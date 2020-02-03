@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape>
+            <gradient
+                android:centerX="0.5"
+                android:centerY="0.1"
+                android:endColor="@color/colorPrimaryLight"
+                android:gradientRadius="300dp"
+                android:startColor="@color/colorPrimaryGreenShade"
+                android:type="radial" />
+        </shape>
+    </item>
+
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/hapdel_logo"></bitmap>
+    </item>
+
+</layer-list>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:elevation="@dimen/_20sdp"
+    android:layout_marginRight="@dimen/_10sdp"
+    android:outlineSpotShadowColor="@color/colorPrimary"
+    android:outlineAmbientShadowColor="@color/colorPrimary"
+    app:cardCornerRadius="@dimen/_5sdp">
+
+    <Button
+        android:id="@+id/cat_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_30sdp"
+        android:maxLines="2"
+        android:elevation="@dimen/_9sdp"
+        android:paddingHorizontal="@dimen/_3sdp"
+        android:ellipsize="none"
+        android:textSize="@dimen/_9ssp"
+        android:textColor="@color/colorWhite" />
+
+</androidx.cardview.widget.CardView>

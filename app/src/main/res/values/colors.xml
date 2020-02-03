@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#E96224</color>
+    <color name="colorPrimaryDark">#ea7537</color>
+    <color name="colorPrimaryGreen">#6CC3CA</color>
+    <color name="colorPrimaryLight">#fdefe8</color>
+    <color name="colorPrimaryGreenShade">#F7F7F7</color>
+
+    <color name="colorAccent">#6CC3CA</color>
+    <color name="color_notification_text">#F63D2B</color>
+    <color name="color_notification_back">#F63D2B</color>
+    <color name="colorWhite">#ffffff</color>
+
+    <color name="colorline">#E8EF51</color>
+    <color name="colortext">#D93862</color>
+    <color name="colorGrey">#746f6f</color>
+    <color name="colorRed">#E44236</color>
+    <color name="colorDullRed">#BA2F16</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorBackFilled">@color/colorPrimary</color>
+    <color name="colorBackFilledUp">#000000</color>
+
+    <color name="colorBackEmpty">#ffc000</color>
+    <color name="colorDeepOrange">#ff8a65</color>
+    <color name="colorCyan">#18ffff</color>
+    <color name="red">#ff0000</color>
+    <color name="cblue">#FFFF00</color>
+    <color name="dgreen">#008000</color>
+
+    <color name="pinned_header_text">#FF3c3c3c</color>
+    <color name="row_activated">#e0e0e0</color>
+    <color name="bg_circle_default">#666666</color>
+
+    <color name="listview_pressed">#FFdddddd</color>
+    <color name="listview_focused">#7dd1ef</color>
+    <color name="listview_checked">#FFededed</color>
+    <color name="colorUploadPrescriptionBg">#263238</color>
+    <color name="lightGray">#E9E6E6</color>
+    <color name="lighterGray">#F8F7F7</color>
+    <color name="lighterOrange">#fa9d41</color>
+    <color name="off_white">#f5f2d0</color>
+    <color name="colorTimeline">#04a75c</color>
+    <color name="colorGrey50">#fafafa</color>
+    <color name="colorTransparent">#00000000</color>
+    <color name="graylight">#fafafa</color>
+    <color name="overlay">#70000000</color>
+    <color name="startblue">#09c6df</color>
+    <color name="endblue">#0bcce6</color>
+    <color name="colorHotRed">#FF6347</color>
+    <color name="darkOrange">#f35933</color>
+    <color name="overlayDark">#000000</color>
+    <color name="colorYellow">#F3B431</color>
+    <color name="colorPurple">#0A79DF</color>
+    <color name="colorGreen">#31b057</color>
+    <color name="transparent">#00000000</color>
+    <color name="darkGray">#4C4B4B</color>
+    <color name="colordarkbackground">#1b242f</color>
+    <color name="medium_gray">#7B8788</color>
+    <color name="french_gray">#cdccd0</color>
+    <color name="colorDullBrown">#EA7773</color>
+
+    <color name="mtrl_textinput_default_box_stroke_color">@color/colorPrimaryGreen</color>
+
+    <array name="connecting_colors">
+        <item>@color/colorPrimary</item>
+        <item>@color/red</item>
+        <item>@color/colorAccent</item>
+        <item>@color/red</item>
+    </array>
+</resources>
+

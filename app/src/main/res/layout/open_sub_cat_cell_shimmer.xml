@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/root_layout"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/category_cardview"
+        android:layout_width="wrap_content"
+        app:contentPadding="@dimen/_5sdp"
+        app:cardCornerRadius="@dimen/_2sdp"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        app:cardBackgroundColor="@color/graylight"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <TextView
+            android:id="@+id/open_cat_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="                  "
+            android:textSize="@dimen/_12ssp"
+            android:background="@color/french_gray"
+            android:textStyle="bold"
+            />
+    </androidx.cardview.widget.CardView>
+
+    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+        android:id="@+id/sub_category_view"
+        android:layout_below="@+id/category_cardview"
+        android:layout_marginTop="@dimen/_7sdp"
+        app:shimmer_demo_child_count="4"
+        app:shimmer_demo_layout="@layout/sub_cat_cell_shimmer"
+        app:shimmer_demo_grid_child_count="4"
+        app:shimmer_demo_layout_manager_type="grid"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+
+</RelativeLayout>

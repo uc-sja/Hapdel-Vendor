@@ -1,0 +1,378 @@
+package com.utility.hapdelvendor.RetrofitClient;
+
+import com.utility.hapdelvendor.Model.AddressModel.AddressModel;
+import com.utility.hapdelvendor.Model.BannerModel.CategoryBanner.CategoryBannerModel;
+import com.utility.hapdelvendor.Model.BannerModel.SimpleBannerModel.SimpleBannerModel;
+import com.utility.hapdelvendor.Model.CartModel.CartModel;
+import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.ParentCategoryModel;
+import com.utility.hapdelvendor.Model.CouponModel.ApplyCouponModel.ApplyCouponModel;
+import com.utility.hapdelvendor.Model.CouponModel.CouponModel;
+import com.utility.hapdelvendor.Model.DeliveryModel.DeliveryFareModel;
+import com.utility.hapdelvendor.Model.FilterModel.WeightListModel.WeightListModel;
+import com.utility.hapdelvendor.Model.LoginModel.UserModel;
+import com.utility.hapdelvendor.Model.PackageCategoryModel.PackageContentModel.PackageContentModel;
+import com.utility.hapdelvendor.Model.PackageCategoryModel.WeightTypeModel.WeightTypeModel;
+import com.utility.hapdelvendor.Model.ProducModel.ProductModel;
+import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
+import com.utility.hapdelvendor.Model.SearchModel.SearchResultModel;
+import com.utility.hapdelvendor.Model.SlotModel.DeliverySlotModel;
+import com.utility.hapdelvendor.Model.UserOrderModel.OrderDetailModel.OrderDetailModel;
+import com.utility.hapdelvendor.Model.UserOrderModel.OrderModel.OrderModel;
+import com.utility.hapdelvendor.Model.VendorModel.VendorModel;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
+
+public interface HapdelApi {
+    @POST("users/dashboard/get_parent_categories")
+    Call<ParentCategoryModel> fetchParentCategory();
+
+    @FormUrlEncoded
+    @POST("users/dashboard/get_listed_categories")
+    Call<ParentCategoryModel> fetchSubCategory(
+            @Field("parent_id") String parent_id
+    );
+
+    @FormUrlEncoded
+    @POST("users/products/get_products_by_category")
+    Call<ProductModel> fetchProducts(
+            @Field("category_id") String category_id,
+            @Field("lat") String lat,
+            @Field("lng") String lng,
+            @Field("page") String page
+    );
+
+    @FormUrlEncoded
+    @POST("users/user/login")
+    Call<ResponseModel> loginUser(
+            @Field("mobile") String mobile
+    );
+
+    @FormUrlEncoded
+    @POST("users/user/registration")
+    Call<ResponseModel> signUpUser(
+            @Field("name") String name,
+            @Field("email") String email,
+            @Field("mobile") String mobile,
+            @Field("password") String pswsd
+    );
+
+    @FormUrlEncoded
+    @POST("users/user/verify_otp")
+    Call<UserModel> verifyOtp(
+            @Field("otp") String otp,
+            @Field("mobile") String mobile
+
+    );
+
+    @FormUrlEncoded
+    @POST("users/cart/add_item")
+    Call<ResponseModel> updateCart(
+            @Field("user_id") String userId,
+            @Field("access_token") String accessToken,
+            @Field("product_id") String pid,
+            @Field("quantity") int newValue,
+            @Field("seller_id") String seller_id);
+
+
+    @FormUrlEncoded
+    @POST("users/user/logout")
+    Call<ResponseModel> logoutUser(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token
+    );
+
+    @FormUrlEncoded
+    @POST("users/cart/user_cart")
+    Call<CartModel> fetchCart(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("latitude") String lat,
+            @Field("longitude") String lng
+    );
+
+
+    @FormUrlEncoded
+    @POST("users/cart/update_seller")
+    Call<CartModel> changeSeller(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("latitude") String lat,
+            @Field("longitude") String lng,
+            @Field("seller_id") String sellerId
+    );
+
+    @FormUrlEncoded
+    @POST("users/cart/get_delivery_time")
+    Call<DeliverySlotModel> fetchDeliverySlot(
+
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token
+    );
+
+    @FormUrlEncoded
+    @POST("users/cart/update_delivery_slot")
+    Call<ResponseModel> selectSlot(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("delivery_slot_id") String slot_id
+    );
+
+    @FormUrlEncoded
+    @POST("users/cart/fetch_coupons")
+    Call<CouponModel> fetchCoupons(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token
+    );
+
+    @FormUrlEncoded
+    @POST("users/cart/add_coupon")
+    Call<ApplyCouponModel> applyCoupon(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("coupon") String coupon
+    );
+
+    @FormUrlEncoded
+    @POST("users/cart/remove_coupon")
+    Call<ResponseModel> cancelCoupon(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token
+    );
+
+    @FormUrlEncoded
+    @POST("users/user/save_address")
+    Call<ResponseModel> saveAddress(
+            @Field("user_id") String id,
+            @Field("access_token") String accessToken,
+            @Field("name") String full_name,
+            @Field("mobile") String contact,
+            @Field("house_no") String house,
+            @Field("apartment_name") String apartment,
+            @Field("street_address") String street,
+            @Field("address") String area,
+            @Field("landmark") String landmark,
+            @Field("pincode") String pin,
+            @Field("city") String city,
+            @Field("state") String state,
+            @Field("lat") String lat,
+            @Field("long") String lng,
+            @Field("default") String def,
+            @Field("address_type") String address_type,
+            @Field("address_id") String address_id
+    );
+
+    @FormUrlEncoded
+    @POST("users/user/fetch_all_addresses")
+    Call<AddressModel> fetchAddress(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token
+    );
+
+    @FormUrlEncoded
+    @POST("users/order/create_order")
+    Call<ResponseModel> createOrder(
+            @Field("user_id") String id,
+            @Field("access_token") String accessToken,
+            @Field("order_id") String orderid,
+            @Field("gateway") String gateway,
+            @Field("address_id") String addressId,
+            @Field("service_time_slot") String service_timing);
+
+
+    @FormUrlEncoded
+    @POST("users/user/remove_address")
+    Call<ResponseModel> deleteAddress(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("address_id") String address_id
+    );
+
+
+    @FormUrlEncoded
+    @POST("users/products/filter_products")
+    Call<ProductModel> applyFilter(
+            @Field("category_id") String category_id,
+            @Field("weight[]") List<String> weightFilter,
+            @Field("brand[]") List<String> brandFilter,
+            @Field("latitude") String lat,
+            @Field("longitude") String lng
+
+    );
+
+    @FormUrlEncoded
+    @POST("users/products/get_filter_weight_list")
+    Call<WeightListModel> fetchWeightFilters(
+            @Field("category_id") String category_id
+
+    );
+
+    @FormUrlEncoded
+    @POST("users/user/get_slider_banners")
+    Call<SimpleBannerModel> fetchSimpleBanner(
+            @Field("category_id") String category_id
+    );
+
+
+    @FormUrlEncoded
+    @POST("users/cart/remove_cart")
+    Call<ResponseModel> removeCart(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token
+    );
+
+
+
+    @FormUrlEncoded
+    @POST("users/user/get_banner_with_products")
+    Call<CategoryBannerModel> fetchBannerWithProducts(
+            @Field("type") String homepage,
+            @Field("latitude") String latitude,
+            @Field("longitude") String longitude,
+            @Field("page") String page,
+            @Field("category_id") String category_id);
+
+
+
+    @FormUrlEncoded
+    @POST("users/products/search")
+    Call<SearchResultModel> searchItem(
+            @Field("query") String keyword,
+            @Field("lat") String latitude,
+            @Field("long") String longitude,
+            @Field("category_id") String categoryId
+    );
+
+    @FormUrlEncoded
+    @POST("users/user/update_profile")
+    Call<ResponseModel> updateProfile(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("email") String email,
+            @Field("mobile") String mobile,
+            @Field("name") String name
+    );
+
+
+    @FormUrlEncoded
+    @POST("users/order/get_user_orders")
+    Call<OrderDetailModel> fetchVendorOrderDetails(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("page") String page,
+            @Field("id") String order_id
+    );
+
+    @FormUrlEncoded
+    @POST("order/all_orders")
+    Call<OrderModel> fetchVendorOrder(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("page") String page
+    );
+
+    @FormUrlEncoded
+    @POST("users/order/cancel_order")
+    Call<ResponseModel> cancelOrder(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("id") String item_id
+    );
+
+
+    //VendorList
+    @FormUrlEncoded
+    @POST("users/user/get_nearby_sellers")
+    Call<VendorModel> fetch_all_vendors(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("lat") String latitude,
+            @Field("long") String longitude
+    );
+
+    @FormUrlEncoded
+    @POST("users/user/get_favorite")
+    Call<VendorModel> fetch_fav_vendors(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("lat") String latitude,
+            @Field("long") String longitude
+    );
+
+    @FormUrlEncoded
+    @POST("users/products/get_products_by_seller")
+    Call<ProductModel> fetchProductsBySeller(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("seller_id") String seller_id,
+            @Field("page") String page
+    );
+
+    @FormUrlEncoded
+    @POST("users/delivery/fetch_delivery_types")
+    Call<PackageContentModel> fetchPackageContents(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token
+    );
+
+    @FormUrlEncoded
+    @POST("users/delivery/fetch_weight_type")
+    Call<WeightTypeModel> fetchWeightTypes(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token
+    );
+
+    @FormUrlEncoded
+    @POST("users/delivery/calculate_fare_price")
+    Call<DeliveryFareModel> deliveryFare(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("weight_id") String weight_id,
+            @Field("pickup_address_id") String pickup_address_id,
+            @Field("drop_address_id") String drop_address_id
+    );
+
+    @FormUrlEncoded
+    @POST("users/delivery/create_delivery_order")
+    Call<ResponseModel> createPackageDeliveryOrder(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("weight_id") String weight_id,
+            @Field("pickup_address_id") String pickup_address_id,
+            @Field("drop_address_id") String drop_address_id,
+            @Field("order_type") String payment_mode,
+            @Field("delivery_type") String courier_type,
+            @Field("pickup_datetime") String date_time,
+            @Field("instructions") String instructions
+    );
+
+    @FormUrlEncoded
+    @POST("users/user/save_favorite")
+    Call<ResponseModel> saveAsFavorite(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("seller_id") String seller_id,
+            @Field("action") String action
+    );
+
+    @FormUrlEncoded
+    @POST("users/user/is_service_available")
+    Call<ResponseModel> checkServiceAvailibility(
+            @Field("latitude") String lat,
+            @Field("longitude") String lng
+    );
+
+    @FormUrlEncoded
+    @POST("users/order/get_delivery_charges")
+    Call<ResponseModel> fetchDeliveryCharges(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("address_id") String address_id
+    );
+}
+
+

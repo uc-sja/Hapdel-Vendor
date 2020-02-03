@@ -1,0 +1,122 @@
+{
+  "project_info": {
+    "project_number": "602625311330",
+    "firebase_url": "https://hapdel-5b8a9.firebaseio.com",
+    "project_id": "hapdel-5b8a9",
+    "storage_bucket": "hapdel-5b8a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602625311330:android:c21652342a71751b23073b",
+        "android_client_info": {
+          "package_name": "com.utility.hapdelvendor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "602625311330-is0luuk6vfucmki4535jsvno21sf0toh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hapdelvendor",
+            "certificate_hash": "2d669e44485539b08d6f455f9c536296b2609c24"
+          }
+        },
+        {
+          "client_id": "602625311330-qd31afkua0p0ksj5lhfp9v8ih3hllj5a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbmaGtYQ2U2hm8Xtb9D5kVJ11YQEjsdCc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "602625311330-qd31afkua0p0ksj5lhfp9v8ih3hllj5a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602625311330:android:96ab59907e64be9923073b",
+        "android_client_info": {
+          "package_name": "com.utility.hapdel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "602625311330-r0totai279d3dbgdq1cpaus0kc8ldtl9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.utility.hapdel",
+            "certificate_hash": "bc9227e36c86c9d49032ec1437ffa2910026f070"
+          }
+        },
+        {
+          "client_id": "602625311330-qd31afkua0p0ksj5lhfp9v8ih3hllj5a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbmaGtYQ2U2hm8Xtb9D5kVJ11YQEjsdCc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "602625311330-qd31afkua0p0ksj5lhfp9v8ih3hllj5a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602625311330:android:4a2a99b9b7dc457a23073b",
+        "android_client_info": {
+          "package_name": "com.utility.hapdelbiker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "602625311330-hf1sd3o07i86srmvrhj9bio515uo26th.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.utility.hapdelbiker",
+            "certificate_hash": "bc9227e36c86c9d49032ec1437ffa2910026f070"
+          }
+        },
+        {
+          "client_id": "602625311330-qd31afkua0p0ksj5lhfp9v8ih3hllj5a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbmaGtYQ2U2hm8Xtb9D5kVJ11YQEjsdCc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "602625311330-qd31afkua0p0ksj5lhfp9v8ih3hllj5a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

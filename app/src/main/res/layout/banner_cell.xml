@@ -1,0 +1,73 @@
+<androidx.cardview.widget.CardView android:layout_width="wrap_content"
+    android:id="@+id/root_layout"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/_5sdp"
+    android:layout_margin="@dimen/_10sdp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <RelativeLayout
+        android:id="@+id/banner_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        >
+
+        <ImageView
+            android:id="@+id/banner_img"
+            android:scaleType="fitXY"
+            android:layout_width="match_parent"
+            android:src="@color/colorPrimary"
+            android:layout_height="@dimen/_90sdp" />
+
+        <ImageView
+            android:id="@+id/banner_logo"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_margin="@dimen/_2sdp"
+            android:visibility="invisible"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/logo" />
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/banner_logo_txt"
+            style="@style/banner_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_toRightOf="@id/banner_logo"
+            android:textSize="@dimen/_12ssp"
+            android:text="hapdel" />
+
+        <TextView
+            android:id="@+id/banner_subtitle"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/_10sdp"
+            android:text="@string/save_more"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_12ssp"
+            android:theme="@style/banner_offer" />
+
+        <Button
+            android:visibility="invisible"
+            android:id="@+id/banner_btn"
+
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/banner_btn"
+            android:text="TOPUP"
+            android:textColor="@color/colorWhite"
+            android:theme="@style/banner_btn" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

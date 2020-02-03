@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sliding_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    sothree:umanoPanelHeight="0dp"
+    sothree:umanoShadowHeight="0dp">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:background="@color/colorWhite"
+        android:layout_height="wrap_content"
+        tools:context=".Activity.SignInActivity">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:background="@color/colorWhite"
+            android:id="@+id/contraint_layout"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.AppBarLayout
+                app:layout_constraintTop_toTopOf="parent"
+                android:elevation="@dimen/_1sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:id="@+id/appbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:background="@color/colorWhite"
+                app:elevation="0dp"
+                android:fitsSystemWindows="true">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:background="@color/transparent"
+                    android:layout_width="match_parent"
+                    style="@style/toolbar_theme_dark_back"
+                    android:layout_height="?attr/actionBarSize"
+                    />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/icon"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_below="@+id/appbar_layout"
+                android:layout_gravity="bottom|center_horizontal"
+                android:elevation="@dimen/_10sdp"
+                android:src="@drawable/app_icon_png"
+                android:outlineProvider="none"
+                android:paddingBottom="@dimen/_10sdp"
+                android:cropToPadding="false"
+                app:civ_border_color="@color/colorWhite"
+                app:civ_border_width="@dimen/_7sdp"
+                android:visibility="gone"
+                app:civ_circle_background_color="@color/colorWhite"
+                app:layout_constraintBottom_toBottomOf="@+id/appbar_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appbar_layout" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/logo_img"
+            android:src="@drawable/hapdel_logo"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/contraint_layout"
+            android:layout_height="@dimen/_70sdp"/>
+
+
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:layout_below="@+id/logo_img"
+            android:background="@color/transparent"
+            android:visibility="visible">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/form_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:gravity="center"
+                        android:text="Enter Mobile Number"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_16ssp"
+                        android:textStyle="normal" />
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/_20sdp"
+                        android:text="@string/login_msg"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="normal" />
+
+
+                    <RelativeLayout
+                        android:id="@+id/mobile_ver_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_marginTop="@dimen/_30sdp">
+                        <!--android:background="@drawable/ractangle">-->
+
+
+                        <com.mukesh.OtpView
+                            android:id="@+id/enter_mobile_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:itemBackground="@color/transparent"
+                            android:textColor="@color/bg_circle_default"
+                            android:theme="@style/OtpWidget.OtpView"
+                            app:itemCount="10"
+                            app:itemHeight="35dp"
+                            app:lineColor="@android:color/darker_gray"
+                            app:viewType="line" />
+
+
+                    </RelativeLayout>
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btn_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:gravity="bottom"
+                    android:weightSum="10"
+                    android:layout_above="@+id/bottom_img"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_1sdp"/>
+
+                    <Button
+                        android:id="@+id/back"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:layout_weight="2.5"
+                        android:background="@drawable/sign_in_btn"
+                        android:text="Back"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold" />
+
+
+                    <View
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_1sdp"/>
+
+                    <Button
+                        android:id="@+id/proceed"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:layout_weight="2.5"
+                        android:background="@drawable/sign_in_btn"
+                        android:text="Proceed"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold" />
+
+
+                    <View
+                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_1sdp"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/bottom_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_80sdp"
+                    android:src="@drawable/bottom_logo"
+                    android:scaleType="centerCrop"
+                    android:layout_alignParentBottom="true"/>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/slider_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_300sdp"
+        android:background="@color/colorWhite"
+        android:paddingBottom="@dimen/_10sdp"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimary"
+            android:layout_alignParentTop="true"
+            android:layout_height="@dimen/_60sdp">
+
+            <ImageView
+                android:src="@drawable/ic_problem"
+                android:layout_centerInParent="true"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp" />
+
+        </RelativeLayout>
+        <ImageView
+            android:id="@+id/slider_img"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/slider_error" />
+
+        <TextView
+            android:id="@+id/slider_msg"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/slider_img"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:fontFamily="@font/abeezee"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/_40sdp"
+            android:text="Slider Msg"
+            android:textAlignment="center"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12ssp" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/slider_btn_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryGreen"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_4sdp"
+                android:text="Back"
+                android:textAlignment="center"
+                android:layout_toLeftOf="@+id/center_view"
+                android:textAllCaps="true"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_12ssp" />
+
+            <View
+
+                android:id="@+id/center_view"
+                android:layout_centerHorizontal="true"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="0dp"/>
+
+            <Button
+                android:id="@+id/slider_btn_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:layout_toRightOf="@+id/center_view"
+                android:background="@color/colorPrimaryGreen"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_4sdp"
+                android:text="Sign Up"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_12ssp" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>
+

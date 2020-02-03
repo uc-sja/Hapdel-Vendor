@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/_300sdp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="@drawable/curve_layout"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/upper_curve_layout"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_7sdp"
+        >
+
+        <ImageView
+            android:id="@+id/dialog_logo"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/ic_literature" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="@dimen/_10sdp">
+
+        <TextView
+            android:id="@+id/dialog_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Success"
+            android:textStyle="bold"
+            android:textSize="@dimen/_13ssp"
+            android:textAlignment="center"
+            />
+
+        <TextView
+            android:id="@+id/dialog_details"
+            android:layout_width="@dimen/_260sdp"
+            android:layout_height="wrap_content"
+            android:maxHeight="@dimen/_200sdp"
+            android:layout_marginTop="10dp"
+            android:textSize="@dimen/_12ssp"
+            android:scrollbars = "vertical"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            />
+
+        <Button
+            android:id="@+id/buttonOk"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:background="@drawable/banner_btn"
+            android:text="Ok"
+            android:textSize="@dimen/_11ssp"
+            android:textColor="@color/colorWhite" />
+
+    </LinearLayout>
+
+</LinearLayout>
