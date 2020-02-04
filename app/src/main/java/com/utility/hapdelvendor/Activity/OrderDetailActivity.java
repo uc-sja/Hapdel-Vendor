@@ -144,7 +144,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
