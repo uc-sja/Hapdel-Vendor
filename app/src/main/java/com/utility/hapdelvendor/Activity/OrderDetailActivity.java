@@ -1,5 +1,17 @@
 package com.utility.hapdelvendor.Activity;
 
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -7,19 +19,12 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.gson.Gson;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.utility.hapdelvendor.Adapter.OrderedItemsAdapter;
+import com.utility.hapdelvendor.Interfaces.ResponseResult;
 import com.utility.hapdelvendor.Model.UserOrderModel.OrderDetailModel.Datum;
 import com.utility.hapdelvendor.Model.UserOrderModel.OrderDetailModel.OrderDetailModel;
 import com.utility.hapdelvendor.R;
@@ -66,6 +71,13 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private TextView order_date,order_amount,payment_method,order_id;
     private RelativeLayout container_layout;
+
+    //Sliding PanelLayout
+    private SlidingUpPanelLayout sliding_layout;
+    private ImageView slider_img;
+    private Button slider_one_btn, slider_two_btn;
+    private TextView slider_msg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +126,14 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         shipping_text = findViewById(R.id.shipping_text);
 
+        sliding_layout = findViewById(R.id.sliding_layout);
+        slider_img = findViewById(R.id.slider_img);
+        slider_msg = findViewById(R.id.slider_msg);
+
+        slider_one_btn = findViewById(R.id.slider_btn_one);
+        slider_two_btn = findViewById(R.id.slider_btn_two);
+
+
         //Initializing shipping layout
         house_no = findViewById(R.id.house_no);
         apartment_name = findViewById(R.id.apartment_name);
@@ -141,6 +161,42 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         if (parentOrder != null) {
             fetchOrderDetails();
+        }
+
+        if(getCurrentUser()==null || getCurrentUser().getId()==null){
+            showSliderLayout("Please login to see your orders", true, "login", null);
+            return;
+        }
+
+    }
+
+    public void showSliderLayout(String msg, boolean showBtns, String btn_function, final ResponseResult cleartCartResponseResult) {
+        Common.hideKeyboard(this);
+        slider_msg.setText(msg);
+        sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+        if (!showBtns) {
+            slider_one_btn.setVisibility(View.INVISIBLE);
+            slider_two_btn.setVisibility(View.INVISIBLE);
+        }
+
+        if (btn_function.trim().equalsIgnoreCase("login")) {
+            slider_one_btn.setText("Register");
+            slider_two_btn.setText("Login Now");
+            slider_one_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(OrderDetailActivity.this, SignUpActivity.class));
+                }
+            });
+
+            slider_two_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(OrderDetailActivity.this, SignInActivity.class));
+
+                }
+            });
+
         }
     }
 

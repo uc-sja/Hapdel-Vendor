@@ -1,13 +1,10 @@
 package com.utility.hapdelvendor.Activity;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,7 +26,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -40,43 +36,29 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
-import com.google.gson.Gson;
+import com.kingfisher.easyviewindicator.AnyViewIndicator;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.utility.hapdelvendor.Adapter.BannerAdapter;
 import com.utility.hapdelvendor.Adapter.MainCatAdapter;
+import com.utility.hapdelvendor.Adapter.RecentOrderAdapter;
 import com.utility.hapdelvendor.BottomSheetFragment;
-import com.utility.hapdelvendor.Interfaces.LocationMethods;
 import com.utility.hapdelvendor.Interfaces.ResponseResult;
-import com.utility.hapdelvendor.Model.BannerModel.CategoryBanner.CategoryBannerModel;
-import com.utility.hapdelvendor.Model.BannerModel.CategoryBanner.ListItem.BannerItem;
-import com.utility.hapdelvendor.Model.BannerModel.Datum;
-import com.utility.hapdelvendor.Model.BannerModel.SimpleBannerModel.SimpleBannerModel;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.ParentCategoryModel;
 import com.utility.hapdelvendor.Model.ProducModel.Product;
+import com.utility.hapdelvendor.Model.RecentOrderModel.Datum;
+import com.utility.hapdelvendor.Model.RecentOrderModel.RecentOrderModel;
 import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.AutoSuggestAdapter;
 import com.utility.hapdelvendor.Utils.BottomNavigation;
 import com.utility.hapdelvendor.Utils.CircularTextView;
 import com.utility.hapdelvendor.Utils.Common;
-import com.utility.hapdelvendor.Utils.HomeSlideAdapter;
 import com.utility.hapdelvendor.Utils.LocalStorage;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
@@ -84,7 +66,7 @@ import me.relex.circleindicator.CircleIndicator2;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ss.com.bannerslider.Slider;
+
 import static com.utility.hapdelvendor.Utils.Common.getApiInstance;
 import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 import static com.utility.hapdelvendor.Utils.Common.hideKeyboard;
@@ -100,7 +82,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private CircleIndicator2 indicator1, indicator2;
     private RecyclerView deal_recycler;
-    private Slider slider;
+    private RecyclerView recentOrderView;
     private ShimmerRecyclerView shimmerRecycler;
     private RelativeLayout error_msg_layout;
     private TextView error_msg;
@@ -137,14 +119,16 @@ public class HomeActivity extends AppCompatActivity {
     private boolean permissionDenied = false;
     private SwipeRefreshLayout swipeRefreshLayout;
     public BottomSheetFragment bottomSheetFragment;
-    private BannerAdapter bannerAdapter;
-    private BannerAdapter bannerAdapter2;
     private ArrayList<Datum> total_banner_items;
+    private RecentOrderAdapter recentOrderAdapter;
+    private GridLayoutManager gridLayoutManager;
+    private AnyViewIndicator circleIndicator;
 
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,55 +174,39 @@ public class HomeActivity extends AppCompatActivity {
         slider_two_btn = findViewById(R.id.slider_btn_two);
 
 
-        banner_recycler = findViewById(R.id.banner_recycler);
-        banner_recycler.setLayoutManager(new LinearLayoutManager(HomeActivity.this, LinearLayoutManager.HORIZONTAL, false));
-        bannerAdapter = new BannerAdapter(HomeActivity.this, new ArrayList<com.utility.hapdelvendor.Model.BannerModel.SimpleBannerModel.Datum>());
-        banner_recycler.setAdapter(bannerAdapter);
-
-        banner_recycler2 = findViewById(R.id.banner_recycler_2);
-        banner_recycler2.setLayoutManager(new LinearLayoutManager(HomeActivity.this, LinearLayoutManager.HORIZONTAL, false));
-        bannerAdapter2 = new BannerAdapter(HomeActivity.this, new ArrayList<com.utility.hapdelvendor.Model.BannerModel.SimpleBannerModel.Datum>());
-        banner_recycler2.setAdapter(bannerAdapter2);
-
-        //making recyclerview sticky
-        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
-        pagerSnapHelper.attachToRecyclerView(banner_recycler);
-        indicator1 = findViewById(R.id.banner_indicator1);
-        indicator1.attachToRecyclerView(banner_recycler, pagerSnapHelper);
-        bannerAdapter.registerAdapterDataObserver(indicator1.getAdapterDataObserver());
-
-        //making recyclerview2 sticky
-        PagerSnapHelper pagerSnapHelper2 = new PagerSnapHelper();
-        pagerSnapHelper2.attachToRecyclerView(banner_recycler2);
-        indicator2 = findViewById(R.id.banner_indicator2);
-        indicator2.attachToRecyclerView(banner_recycler2, pagerSnapHelper);
-        bannerAdapter2.registerAdapterDataObserver(indicator2.getAdapterDataObserver());
+//        //making recyclerview sticky
+//        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+//        pagerSnapHelper.attachToRecyclerView(banner_recycler);
+//        indicator1 = findViewById(R.id.banner_indicator1);
+//        indicator1.attachToRecyclerView(banner_recycler, pagerSnapHelper);
+//        bannerAdapter.registerAdapterDataObserver(indicator1.getAdapterDataObserver());
+//
+//        //making recyclerview2 sticky
+//        PagerSnapHelper pagerSnapHelper2 = new PagerSnapHelper();
+//        pagerSnapHelper2.attachToRecyclerView(banner_recycler2);
+//        indicator2 = findViewById(R.id.banner_indicator2);
+//        indicator2.attachToRecyclerView(banner_recycler2, pagerSnapHelper);
+//        bannerAdapter2.registerAdapterDataObserver(indicator2.getAdapterDataObserver());
 
 
-        slider = findViewById(R.id.banner_slider);
-        Slider banner = slider;
-        slider.setAdapter(new HomeSlideAdapter(HomeActivity.this, new ArrayList<com.utility.hapdelvendor.Model.BannerModel.Datum>()));
+        recentOrderView = findViewById(R.id.recent_order_recycler);
+
+        circleIndicator = findViewById(R.id.recent_order_indicator);
+        gridLayoutManager = new GridLayoutManager(HomeActivity.this, 2, GridLayoutManager.HORIZONTAL, false);
+        recentOrderView.setLayoutManager(gridLayoutManager);
+
+        recentOrderAdapter = new RecentOrderAdapter(HomeActivity.this, new ArrayList<Datum>());
+        recentOrderView.setAdapter(recentOrderAdapter);
         shimmerRecycler = (ShimmerRecyclerView) findViewById(R.id.shimmer_recycler_view);
 
+        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+        recentOrderView.setOnFlingListener(null);
+        pagerSnapHelper.attachToRecyclerView(recentOrderView);
 
-//        fetchMainCategories();
-
-        slider_banner_layout = findViewById(R.id.slider_banner_layout);
-        slider_banner_layout2 = findViewById(R.id.slider_banner_layout_2);
-
-
-//        fetchBannerImages();
-
-        //initializing the category banner view
-        category_banner_view = findViewById(R.id.category_banner_view);
-        category_banner_view.setHasFixedSize(false);
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        category_banner_view.setLayoutManager(layoutManager);
+        //        fetchMainCategories();
 
 
-        //        total_banner_items = new ArrayList<>();
-        //        fetchBannerCategories(i);
-        //        fetchSliderImages();
+        fetchRecentOrder();
 
         error_msg_layout = findViewById(R.id.error_layout);
         error_msg = findViewById(R.id.error_msg);
@@ -273,7 +241,7 @@ public class HomeActivity extends AppCompatActivity {
     private void fetchHomePage(){
         Log.d(TAG, "fetchHomePage: ");
         fetchMainCategories();
-//        fetchBannerImages();
+//        fetchRecentOrder();
         i = 1;
     }
 
@@ -297,7 +265,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-        private void fetchBannerImages() {
+        private void fetchRecentOrder() {
         final ProgressDialog progressDialog = new ProgressDialog(HomeActivity.this, R.style.MyDialogTheme);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Fetching Offers...");
@@ -307,11 +275,10 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         //initially
-        slider_banner_layout.setVisibility(View.GONE);
-        Call<SimpleBannerModel> loginResponseCall = getApiInstance().fetchSimpleBanner("");
-        loginResponseCall.enqueue(new Callback<SimpleBannerModel>() {
+        Call<RecentOrderModel> loginResponseCall = getApiInstance().fetchRecentOrders("2", "");
+        loginResponseCall.enqueue(new Callback<RecentOrderModel>() {
             @Override
-            public void onResponse(Call<SimpleBannerModel> call, Response<SimpleBannerModel> response) {
+            public void onResponse(Call<RecentOrderModel> call, Response<RecentOrderModel> response) {
                 progressDialog.dismiss();
                 if(!response.isSuccessful()){
                     Toast.makeText(HomeActivity.this, ""+response.message(), Toast.LENGTH_SHORT).show();
@@ -321,27 +288,58 @@ public class HomeActivity extends AppCompatActivity {
 
                 Log.d(TAG, "onResponse: success"+response.code()+response.body());
                 if(response.body()!=null ){
-                    SimpleBannerModel simpleBannerModel = null;
+                    RecentOrderModel recentOrderModel = null;
                     try {
-                        simpleBannerModel = response.body();
+                        recentOrderModel = response.body();
                     } catch (Exception e) {
                         Toast.makeText(HomeActivity.this, "Error in response", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     String content="";
-                    content+= simpleBannerModel.getMsg();
+                    content+= recentOrderModel.getMsg();
 
                     Log.d(TAG, "onResponse: response msg"+response.body().getResult()+"  msg  ");
-                    if (simpleBannerModel.getResult().equalsIgnoreCase("success")){ //very important conditon
+                    if (recentOrderModel.getResult().equalsIgnoreCase("success")){ //very important conditon
                         final List<Datum> bannerList = new ArrayList<>();
-                        Log.d(TAG, "onResponse: success fetchinh banner1");
 
-                        if(simpleBannerModel.getData()!=null && simpleBannerModel.getData().size()>0){
-                            slider_banner_layout.setVisibility(View.VISIBLE);
+                        if(recentOrderModel.getData()!=null && recentOrderModel.getData().size()>0){
 
-                            Log.d(TAG, "onResponse: banner size "+ simpleBannerModel.getData().size());
+                            Log.d(TAG, "onResponse: banner size "+ recentOrderModel.getData().size());
 
-                            bannerAdapter.updateItems(simpleBannerModel.getData());
+
+                            recentOrderAdapter.updateItems(recentOrderModel.getData());
+
+
+                            int indiator_size = (int) Math.ceil(((double) recentOrderModel.getData().size()) / 2);
+
+                            if(indiator_size == 1){
+                                circleIndicator.setVisibility(View.GONE);
+                            }
+                            circleIndicator.setItemCount(indiator_size);
+
+                            recentOrderView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                                private int pos;
+
+                                @Override
+                                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                                    super.onScrollStateChanged(recyclerView, newState);
+                                    switch (newState) {
+                                        case RecyclerView.SCROLL_STATE_IDLE:
+                                            Log.d(TAG, "onScrollStateChanged: new state " + newState);
+
+                                            int position = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition()+1;
+                                            pos = position;
+
+                                            if(position%2 != 0){
+                                                pos = position+1;
+                                            }
+
+                                            circleIndicator.setCurrentPosition((int) ((Double.valueOf(pos)/ 2))-1);
+                                            break;
+                                    }
+                                }
+                            });
+
 
 
                         }
@@ -357,7 +355,7 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<SimpleBannerModel> call, Throwable t) {
+            public void onFailure(Call<RecentOrderModel> call, Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(HomeActivity.this, ""+t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }

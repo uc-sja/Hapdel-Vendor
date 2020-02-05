@@ -241,18 +241,19 @@
                             android:textStyle="bold" />
 
                         <com.google.android.material.textfield.TextInputLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="@dimen/_10sdp"
                             android:textColorHint="@color/medium_gray"
-                            android:theme="@style/TextInputCustomStyle">
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/set_product_price"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textAlignment="center"
-                            android:hint="Enter prodcut price"
+                            android:hint="Enter product price"
                             android:digits="0123456789."
                             android:paddingHorizontal="@dimen/_2sdp"
                             android:inputType="numberDecimal"

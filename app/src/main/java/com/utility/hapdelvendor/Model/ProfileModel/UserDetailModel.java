@@ -1,12 +1,12 @@
 
-package com.utility.hapdelvendor.Model.BannerModel.CategoryBanner;
+package com.utility.hapdelvendor.Model.ProfileModel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class CategoryBannerModel {
+public class UserDetailModel {
 
     @SerializedName("result")
     @Expose

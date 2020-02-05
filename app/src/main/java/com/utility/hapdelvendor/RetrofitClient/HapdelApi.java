@@ -1,8 +1,6 @@
 package com.utility.hapdelvendor.RetrofitClient;
 
 import com.utility.hapdelvendor.Model.AddressModel.AddressModel;
-import com.utility.hapdelvendor.Model.BannerModel.CategoryBanner.CategoryBannerModel;
-import com.utility.hapdelvendor.Model.BannerModel.SimpleBannerModel.SimpleBannerModel;
 import com.utility.hapdelvendor.Model.CartModel.CartModel;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.ParentCategoryModel;
 import com.utility.hapdelvendor.Model.CouponModel.ApplyCouponModel.ApplyCouponModel;
@@ -13,6 +11,8 @@ import com.utility.hapdelvendor.Model.LoginModel.UserModel;
 import com.utility.hapdelvendor.Model.PackageCategoryModel.PackageContentModel.PackageContentModel;
 import com.utility.hapdelvendor.Model.PackageCategoryModel.WeightTypeModel.WeightTypeModel;
 import com.utility.hapdelvendor.Model.ProducModel.ProductModel;
+import com.utility.hapdelvendor.Model.ProfileModel.UserDetailModel;
+import com.utility.hapdelvendor.Model.RecentOrderModel.RecentOrderModel;
 import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.Model.SearchModel.SearchResultModel;
 import com.utility.hapdelvendor.Model.SlotModel.DeliverySlotModel;
@@ -211,11 +211,6 @@ public interface HapdelApi {
 
     );
 
-    @FormUrlEncoded
-    @POST("users/user/get_slider_banners")
-    Call<SimpleBannerModel> fetchSimpleBanner(
-            @Field("category_id") String category_id
-    );
 
 
     @FormUrlEncoded
@@ -225,17 +220,7 @@ public interface HapdelApi {
             @Field("access_token") String access_token
     );
 
-
-
-    @FormUrlEncoded
-    @POST("users/user/get_banner_with_products")
-    Call<CategoryBannerModel> fetchBannerWithProducts(
-            @Field("type") String homepage,
-            @Field("latitude") String latitude,
-            @Field("longitude") String longitude,
-            @Field("page") String page,
-            @Field("category_id") String category_id);
-
+    
 
 
     @FormUrlEncoded
@@ -373,6 +358,21 @@ public interface HapdelApi {
             @Field("access_token") String access_token,
             @Field("address_id") String address_id
     );
+
+    @FormUrlEncoded
+    @POST("order/recent_orders")
+    Call<RecentOrderModel> fetchRecentOrders(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token
+            );
+
+    @FormUrlEncoded
+    @POST("profile/user_info")
+    Call<UserDetailModel> fetchUserDetails(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token
+    );
+
 }
 
 

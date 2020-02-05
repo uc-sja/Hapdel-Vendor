@@ -174,13 +174,13 @@
                                 android:orientation="vertical">
 
                                 <LinearLayout
-                                    android:id="@+id/slider_banner_layout"
+                                    android:id="@+id/recent_order_layout"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
 
                                     <TextView
-                                        android:id="@+id/banner_subtitle"
+                                        android:id="@+id/recent_order_subtitle"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginBottom="@dimen/_5sdp"
@@ -197,7 +197,7 @@
 
 
                                     <androidx.recyclerview.widget.RecyclerView
-                                        android:id="@+id/banner_recycler"
+                                        android:id="@+id/recent_order_recycler"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:clipToPadding="false"
@@ -205,13 +205,14 @@
                                         android:paddingStart="@dimen/_12sdp"
                                         android:paddingEnd="@dimen/_12sdp" />
 
-                                    <me.relex.circleindicator.CircleIndicator2
-                                        android:id="@+id/banner_indicator1"
+                                    <com.kingfisher.easyviewindicator.AnyViewIndicator
+                                        android:id="@+id/recent_order_indicator"
                                         android:layout_width="wrap_content"
                                         android:layout_height="@dimen/_20sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
                                         android:layout_gravity="left"
                                         android:gravity="left"
-                                        sothree:ci_drawable="@drawable/coloured_radius"></me.relex.circleindicator.CircleIndicator2>
+                                        sothree:ci_drawable="@drawable/coloured_radius"></com.kingfisher.easyviewindicator.AnyViewIndicator>
 
                                 </LinearLayout>
 
@@ -256,41 +257,8 @@
                                         sothree:ci_drawable="@drawable/coloured_radius"></me.relex.circleindicator.CircleIndicator2>
                                 </LinearLayout>
 
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/_15sdp"
-                                    android:descendantFocusability="blocksDescendants">
-
-                                    <androidx.recyclerview.widget.RecyclerView
-                                        android:id="@+id/category_banner_view"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="horizontal"
-                                        android:visibility="visible" />
 
 
-                                </RelativeLayout>
-
-
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/banner_slider_card"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginVertical="@dimen/_10sdp"
-                                    android:visibility="gone"
-                                    sothree:cardCornerRadius="@dimen/_5sdp">
-
-                                    <ss.com.bannerslider.Slider
-                                        android:id="@+id/banner_slider"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="@dimen/_150sdp"
-                                        android:layout_gravity="center"
-                                        sothree:slider_animateIndicators="true"
-                                        sothree:slider_interval="3000"
-                                        sothree:slider_loopSlides="true"></ss.com.bannerslider.Slider>
-
-                                </androidx.cardview.widget.CardView>
 
 
                                 <View

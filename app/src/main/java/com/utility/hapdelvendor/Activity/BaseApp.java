@@ -6,12 +6,10 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.utility.hapdelvendor.R;
-import com.utility.hapdelvendor.Service.PicassoImageLoadingService;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
-import ss.com.bannerslider.Slider;
 
 public class BaseApp extends Application {
     public static BaseApp AppContext;
@@ -22,7 +20,7 @@ public class BaseApp extends Application {
         super.onCreate();
 
         AppContext = this;
-        Slider.init(new PicassoImageLoadingService(AppContext));
+//        Slider.init(new PicassoImageLoadingService(AppContext));
 
 
         ViewPump.init(ViewPump.builder()

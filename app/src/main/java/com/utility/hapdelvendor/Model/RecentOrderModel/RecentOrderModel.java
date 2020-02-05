@@ -1,12 +1,12 @@
 
-package com.utility.hapdelvendor.Model.BannerModel;
+package com.utility.hapdelvendor.Model.RecentOrderModel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class BannerModel {
+public class RecentOrderModel {
 
     @SerializedName("result")
     @Expose
