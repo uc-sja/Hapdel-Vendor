@@ -4,6 +4,8 @@ package com.utility.hapdelvendor.Model.UserOrderModel.OrderModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Datum {
 
     @SerializedName("id")
@@ -30,6 +32,19 @@ public class Datum {
     @SerializedName("txn_id")
     @Expose
     private String txnId;
+    @SerializedName("items")
+    @Expose
+    private List<Item> items = null;
+
+    private boolean isExpanded;
+
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
+    }
 
     public String getId() {
         return id;
@@ -93,6 +108,14 @@ public class Datum {
 
     public void setTxnId(String txnId) {
         this.txnId = txnId;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 
 }

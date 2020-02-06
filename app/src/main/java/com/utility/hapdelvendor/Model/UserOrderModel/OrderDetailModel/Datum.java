@@ -9,51 +9,54 @@ public class Datum {
     @SerializedName("id")
     @Expose
     private String id;
-    @SerializedName("transaction_id")
-    @Expose
-    private String transactionId;
-    @SerializedName("txn_amount")
-    @Expose
-    private String txnAmount;
-    @SerializedName("order_status")
-    @Expose
-    private String orderStatus;
-    @SerializedName("payment_method")
-    @Expose
-    private String paymentMethod;
-    @SerializedName("txn_date")
-    @Expose
-    private String txnDate;
-    @SerializedName("product_name")
-    @Expose
-    private String productName;
-    @SerializedName("brand")
-    @Expose
-    private String brand;
-    @SerializedName("type")
-    @Expose
-    private String type;
-    @SerializedName("base_url")
-    @Expose
-    private String baseUrl;
-    @SerializedName("image")
-    @Expose
-    private String image;
     @SerializedName("quantity")
     @Expose
     private String quantity;
-    @SerializedName("price")
+    @SerializedName("payment_method")
     @Expose
-    private String price;
-    @SerializedName("total_discount")
+    private String paymentMethod;
+    @SerializedName("product_id")
     @Expose
-    private String totalDiscount;
+    private String productId;
+    @SerializedName("product_price")
+    @Expose
+    private String productPrice;
+    @SerializedName("discount_vendor")
+    @Expose
+    private String discountVendor;
+    @SerializedName("discount_admin")
+    @Expose
+    private String discountAdmin;
     @SerializedName("coupon_discount")
     @Expose
     private String couponDiscount;
+    @SerializedName("total_discount")
+    @Expose
+    private String totalDiscount;
+    @SerializedName("coupon_text")
+    @Expose
+    private String couponText;
+    @SerializedName("order_status")
+    @Expose
+    private String orderStatus;
+    @SerializedName("user_id")
+    @Expose
+    private String userId;
+    @SerializedName("display_name")
+    @Expose
+    private String displayName;
+    @SerializedName("email")
+    @Expose
+    private String email;
+    @SerializedName("mobile")
+    @Expose
+    private String mobile;
     @SerializedName("address_name")
     @Expose
     private String addressName;
+    @SerializedName("pincode")
+    @Expose
+    private String pincode;
     @SerializedName("address_mobile")
     @Expose
     private String addressMobile;
@@ -66,15 +69,12 @@ public class Datum {
     @SerializedName("street_address")
     @Expose
     private String streetAddress;
-    @SerializedName("landmark")
-    @Expose
-    private String landmark;
     @SerializedName("address")
     @Expose
     private String address;
-    @SerializedName("pincode")
+    @SerializedName("landmark")
     @Expose
-    private String pincode;
+    private String landmark;
     @SerializedName("city")
     @Expose
     private String city;
@@ -84,32 +84,54 @@ public class Datum {
     @SerializedName("address_type")
     @Expose
     private String addressType;
-
-    @SerializedName("contents")
+    @SerializedName("category_id")
     @Expose
-    private String contents;
-    @SerializedName("pickup_address_id")
+    private String categoryId;
+    @SerializedName("type")
     @Expose
-    private String pickupAddressId;
-    @SerializedName("drop_address_id")
+    private String type;
+    @SerializedName("product_name")
     @Expose
-    private String dropAddressId;
-    @SerializedName("pickup_datetime")
+    private String productName;
+    @SerializedName("brand")
     @Expose
-    private String pickupDatetime;
-    @SerializedName("last_update")
+    private String brand;
+    @SerializedName("image")
     @Expose
-    private String lastUpdate;
-    @SerializedName("packet_size")
+    private String image;
+    @SerializedName("per")
     @Expose
-    private String packetSize;
-    @SerializedName("pickup_address")
+    private String per;
+    @SerializedName("unit")
     @Expose
-    private PickupAddress pickupAddress;
-    @SerializedName("drop_address")
+    private String unit;
+    @SerializedName("order_id")
     @Expose
-    private DropAddress dropAddress;
-
+    private String orderId;
+    @SerializedName("bank_txn_id")
+    @Expose
+    private String bankTxnId;
+    @SerializedName("txn_amount")
+    @Expose
+    private String txnAmount;
+    @SerializedName("txn_date")
+    @Expose
+    private String txnDate;
+    @SerializedName("service_time_slot")
+    @Expose
+    private String serviceTimeSlot;
+    @SerializedName("status")
+    @Expose
+    private String status;
+    @SerializedName("delivery_price")
+    @Expose
+    private String deliveryPrice;
+    @SerializedName("title")
+    @Expose
+    private String title;
+    @SerializedName("store_name")
+    @Expose
+    private String storeName;
 
     public String getId() {
         return id;
@@ -117,86 +139,6 @@ public class Datum {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    public String getTxnAmount() {
-        return txnAmount;
-    }
-
-    public void setTxnAmount(String txnAmount) {
-        this.txnAmount = txnAmount;
-    }
-
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public String getTxnDate() {
-        return txnDate;
-    }
-
-    public void setTxnDate(String txnDate) {
-        this.txnDate = txnDate;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getBaseUrl() {
-        return baseUrl;
-    }
-
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public String getQuantity() {
@@ -207,20 +149,44 @@ public class Datum {
         this.quantity = quantity;
     }
 
-    public String getPrice() {
-        return price;
+    public String getPaymentMethod() {
+        return paymentMethod;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
-    public String getTotalDiscount() {
-        return totalDiscount;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setTotalDiscount(String totalDiscount) {
-        this.totalDiscount = totalDiscount;
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(String productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public String getDiscountVendor() {
+        return discountVendor;
+    }
+
+    public void setDiscountVendor(String discountVendor) {
+        this.discountVendor = discountVendor;
+    }
+
+    public String getDiscountAdmin() {
+        return discountAdmin;
+    }
+
+    public void setDiscountAdmin(String discountAdmin) {
+        this.discountAdmin = discountAdmin;
     }
 
     public String getCouponDiscount() {
@@ -231,12 +197,76 @@ public class Datum {
         this.couponDiscount = couponDiscount;
     }
 
+    public String getTotalDiscount() {
+        return totalDiscount;
+    }
+
+    public void setTotalDiscount(String totalDiscount) {
+        this.totalDiscount = totalDiscount;
+    }
+
+    public String getCouponText() {
+        return couponText;
+    }
+
+    public void setCouponText(String couponText) {
+        this.couponText = couponText;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
     public String getAddressName() {
         return addressName;
     }
 
     public void setAddressName(String addressName) {
         this.addressName = addressName;
+    }
+
+    public String getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(String pincode) {
+        this.pincode = pincode;
     }
 
     public String getAddressMobile() {
@@ -271,78 +301,6 @@ public class Datum {
         this.streetAddress = streetAddress;
     }
 
-    public String getLandmark() {
-        return landmark;
-    }
-
-    public void setLandmark(String landmark) {
-        this.landmark = landmark;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
-    }
-
-    public String getPickupAddressId() {
-        return pickupAddressId;
-    }
-
-    public void setPickupAddressId(String pickupAddressId) {
-        this.pickupAddressId = pickupAddressId;
-    }
-
-    public String getDropAddressId() {
-        return dropAddressId;
-    }
-
-    public void setDropAddressId(String dropAddressId) {
-        this.dropAddressId = dropAddressId;
-    }
-
-    public String getPickupDatetime() {
-        return pickupDatetime;
-    }
-
-    public void setPickupDatetime(String pickupDatetime) {
-        this.pickupDatetime = pickupDatetime;
-    }
-
-    public String getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(String lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    public String getPacketSize() {
-        return packetSize;
-    }
-
-    public void setPacketSize(String packetSize) {
-        this.packetSize = packetSize;
-    }
-
-    public PickupAddress getPickupAddress() {
-        return pickupAddress;
-    }
-
-    public void setPickupAddress(PickupAddress pickupAddress) {
-        this.pickupAddress = pickupAddress;
-    }
-
-    public DropAddress getDropAddress() {
-        return dropAddress;
-    }
-
-    public void setDropAddress(DropAddress dropAddress) {
-        this.dropAddress = dropAddress;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -351,12 +309,12 @@ public class Datum {
         this.address = address;
     }
 
-    public String getPincode() {
-        return pincode;
+    public String getLandmark() {
+        return landmark;
     }
 
-    public void setPincode(String pincode) {
-        this.pincode = pincode;
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
     }
 
     public String getCity() {
@@ -381,6 +339,134 @@ public class Datum {
 
     public void setAddressType(String addressType) {
         this.addressType = addressType;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getPer() {
+        return per;
+    }
+
+    public void setPer(String per) {
+        this.per = per;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getBankTxnId() {
+        return bankTxnId;
+    }
+
+    public void setBankTxnId(String bankTxnId) {
+        this.bankTxnId = bankTxnId;
+    }
+
+    public String getTxnAmount() {
+        return txnAmount;
+    }
+
+    public void setTxnAmount(String txnAmount) {
+        this.txnAmount = txnAmount;
+    }
+
+    public String getTxnDate() {
+        return txnDate;
+    }
+
+    public void setTxnDate(String txnDate) {
+        this.txnDate = txnDate;
+    }
+
+    public String getServiceTimeSlot() {
+        return serviceTimeSlot;
+    }
+
+    public void setServiceTimeSlot(String serviceTimeSlot) {
+        this.serviceTimeSlot = serviceTimeSlot;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDeliveryPrice() {
+        return deliveryPrice;
+    }
+
+    public void setDeliveryPrice(String deliveryPrice) {
+        this.deliveryPrice = deliveryPrice;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
     }
 
 }

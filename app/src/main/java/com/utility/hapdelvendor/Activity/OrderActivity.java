@@ -257,7 +257,7 @@ public class OrderActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setUpBadge();
-//
+
 //            if(getCurrentUser()==null){
 //                showSliderLayout("Kindly login to view your orders", true, "login", null);
 //                return;

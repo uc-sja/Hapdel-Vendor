@@ -201,9 +201,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:clipToPadding="false"
-                                        android:orientation="horizontal"
-                                        android:paddingStart="@dimen/_12sdp"
-                                        android:paddingEnd="@dimen/_12sdp" />
+                                        android:orientation="horizontal" />
 
                                     <com.kingfisher.easyviewindicator.AnyViewIndicator
                                         android:id="@+id/recent_order_indicator"
@@ -211,8 +209,9 @@
                                         android:layout_height="@dimen/_20sdp"
                                         android:layout_marginTop="@dimen/_10sdp"
                                         android:layout_gravity="left"
-                                        android:gravity="left"
-                                        sothree:ci_drawable="@drawable/coloured_radius"></com.kingfisher.easyviewindicator.AnyViewIndicator>
+                                        android:gravity="center"
+                                        sothree:avi_drawable_unselected="@drawable/gray_radius"
+                                        sothree:avi_drawable="@drawable/coloured_radius"></com.kingfisher.easyviewindicator.AnyViewIndicator>
 
                                 </LinearLayout>
 

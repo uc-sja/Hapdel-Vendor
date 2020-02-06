@@ -1,24 +1,25 @@
 package com.utility.hapdelvendor.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-import com.utility.hapdelvendor.Activity.OrderDetailActivity;
 import com.utility.hapdelvendor.Model.UserOrderModel.OrderModel.Datum;
+import com.utility.hapdelvendor.Model.UserOrderModel.OrderModel.Item;
 import com.utility.hapdelvendor.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -56,14 +57,41 @@ public class VendorOrderAdapter extends RecyclerView.Adapter<VendorOrderAdapter.
         holder.order_date.setText(format2.format(date));
 //        holder.quantity.setText("(x"+datum.getQuantity()+")  ");
 
+        bind(holder, datum);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, OrderDetailActivity.class);
-                intent.putExtra("order", new Gson().toJson(datum));
-                context.startActivity(intent);
+//                Intent intent = new Intent(context, OrderDetailActivity.class);
+//                intent.putExtra("order", new Gson().toJson(datum));
+//                context.startActivity(intent);
+
+                // Get the current state of the item
+                boolean expanded = datum.isExpanded();
+                // Change the state
+                datum.setExpanded(!expanded);
+                // Notify the adapter that item has changed
+                notifyItemChanged(position);
             }
         });
+
+
+
+    }
+
+    private void bind(UserOrderViewholder holder, Datum datum) {
+        // Get the state
+        boolean expanded = datum.isExpanded();
+        // Set the visibility based on state
+        holder.items_view_layout.setVisibility(expanded ? View.VISIBLE : View.GONE);
+
+        if(expanded){
+            holder.adapter.updateItems(datum.getItems());
+            holder.click_info_layout.setVisibility(View.GONE);
+        } else {
+            holder.click_info_layout.setVisibility(View.VISIBLE);
+        }
+
     }
 
 
@@ -80,9 +108,13 @@ public class VendorOrderAdapter extends RecyclerView.Adapter<VendorOrderAdapter.
     }
 
     public class UserOrderViewholder extends RecyclerView.ViewHolder {
+        private final ItemViewAdapter adapter;
+        private final LinearLayout click_info_layout;
         private RelativeLayout root_layout;
         TextView product_name, order_status, order_amount, order_date, status_color,quantity;
         ImageView product_img;
+        RecyclerView items_view;
+        LinearLayout items_view_layout;
         public UserOrderViewholder(@NonNull View itemView) {
             super(itemView);
             product_name = itemView.findViewById(R.id.product_name);
@@ -92,6 +124,13 @@ public class VendorOrderAdapter extends RecyclerView.Adapter<VendorOrderAdapter.
             order_date = itemView.findViewById(R.id.order_date);
             status_color = itemView.findViewById(R.id.status_color);
             quantity = itemView.findViewById(R.id.quantity);
+            items_view = itemView.findViewById(R.id.items_view);
+            items_view_layout = itemView.findViewById(R.id.items_view_layout);
+            click_info_layout = itemView.findViewById(R.id.click_info_layout);
+            
+            items_view.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+            adapter = new ItemViewAdapter(new ArrayList<Item>(), context);
+            items_view.setAdapter(adapter);
 
             root_layout = itemView.findViewById(R.id.root_layout);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

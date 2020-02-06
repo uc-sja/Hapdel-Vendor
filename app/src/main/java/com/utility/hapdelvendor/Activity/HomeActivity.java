@@ -191,9 +191,13 @@ public class HomeActivity extends AppCompatActivity {
 
         recentOrderView = findViewById(R.id.recent_order_recycler);
 
+        PagerSnapHelper pagerSnapHelper2 = new PagerSnapHelper();
+        pagerSnapHelper2.attachToRecyclerView(recentOrderView);
+
         circleIndicator = findViewById(R.id.recent_order_indicator);
         gridLayoutManager = new GridLayoutManager(HomeActivity.this, 2, GridLayoutManager.HORIZONTAL, false);
         recentOrderView.setLayoutManager(gridLayoutManager);
+
 
         recentOrderAdapter = new RecentOrderAdapter(HomeActivity.this, new ArrayList<Datum>());
         recentOrderView.setAdapter(recentOrderAdapter);

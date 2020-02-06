@@ -47,7 +47,7 @@ public interface HapdelApi {
     );
 
     @FormUrlEncoded
-    @POST("users/user/login")
+    @POST("user/login")
     Call<ResponseModel> loginUser(
             @Field("mobile") String mobile
     );
@@ -244,12 +244,11 @@ public interface HapdelApi {
 
 
     @FormUrlEncoded
-    @POST("users/order/get_user_orders")
+    @POST("order/order_details")
     Call<OrderDetailModel> fetchVendorOrderDetails(
             @Field("user_id") String userId,
             @Field("access_token") String access_token,
-            @Field("page") String page,
-            @Field("id") String order_id
+            @Field("order_id") String order_id
     );
 
     @FormUrlEncoded
