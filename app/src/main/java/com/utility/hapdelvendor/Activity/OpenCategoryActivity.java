@@ -1,13 +1,8 @@
 package com.utility.hapdelvendor.Activity;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.Toolbar;
@@ -30,44 +24,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.utility.hapdelvendor.Adapter.OpenCatAdapter;
-import com.utility.hapdelvendor.BottomSheetFragment;
-import com.utility.hapdelvendor.Interfaces.LocationMethods;
 import com.utility.hapdelvendor.Interfaces.ResponseResult;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.ParentCategoryModel;
-import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.BottomNavigation;
 import com.utility.hapdelvendor.Utils.CircularTextView;
 import com.utility.hapdelvendor.Utils.Common;
-import com.utility.hapdelvendor.Utils.LocalStorage;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.text.TextUtils.isEmpty;
-import static com.utility.hapdelvendor.Utils.Common.fetchCityFromLatLng;
 import static com.utility.hapdelvendor.Utils.Common.hideKeyboard;
 
 public class OpenCategoryActivity extends AppCompatActivity {
@@ -217,7 +193,7 @@ public class OpenCategoryActivity extends AppCompatActivity {
     }
 
     private void fetchSubCategories(Datum datum) {
-        Call<ParentCategoryModel> categoryModel = Common.getApiInstance().fetchSubCategory(datum.getId());
+        Call<ParentCategoryModel> categoryModel = Common.getApiInstance().fetchSubCategory("1", "",  datum.getId());
         shimmerRecycler.showShimmerAdapter();
 
         categoryModel.enqueue(new Callback<ParentCategoryModel>() {

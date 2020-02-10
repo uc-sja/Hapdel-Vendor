@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -67,7 +66,7 @@ public class ItemViewAdapter extends RecyclerView.Adapter<ItemViewAdapter.ItemsV
     public class ItemsViewHolder  extends RecyclerView.ViewHolder{
         private LinearLayout root_layout;
         TextView product_name, product_price;
-        CardView product_card;
+        LinearLayout product_card;
         public ItemsViewHolder(@NonNull View itemView) {
             super(itemView);
             product_name = itemView.findViewById(R.id.product_name);

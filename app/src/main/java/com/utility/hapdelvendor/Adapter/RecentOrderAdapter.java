@@ -2,11 +2,9 @@ package com.utility.hapdelvendor.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,14 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.utility.hapdelvendor.Activity.OrderDetailActivity;
 import com.utility.hapdelvendor.Model.RecentOrderModel.Datum;
 import com.utility.hapdelvendor.R;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class RecentOrderAdapter extends RecyclerView.Adapter<RecentOrderAdapter.RecentOrderViewHolder> {
@@ -44,19 +40,12 @@ public class RecentOrderAdapter extends RecyclerView.Adapter<RecentOrderAdapter.
     @Override
     public void onBindViewHolder(@NonNull RecentOrderViewHolder holder, int position) {
         final Datum datum = data.get(position);
-        holder.product_name.setText("Order Id: #"+datum.getOrderId());
+        holder.order_id_text.setText("Order Id: #"+datum.getOrderId());
 //        Double order_amt = (Double.valueOf(datum.getPrice())-(Double.valueOf(datum.getTotalDiscount())) + Double.valueOf(datum.getCouponDiscount()));
         holder.order_amount.setText(context.getResources().getString(R.string.rupee_icon)+" "+datum.getAmount());
 
-        SimpleDateFormat format1 = new SimpleDateFormat("dd-MMM-yyyy");
-        SimpleDateFormat format2 = new SimpleDateFormat("EE, d MMM yyyy hh:mm a");
-        Date date = null;
-        try {
-            date = format1.parse(datum.getTxnDate());
-        } catch (ParseException e) {
-            Log.d(TAG, "onBindViewHolder: "+e.toString());
-        }
-        holder.order_date.setText(format2.format(date));
+
+        holder.customer_name.setText("Customer: "+datum.getName());
 //        holder.quantity.setText("(x"+datum.getQuantity()+")  ");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +56,22 @@ public class RecentOrderAdapter extends RecyclerView.Adapter<RecentOrderAdapter.
                 context.startActivity(intent);
             }
         });
+
+        holder.order_status.setText(( datum.getOrderStatus().substring(0,1).toUpperCase() + datum.getOrderStatus().substring(1)));
+
+//        if (datum.getImage() != null && !isEmpty(datum.getImage())) {
+//            Log.d(TAG, "onBindViewHolder: " + datum.getImage());
+//            if (datum.getImage().contains("|")) {
+//                images = datum.getImage().split("\\|");
+//                Log.d(TAG, "onBindViewHolder: length " + images[1]);
+//                Picasso.get().load(datum.getBaseUrl() + "" + images[0]).placeholder(R.drawable.app_icon_small_png).into(productViewHolder.product_img);
+//            } else {
+//                Picasso.get().load(datum.getBaseUrl() + "" + datum.getImage()).placeholder(R.drawable.app_icon_small_png).into(productViewHolder.product_img);
+//            }
+//        } else {
+//            productViewHolder.product_img.setImageResource(R.drawable.app_icon_small_png);
+//        }
+
 
     }
 
@@ -85,23 +90,23 @@ public class RecentOrderAdapter extends RecyclerView.Adapter<RecentOrderAdapter.
 
     public class RecentOrderViewHolder extends RecyclerView.ViewHolder{
         private RelativeLayout root_layout;
-        TextView product_name, order_status, order_amount, order_date, status_color,quantity;
-        ImageView product_img;
+        TextView order_id_text, order_status, order_amount, customer_name, status_color,quantity;
+        CircularImageView product_img;
 
         public RecentOrderViewHolder(@NonNull View itemView) {
             super(itemView);
-            product_name = itemView.findViewById(R.id.product_name);
+            order_id_text = itemView.findViewById(R.id.order_id_text);
             order_status = itemView.findViewById(R.id.order_status);
             product_img = itemView.findViewById(R.id.product_img);
-            order_amount = itemView.findViewById(R.id.order_amount);
-            order_date = itemView.findViewById(R.id.order_date);
+            order_amount = itemView.findViewById(R.id.order_amount_text);
+            customer_name = itemView.findViewById(R.id.order_date_text);
             status_color = itemView.findViewById(R.id.status_color);
             quantity = itemView.findViewById(R.id.quantity);
 
             root_layout = itemView.findViewById(R.id.root_layout);
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(0,context.getResources().getDimensionPixelOffset(R.dimen._10sdp),0,0);
-            root_layout.setLayoutParams(layoutParams);
+//            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//            layoutParams.setMargins(0,context.getResources().getDimensionPixelOffset(R.dimen._10sdp),0,0);
+//            root_layout.setLayoutParams(layoutParams);
         }
     }
 }

@@ -123,6 +123,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/lighterGray"
                         android:paddingHorizontal="@dimen/_7sdp">
 
                         <RelativeLayout
@@ -203,15 +204,15 @@
                                         android:clipToPadding="false"
                                         android:orientation="horizontal" />
 
-                                    <com.kingfisher.easyviewindicator.AnyViewIndicator
-                                        android:id="@+id/recent_order_indicator"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="@dimen/_20sdp"
-                                        android:layout_marginTop="@dimen/_10sdp"
-                                        android:layout_gravity="left"
-                                        android:gravity="center"
-                                        sothree:avi_drawable_unselected="@drawable/gray_radius"
-                                        sothree:avi_drawable="@drawable/coloured_radius"></com.kingfisher.easyviewindicator.AnyViewIndicator>
+<!--                                    <com.kingfisher.easyviewindicator.AnyViewIndicator-->
+<!--                                        android:id="@+id/recent_order_indicator"-->
+<!--                                        android:layout_width="wrap_content"-->
+<!--                                        android:layout_height="@dimen/_20sdp"-->
+<!--                                        android:layout_marginTop="@dimen/_10sdp"-->
+<!--                                        android:layout_gravity="left"-->
+<!--                                        android:gravity="center"-->
+<!--                                        sothree:avi_drawable_unselected="@drawable/gray_radius"-->
+<!--                                        sothree:avi_drawable="@drawable/coloured_radius"></com.kingfisher.easyviewindicator.AnyViewIndicator>-->
 
                                 </LinearLayout>
 

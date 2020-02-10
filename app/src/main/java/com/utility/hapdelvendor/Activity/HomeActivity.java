@@ -21,7 +21,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
@@ -30,7 +29,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -110,7 +108,7 @@ public class HomeActivity extends AppCompatActivity {
     private AutoSuggestAdapter autoSuggestAdapter;
     private NestedScrollView nested_scroll_view;
     private int i = 1;
-    private int scrolledOutItems,currentItems,totalItems;
+    private int scrolledOutItems, currentItems, totalItems;
     private LinearLayoutManager layoutManager;
     private boolean isScrolling;
     private boolean firstLoad;
@@ -121,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
     public BottomSheetFragment bottomSheetFragment;
     private ArrayList<Datum> total_banner_items;
     private RecentOrderAdapter recentOrderAdapter;
-    private GridLayoutManager gridLayoutManager;
+    private LinearLayoutManager linearLayoutManager;
     private AnyViewIndicator circleIndicator;
 
     @Override
@@ -151,13 +149,11 @@ public class HomeActivity extends AppCompatActivity {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        if(!Places.isInitialized()){
+        if (!Places.isInitialized()) {
             Places.initialize(HomeActivity.this, getString(R.string.place_api_key));
         }
         // Create a new Places client instance.
         PlacesClient placesClient = Places.createClient(HomeActivity.this);
-
-
 
 //        swipeRefreshLayout = findViewById(R.id.swiperefresh);
         main_category_view = findViewById(R.id.main_category_view);
@@ -191,21 +187,18 @@ public class HomeActivity extends AppCompatActivity {
 
         recentOrderView = findViewById(R.id.recent_order_recycler);
 
-        PagerSnapHelper pagerSnapHelper2 = new PagerSnapHelper();
-        pagerSnapHelper2.attachToRecyclerView(recentOrderView);
-
-        circleIndicator = findViewById(R.id.recent_order_indicator);
-        gridLayoutManager = new GridLayoutManager(HomeActivity.this, 2, GridLayoutManager.HORIZONTAL, false);
-        recentOrderView.setLayoutManager(gridLayoutManager);
+//        circleIndicator = findViewById(R.id.recent_order_indicator);
+        linearLayoutManager = new  LinearLayoutManager(HomeActivity.this, LinearLayoutManager.VERTICAL, false);
+        recentOrderView.setLayoutManager(linearLayoutManager);
 
 
         recentOrderAdapter = new RecentOrderAdapter(HomeActivity.this, new ArrayList<Datum>());
         recentOrderView.setAdapter(recentOrderAdapter);
         shimmerRecycler = (ShimmerRecyclerView) findViewById(R.id.shimmer_recycler_view);
 
-        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
-        recentOrderView.setOnFlingListener(null);
-        pagerSnapHelper.attachToRecyclerView(recentOrderView);
+//        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+//        recentOrderView.setOnFlingListener(null);
+//        pagerSnapHelper.attachToRecyclerView(recentOrderView);
 
         //        fetchMainCategories();
 
@@ -220,7 +213,6 @@ public class HomeActivity extends AppCompatActivity {
         nested_scroll_view.setNestedScrollingEnabled(false);
 
 
-
 //        Log.d(TAG, "onCreate: "+nested_scroll_view.getChildAt(nested_scroll_view.getChildCount()-1));
 //        Log.d(TAG, "onScrollChange:  e"+error_msg_layout.getId()+"  "+main_cat_layout.getId());
 
@@ -228,13 +220,12 @@ public class HomeActivity extends AppCompatActivity {
         search_bar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
-                    intent.putExtra("category", "");
-                    startActivity(intent);
+                Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
+                intent.putExtra("category", "");
+                startActivity(intent);
             }
         });
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -242,13 +233,12 @@ public class HomeActivity extends AppCompatActivity {
         Log.d(TAG, "onActivityResult: ");
     }
 
-    private void fetchHomePage(){
+    private void fetchHomePage() {
         Log.d(TAG, "fetchHomePage: ");
         fetchMainCategories();
 //        fetchRecentOrder();
         i = 1;
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -258,7 +248,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(++backPressCount <= 1){
+        if (++backPressCount <= 1) {
             Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
             return;
         } else {
@@ -267,14 +257,12 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-
-
-        private void fetchRecentOrder() {
+    private void fetchRecentOrder() {
         final ProgressDialog progressDialog = new ProgressDialog(HomeActivity.this, R.style.MyDialogTheme);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Fetching Offers...");
         progressDialog.setCancelable(false);
-        if(!((Activity)HomeActivity.this).isFinishing()){
+        if (!((Activity) HomeActivity.this).isFinishing()) {
             progressDialog.show();
         }
 
@@ -284,14 +272,14 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<RecentOrderModel> call, Response<RecentOrderModel> response) {
                 progressDialog.dismiss();
-                if(!response.isSuccessful()){
-                    Toast.makeText(HomeActivity.this, ""+response.message(), Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "onResponse: fail "+response.code());
+                if (!response.isSuccessful()) {
+                    Toast.makeText(HomeActivity.this, "" + response.message(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onResponse: fail " + response.code());
                     return;
                 }
 
-                Log.d(TAG, "onResponse: success"+response.code()+response.body());
-                if(response.body()!=null ){
+                Log.d(TAG, "onResponse: success" + response.code() + response.body());
+                if (response.body() != null) {
                     RecentOrderModel recentOrderModel = null;
                     try {
                         recentOrderModel = response.body();
@@ -299,16 +287,16 @@ public class HomeActivity extends AppCompatActivity {
                         Toast.makeText(HomeActivity.this, "Error in response", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    String content="";
-                    content+= recentOrderModel.getMsg();
+                    String content = "";
+                    content += recentOrderModel.getMsg();
 
-                    Log.d(TAG, "onResponse: response msg"+response.body().getResult()+"  msg  ");
-                    if (recentOrderModel.getResult().equalsIgnoreCase("success")){ //very important conditon
+                    Log.d(TAG, "onResponse: response msg" + response.body().getResult() + "  msg  ");
+                    if (recentOrderModel.getResult().equalsIgnoreCase("success")) { //very important conditon
                         final List<Datum> bannerList = new ArrayList<>();
 
-                        if(recentOrderModel.getData()!=null && recentOrderModel.getData().size()>0){
+                        if (recentOrderModel.getData() != null && recentOrderModel.getData().size() > 0) {
 
-                            Log.d(TAG, "onResponse: banner size "+ recentOrderModel.getData().size());
+                            Log.d(TAG, "onResponse: banner size " + recentOrderModel.getData().size());
 
 
                             recentOrderAdapter.updateItems(recentOrderModel.getData());
@@ -316,43 +304,40 @@ public class HomeActivity extends AppCompatActivity {
 
                             int indiator_size = (int) Math.ceil(((double) recentOrderModel.getData().size()) / 2);
 
-                            if(indiator_size == 1){
-                                circleIndicator.setVisibility(View.GONE);
-                            }
-                            circleIndicator.setItemCount(indiator_size);
-
-                            recentOrderView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                                private int pos;
-
-                                @Override
-                                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                                    super.onScrollStateChanged(recyclerView, newState);
-                                    switch (newState) {
-                                        case RecyclerView.SCROLL_STATE_IDLE:
-                                            Log.d(TAG, "onScrollStateChanged: new state " + newState);
-
-                                            int position = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition()+1;
-                                            pos = position;
-
-                                            if(position%2 != 0){
-                                                pos = position+1;
-                                            }
-
-                                            circleIndicator.setCurrentPosition((int) ((Double.valueOf(pos)/ 2))-1);
-                                            break;
-                                    }
-                                }
-                            });
-
+//                            circleIndicator.setVisibility(View.GONE);
+//                            circleIndicator.setItemCount(indiator_size);
+//
+//                            recentOrderView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//                                private int pos;
+//
+//                                @Override
+//                                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                                    super.onScrollStateChanged(recyclerView, newState);
+//                                    switch (newState) {
+//                                        case RecyclerView.SCROLL_STATE_IDLE:
+//                                            Log.d(TAG, "onScrollStateChanged: new state " + newState);
+//
+//                                            int position = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition() + 1;
+//                                            pos = position;
+//
+//                                            if (position % 2 != 0) {
+//                                                pos = position + 1;
+//                                            }
+//
+//                                            circleIndicator.setCurrentPosition((int) ((Double.valueOf(pos) / 2)) - 1);
+//                                            break;
+//                                    }
+//                                }
+//                            });
 
 
                         }
 
-                    }else{
+                    } else {
                         Toast.makeText(HomeActivity.this, content, Toast.LENGTH_SHORT).show();
                     }
 
-                    Log.d(TAG, "onResponse: fetch banner images res "+content);
+                    Log.d(TAG, "onResponse: fetch banner images res " + content);
                 } else {
                     Toast.makeText(HomeActivity.this, "Invalid response from server", Toast.LENGTH_SHORT).show();
                 }
@@ -361,7 +346,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<RecentOrderModel> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(HomeActivity.this, ""+t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "" + t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -386,34 +371,34 @@ public class HomeActivity extends AppCompatActivity {
 
     private void fetchMainCategories() {
         Log.d(TAG, "fetchMainCategories: ");
-        Call<ParentCategoryModel> categoryModel = getApiInstance().fetchParentCategory();
+        Call<ParentCategoryModel> categoryModel = getApiInstance().fetchParentCategory("1", "");
         shimmerRecycler.showShimmerAdapter();
         categoryModel.enqueue(new Callback<ParentCategoryModel>() {
             @Override
             public void onResponse(Call<ParentCategoryModel> call, Response<ParentCategoryModel> response) {
                 shimmerRecycler.hideShimmerAdapter();
-                if(!response.isSuccessful()){
-                    Toast.makeText(HomeActivity.this, ""+response.message(), Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "onResponse: "+response.code()+"  mes "+response.message());
+                if (!response.isSuccessful()) {
+                    Toast.makeText(HomeActivity.this, "" + response.message(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onResponse: " + response.code() + "  mes " + response.message());
                     return;
                 }
-                if(response.body() != null){
+                if (response.body() != null) {
                     ParentCategoryModel parentCategoryModel = null;
 
 
                     try {
                         parentCategoryModel = response.body();
                     } catch (Exception e) {
-                        Log.d(TAG, "onResponse: "+e.toString());
+                        Log.d(TAG, "onResponse: " + e.toString());
                         Toast.makeText(HomeActivity.this, "Error parsing response.", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     String content = "";
-                    if(parentCategoryModel.getResult().equals("success")){
+                    if (parentCategoryModel.getResult().equals("success")) {
                         Log.d(TAG, "onResponse: parentcategory fetch success");
-                        if(parentCategoryModel.getData()!=null && parentCategoryModel.getData().size()>0){
+                        if (parentCategoryModel.getData() != null && parentCategoryModel.getData().size() > 0) {
                             hideErrorMessage();
-                            Log.d(TAG, "onResponse: parentcategory size "+ parentCategoryModel.getData().size());
+                            Log.d(TAG, "onResponse: parentcategory size " + parentCategoryModel.getData().size());
                             main_cat_adapter.updateItems(parentCategoryModel.getData());
 
 //                            Drawable divider = ContextCompat.getDrawable(HomeActivity.this, R.drawable.line_divider_orange);
@@ -428,8 +413,8 @@ public class HomeActivity extends AppCompatActivity {
 
                     } else {
                         showErrorMessage(parentCategoryModel.getMsg());
-                        Log.d(TAG, "onResponse: "+parentCategoryModel.getMsg());
-                        Toast.makeText(HomeActivity.this, ""+parentCategoryModel.getMsg(), Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onResponse: " + parentCategoryModel.getMsg());
+                        Toast.makeText(HomeActivity.this, "" + parentCategoryModel.getMsg(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -438,7 +423,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onFailure(Call<ParentCategoryModel> call, Throwable t) {
                 shimmerRecycler.hideShimmerAdapter();
                 showErrorMessage(t.getLocalizedMessage());
-                Log.d(TAG, "onFailure: "+t.getLocalizedMessage());
+                Log.d(TAG, "onFailure: " + t.getLocalizedMessage());
             }
         });
 
@@ -449,9 +434,8 @@ public class HomeActivity extends AppCompatActivity {
         Log.d(TAG, "onResume: home ");
         super.onResume();
         backPressCount = 0;
-            fetchHomePage();
-
-        Log.d(TAG, "onResume: else currentcity"+Common.currentCity);
+        fetchHomePage();
+        Log.d(TAG, "onResume: else currentcity" + Common.currentCity);
     }
 
 
@@ -460,37 +444,37 @@ public class HomeActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Updating Cart...");
         progressDialog.setCancelable(false);
-        if(!((Activity)HomeActivity.this).isFinishing()){
+        if (!((Activity) HomeActivity.this).isFinishing()) {
             progressDialog.show();
         }
 
-        final Call<ResponseModel> responseModel = getApiInstance().updateCart(getCurrentUser().getId(), getCurrentUser().getAccessToken(), product.getPid(),newValue, seller_id);
+        final Call<ResponseModel> responseModel = getApiInstance().updateCart(getCurrentUser().getId(), getCurrentUser().getAccessToken(), product.getPid(), newValue, seller_id);
         responseModel.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
                 progressDialog.dismiss();
-                if(!response.isSuccessful()){
+                if (!response.isSuccessful()) {
                     responseResult.onFailure(response.message());
-                    Toast.makeText(HomeActivity.this, ""+response.message(), Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "onResponse: "+response.code()+"  mes "+response.message());
+                    Toast.makeText(HomeActivity.this, "" + response.message(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onResponse: " + response.code() + "  mes " + response.message());
                     return;
                 }
 
-                if(response.body() != null){
+                if (response.body() != null) {
                     ResponseModel responseModel = null;
                     try {
                         responseModel = response.body();
                     } catch (Exception e) {
-                        Log.d(TAG, "onResponse: "+e.toString());
+                        Log.d(TAG, "onResponse: " + e.toString());
                         responseResult.onFailure(e.toString());
                         Toast.makeText(HomeActivity.this, "Error parsing response.", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     String content = "";
-                    if(responseModel.getResult().equals("success")){
-                        Log.d(TAG, "onResponse: update Cart: is Added"+isAdd);
-                        if(isAdd){
+                    if (responseModel.getResult().equals("success")) {
+                        Log.d(TAG, "onResponse: update Cart: is Added" + isAdd);
+                        if (isAdd) {
                             LocalStorage.addToCart(product);
                         } else {
                             LocalStorage.removeFromCart(product, isAll);
@@ -513,11 +497,10 @@ public class HomeActivity extends AppCompatActivity {
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 progressDialog.dismiss();
                 responseResult.onFailure(t.getLocalizedMessage());
-                Log.d(TAG, "onFailure: "+t.getLocalizedMessage());
+                Log.d(TAG, "onFailure: " + t.getLocalizedMessage());
             }
         });
     }
-
 
 
     private void showErrorMessage(String s) {
@@ -539,16 +522,16 @@ public class HomeActivity extends AppCompatActivity {
         Log.d(TAG, "onSaveInstanceState: ");
     }
 
-    public void showSliderLayout(String msg, boolean showBtns, String btn_function, final ResponseResult cleartCartResponseResult){
+    public void showSliderLayout(String msg, boolean showBtns, String btn_function, final ResponseResult cleartCartResponseResult) {
         hideKeyboard(this);
         slider_msg.setText(msg);
         sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
-        if(!showBtns){
+        if (!showBtns) {
             slider_one_btn.setVisibility(View.INVISIBLE);
             slider_two_btn.setVisibility(View.INVISIBLE);
         }
 
-        if(btn_function.trim().equalsIgnoreCase("login")){
+        if (btn_function.trim().equalsIgnoreCase("login")) {
             slider_one_btn.setText("Register");
             slider_two_btn.setText("Login Now");
             slider_one_btn.setOnClickListener(new View.OnClickListener() {
@@ -565,7 +548,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
 
-        } else if(btn_function.trim().equalsIgnoreCase("clear")){
+        } else if (btn_function.trim().equalsIgnoreCase("clear")) {
             slider_one_btn.setText("Cancel");
             slider_two_btn.setText("Clear");
             slider_one_btn.setOnClickListener(new View.OnClickListener() {

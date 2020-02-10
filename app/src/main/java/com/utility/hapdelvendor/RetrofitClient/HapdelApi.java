@@ -28,21 +28,27 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 public interface HapdelApi {
-    @POST("users/dashboard/get_parent_categories")
-    Call<ParentCategoryModel> fetchParentCategory();
+    @FormUrlEncoded
+    @POST("categories/get_parent_categories")
+    Call<ParentCategoryModel> fetchParentCategory(
+            @Field("user_id") String userId,
+            @Field("access_token") String accessToken
+    );
 
     @FormUrlEncoded
-    @POST("users/dashboard/get_listed_categories")
+    @POST("categories/get_listed_categories")
     Call<ParentCategoryModel> fetchSubCategory(
+            @Field("user_id") String userId,
+            @Field("access_token") String accessToken,
             @Field("parent_id") String parent_id
     );
 
     @FormUrlEncoded
-    @POST("users/products/get_products_by_category")
+    @POST("products/list")
     Call<ProductModel> fetchProducts(
+            @Field("user_id") String userId,
+            @Field("access_token") String accessToken,
             @Field("category_id") String category_id,
-            @Field("lat") String lat,
-            @Field("lng") String lng,
             @Field("page") String page
     );
 

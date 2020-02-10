@@ -42,7 +42,7 @@ import com.leinardi.android.speeddial.SpeedDialView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.utility.hapdelvendor.Adapter.ProductsAdapter;
 import com.utility.hapdelvendor.Adapter.TabbedViewAdapter;
-import com.utility.hapdelvendor.ExpandableCheckboxView.ConstantManager;
+import com.utility.hapdelvendor.Dialog.AddProduct;
 import com.utility.hapdelvendor.ExpandableCheckboxView.DataItem;
 import com.utility.hapdelvendor.ExpandableCheckboxView.MyCategoriesExpandableListAdapter;
 import com.utility.hapdelvendor.ExpandableCheckboxView.SubCategoryItem;
@@ -54,7 +54,6 @@ import com.utility.hapdelvendor.Model.ProducModel.Product;
 import com.utility.hapdelvendor.Model.ProducModel.ProductModel;
 import com.utility.hapdelvendor.Model.SearchModel.SearchResultModel;
 import com.utility.hapdelvendor.R;
-import com.utility.hapdelvendor.Dialog.AddProduct;
 import com.utility.hapdelvendor.Utils.BottomNavigation;
 import com.utility.hapdelvendor.Utils.Common;
 import com.utility.hapdelvendor.Utils.MovableFloatingActionButton;
@@ -406,7 +405,7 @@ public class OpenProductActivity extends AppCompatActivity {
     }
 
     private void fetchTabbedCategories(final com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum datum) {
-        Call<ParentCategoryModel> categoryModel = getApiInstance().fetchSubCategory(datum.getId());
+        Call<ParentCategoryModel> categoryModel = getApiInstance().fetchSubCategory("1", "", datum.getId());
         categoryModel.enqueue(new Callback<ParentCategoryModel>() {
             @Override
             public void onResponse(Call<ParentCategoryModel> call, Response<ParentCategoryModel> response) {

@@ -73,7 +73,7 @@
                             android:orientation="horizontal"
                             android:padding="@dimen/_2sdp">
 
-                            <com.utility.hapdelbiker.Utility.CircularTextView
+                            <com.utility.hapdelvendor.Utils.CircularTextView
                                 android:id="@+id/user_initial"
                                 android:layout_width="@dimen/_40sdp"
                                 android:layout_height="@dimen/_40sdp"
