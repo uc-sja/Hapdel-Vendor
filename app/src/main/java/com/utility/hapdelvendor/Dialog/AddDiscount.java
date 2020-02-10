@@ -6,11 +6,18 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum;
 import com.utility.hapdelvendor.R;
 
 public class AddDiscount extends Dialog {
-    public AddDiscount(@NonNull Context context) {
+
+    private Context context;
+    private Datum selected_category;
+
+    public AddDiscount(@NonNull Context context, Datum selectedDatum) {
         super(context);
+        this.context = context;
+        selected_category = selectedDatum;
     }
 
     @Override

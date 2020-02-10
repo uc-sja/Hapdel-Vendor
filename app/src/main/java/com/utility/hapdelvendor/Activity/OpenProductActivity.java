@@ -42,6 +42,7 @@ import com.leinardi.android.speeddial.SpeedDialView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.utility.hapdelvendor.Adapter.ProductsAdapter;
 import com.utility.hapdelvendor.Adapter.TabbedViewAdapter;
+import com.utility.hapdelvendor.Dialog.AddDiscount;
 import com.utility.hapdelvendor.Dialog.AddProduct;
 import com.utility.hapdelvendor.ExpandableCheckboxView.DataItem;
 import com.utility.hapdelvendor.ExpandableCheckboxView.MyCategoriesExpandableListAdapter;
@@ -309,12 +310,15 @@ public class OpenProductActivity extends AppCompatActivity {
             public boolean onActionSelected(SpeedDialActionItem actionItem) {
                 switch (actionItem.getId()){
                     case R.id.fab_add_btn :
-                        AddProduct addProduct = new AddProduct(OpenProductActivity.this);
+                        AddProduct addProduct = new AddProduct(OpenProductActivity.this, selectedDatum);
                         addProduct.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                         addProduct.show();
                         break;
 
                     case R.id.fab_disc_btn :
+                        AddDiscount addDiscount = new AddDiscount(OpenProductActivity.this, selectedDatum);
+                        addDiscount.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+                        addDiscount.show();
                         break;
                 }
                 return false;

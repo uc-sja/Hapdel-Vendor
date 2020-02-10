@@ -1,6 +1,8 @@
 package com.utility.hapdelvendor.Dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -8,6 +10,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,10 +23,11 @@ import androidx.cardview.widget.CardView;
 import com.squareup.picasso.Picasso;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum;
 import com.utility.hapdelvendor.Model.ProducModel.Product;
+import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.Model.SearchModel.SearchResultModel;
+import com.utility.hapdelvendor.OtpVerificationActivity;
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.AutoSuggestAdapter;
-import com.utility.hapdelvendor.Utils.Common;
 
 import java.util.ArrayList;
 
@@ -32,6 +36,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.text.TextUtils.isEmpty;
+import static com.utility.hapdelvendor.Utils.Common.getApiInstance;
+import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 
 public class AddProduct extends Dialog {
     Context context;
@@ -43,10 +49,13 @@ public class AddProduct extends Dialog {
     private ImageView product_img;
     private EditText set_stock_count, set_product_price;
     private Product product;
+    private Datum selected_category;
+    private Button submit_result;
 
-    public AddProduct(@NonNull Context context) {
+    public AddProduct(@NonNull Context context, Datum selectedDatum) {
         super(context);
         this.context = context;
+        selected_category = selectedDatum;
     }
 
     @Override
@@ -62,10 +71,10 @@ public class AddProduct extends Dialog {
         product_price = findViewById(R.id.product_price);
         set_stock_count = findViewById(R.id.set_stock_count);
         set_product_price = findViewById(R.id.set_product_price);
+        submit_result = findViewById(R.id.submit_result);
 
         autoSuggestAdapter = new AutoSuggestAdapter(context, android.R.layout.simple_spinner_dropdown_item, new ArrayList());
         search_bar.setAdapter(autoSuggestAdapter);
-
 
         search_bar.addTextChangedListener(new TextWatcher() {
             @Override
@@ -78,7 +87,7 @@ public class AddProduct extends Dialog {
 
             @Override
             public void afterTextChanged(Editable s) {
-                searchItem(search_bar.getText().toString(), new Datum());
+                searchItem(search_bar.getText().toString(), selected_category);
 
             }
         });
@@ -138,20 +147,112 @@ public class AddProduct extends Dialog {
                 }
             }
         });
+
+
+        submit_result.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(validateInput()){
+                    addProduct();
+                }
+            }
+        });
+    }
+
+    private void addProduct() {
+
+        final ProgressDialog progressDialog = new ProgressDialog(OtpVerificationActivity.this, R.style.MyDialogTheme);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Adding product...");
+        progressDialog.setCancelable(false);
+        if(!((Activity)OtpVerificationActivity.this).isFinishing()){
+            progressDialog.show();
+        }
+
+
+        Call<ResponseModel> responseModelCall = getApiInstance().addProduct(getCurrentUser().getId(), getCurrentUser().getAccessToken(), datum.getId());
+        responseModelCall.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                progressDialog.dismiss();
+                if(!response.isSuccessful()){
+                    Toast.makeText(context, ""+response.message(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onResponse: fail "+response.code());
+                    return;
+                }
+
+                Log.d(TAG, "onResponse: success"+response.code()+response.body());
+                if(response.body()!=null ){
+                    ResponseModel responseModel = null;
+                    try {
+                        responseModel = response.body();
+                    } catch (Exception e) {
+                        Toast.makeText(context, "Error in response", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    String content="";
+                    Log.d(TAG, "onResponse: response msg"+response.body().getResult()+"  msg  ");
+                    if (responseModel.getResult().equals("success")){ //very important conditon
+
+                    }else{
+                        content+= responseModel.getMsg();
+                        Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
+                    }
+
+                    Log.d(TAG, "onResponse: delete address res"+content);
+                } else {
+                    Toast.makeText(context, "Invalid response from server", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(context, ""+t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    private boolean validateInput() {
+        String stock_count = set_stock_count.getText().toString();
+        String product_price = set_product_price.getText().toString();
+
+        boolean isValid = false;
+
+        try {
+            int stock = Integer.valueOf(stock_count.trim());
+        } catch (NumberFormatException e) {
+            Log.d(TAG, "validateInput: "+e.toString());
+            set_stock_count.setError("Kindly enter valid stock count");
+            set_stock_count.requestFocus();
+            return false;
+        }
+
+        try {
+            int price = Integer.valueOf(product_price.trim());
+        } catch (NumberFormatException e) {
+            Log.d(TAG, "validateInput: "+e.toString());
+            set_product_price.setError("Kindly enter valid product price");
+            set_product_price.requestFocus();
+            return false;
+        }
+
+        return true;
     }
 
     private void setProductPrice(Product product) {
         if (product.getType().trim().equalsIgnoreCase("product")) {
             product_price.setText(context.getResources().getString(R.string.rupee_icon) + " " + product.getPrice() + " / " + product.getPer() + " " + product.getUnit());
-
-        } else if (product.getType().trim().equalsIgnoreCase("service")) {
+            } else if (product.getType().trim().equalsIgnoreCase("service")) {
             product_price.setText(context.getResources().getString(R.string.rupee_icon) + " " + product.getPrice());
 
         }
     }
 
-    private void searchItem(final String keyword, com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum categoryId) {
-        Call<SearchResultModel> searchResultModelCall = Common.getApiInstance().searchItem(keyword, Common.currentLat, Common.currentLong, "");
+    private void searchItem(final String keyword, com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum category) {
+        Log.d(TAG, "searchItem: catID "+category.getIcon());
+        Call<SearchResultModel> searchResultModelCall = getApiInstance().searchItem(getCurrentUser().getId(), getCurrentUser().getAccessToken(), category.getId(), "");
 //        shimmerRecycler.showShimmerAdapter();
         searchResultModelCall.enqueue(new Callback<SearchResultModel>() {
             @Override
@@ -185,7 +286,6 @@ public class AddProduct extends Dialog {
                         content += searchResultModel.getMsg();
                         Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
                     }
-
                     Log.d(TAG, "onResponse: search item res" + content);
                 } else {
                     Toast.makeText(context, "Invalid response from server", Toast.LENGTH_SHORT).show();

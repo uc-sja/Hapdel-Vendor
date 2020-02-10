@@ -1,9 +1,8 @@
+
 package com.utility.hapdelvendor.Model.LoginModel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 public class Datum {
 
@@ -16,6 +15,21 @@ public class Datum {
     @SerializedName("mobile")
     @Expose
     private String mobile;
+    @SerializedName("profile")
+    @Expose
+    private Object profile;
+    @SerializedName("password")
+    @Expose
+    private String password;
+    @SerializedName("otp")
+    @Expose
+    private Object otp;
+    @SerializedName("forgot_token")
+    @Expose
+    private Object forgotToken;
+    @SerializedName("request_date")
+    @Expose
+    private Object requestDate;
     @SerializedName("display_name")
     @Expose
     private String displayName;
@@ -25,23 +39,18 @@ public class Datum {
     @SerializedName("activated")
     @Expose
     private String activated;
+    @SerializedName("access_role")
+    @Expose
+    private Object accessRole;
+    @SerializedName("last_login")
+    @Expose
+    private String lastLogin;
+    @SerializedName("registration_date")
+    @Expose
+    private String registrationDate;
     @SerializedName("access_token")
     @Expose
     private String accessToken;
-    @SerializedName("default_address")
-    @Expose
-    private List<com.utility.hapdelvendor.Model.AddressModel.Datum> default_address;
-
-    public List<com.utility.hapdelvendor.Model.AddressModel.Datum> getDefault_address() {
-        return default_address;
-    }
-
-    public void setDefault_address(List<com.utility.hapdelvendor.Model.AddressModel.Datum> default_address) {
-        this.default_address = default_address;
-    }
-
-    public Datum() {
-    }
 
     public String getId() {
         return id;
@@ -67,6 +76,46 @@ public class Datum {
         this.mobile = mobile;
     }
 
+    public Object getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Object profile) {
+        this.profile = profile;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Object getOtp() {
+        return otp;
+    }
+
+    public void setOtp(Object otp) {
+        this.otp = otp;
+    }
+
+    public Object getForgotToken() {
+        return forgotToken;
+    }
+
+    public void setForgotToken(Object forgotToken) {
+        this.forgotToken = forgotToken;
+    }
+
+    public Object getRequestDate() {
+        return requestDate;
+    }
+
+    public void setRequestDate(Object requestDate) {
+        this.requestDate = requestDate;
+    }
+
     public String getDisplayName() {
         return displayName;
     }
@@ -89,6 +138,30 @@ public class Datum {
 
     public void setActivated(String activated) {
         this.activated = activated;
+    }
+
+    public Object getAccessRole() {
+        return accessRole;
+    }
+
+    public void setAccessRole(Object accessRole) {
+        this.accessRole = accessRole;
+    }
+
+    public String getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(String lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public String getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(String registrationDate) {
+        this.registrationDate = registrationDate;
     }
 
     public String getAccessToken() {

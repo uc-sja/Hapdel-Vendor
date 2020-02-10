@@ -19,7 +19,6 @@ import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.squareup.picasso.Picasso;
 import com.utility.hapdelvendor.Model.ProducModel.Product;
 import com.utility.hapdelvendor.R;
-import com.utility.hapdelvendor.Utils.LocalStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,24 +62,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         //if yes it further check if they are of type service or product
         //and diplays the cart/remove/add buttons accordingly
         Log.d(TAG, "onBindViewHolder: type " + datum.getType());
-        if (LocalStorage.getCartCount(datum) > 0) {
-            if (datum.getType().trim().equalsIgnoreCase("product")) {
-                productViewHolder.cart_btn.setVisibility(View.GONE);
-                productViewHolder.change_number_btn.setVisibility(View.VISIBLE);
-                productViewHolder.change_number_btn.setNumber("" + LocalStorage.getCartCount(datum));
-
-            } else if (datum.getType().trim().equalsIgnoreCase("service")) {
-                productViewHolder.cart_btn.setVisibility(View.GONE);
-                productViewHolder.remove_btn.setVisibility(View.VISIBLE);
-            }
-
-            Log.d(TAG, "onBindViewHolder: condition true ");
-        } else {
-            productViewHolder.cart_btn.setVisibility(View.VISIBLE);
-            productViewHolder.change_number_btn.setVisibility(View.GONE);
-            productViewHolder.remove_btn.setVisibility(View.GONE);
-        }
-
         if (datum.getType().trim().equalsIgnoreCase("product")) {
             productViewHolder.product_price.setText(context.getResources().getString(R.string.rupee_icon) + " " + datum.getPrice() + " / " + datum.getPer() + " " + datum.getUnit());
 

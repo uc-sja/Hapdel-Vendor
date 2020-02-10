@@ -45,16 +45,13 @@ import com.utility.hapdelvendor.Adapter.RecentOrderAdapter;
 import com.utility.hapdelvendor.BottomSheetFragment;
 import com.utility.hapdelvendor.Interfaces.ResponseResult;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.ParentCategoryModel;
-import com.utility.hapdelvendor.Model.ProducModel.Product;
 import com.utility.hapdelvendor.Model.RecentOrderModel.Datum;
 import com.utility.hapdelvendor.Model.RecentOrderModel.RecentOrderModel;
-import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.AutoSuggestAdapter;
 import com.utility.hapdelvendor.Utils.BottomNavigation;
 import com.utility.hapdelvendor.Utils.CircularTextView;
 import com.utility.hapdelvendor.Utils.Common;
-import com.utility.hapdelvendor.Utils.LocalStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +63,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.utility.hapdelvendor.Utils.Common.getApiInstance;
-import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 import static com.utility.hapdelvendor.Utils.Common.hideKeyboard;
 
 public class HomeActivity extends AppCompatActivity {
@@ -436,70 +432,6 @@ public class HomeActivity extends AppCompatActivity {
         backPressCount = 0;
         fetchHomePage();
         Log.d(TAG, "onResume: else currentcity" + Common.currentCity);
-    }
-
-
-    private void updateCartValue(final Product product, int newValue, final boolean isAdd, final boolean isAll, final ResponseResult responseResult, String seller_id) {
-        final ProgressDialog progressDialog = new ProgressDialog(HomeActivity.this, R.style.MyDialogTheme);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Updating Cart...");
-        progressDialog.setCancelable(false);
-        if (!((Activity) HomeActivity.this).isFinishing()) {
-            progressDialog.show();
-        }
-
-        final Call<ResponseModel> responseModel = getApiInstance().updateCart(getCurrentUser().getId(), getCurrentUser().getAccessToken(), product.getPid(), newValue, seller_id);
-        responseModel.enqueue(new Callback<ResponseModel>() {
-            @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                progressDialog.dismiss();
-                if (!response.isSuccessful()) {
-                    responseResult.onFailure(response.message());
-                    Toast.makeText(HomeActivity.this, "" + response.message(), Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "onResponse: " + response.code() + "  mes " + response.message());
-                    return;
-                }
-
-                if (response.body() != null) {
-                    ResponseModel responseModel = null;
-                    try {
-                        responseModel = response.body();
-                    } catch (Exception e) {
-                        Log.d(TAG, "onResponse: " + e.toString());
-                        responseResult.onFailure(e.toString());
-                        Toast.makeText(HomeActivity.this, "Error parsing response.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    String content = "";
-                    if (responseModel.getResult().equals("success")) {
-                        Log.d(TAG, "onResponse: update Cart: is Added" + isAdd);
-                        if (isAdd) {
-                            LocalStorage.addToCart(product);
-                        } else {
-                            LocalStorage.removeFromCart(product, isAll);
-                        }
-
-
-                        responseResult.onSuccess();
-
-                    } else {
-                        responseResult.onFailure(responseModel.getMsg());
-                    }
-
-                } else {
-
-                    responseResult.onFailure("Invalid response from server");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
-                progressDialog.dismiss();
-                responseResult.onFailure(t.getLocalizedMessage());
-                Log.d(TAG, "onFailure: " + t.getLocalizedMessage());
-            }
-        });
     }
 
 

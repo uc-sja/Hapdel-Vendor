@@ -33,7 +33,6 @@ import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.BottomNavigation;
 import com.utility.hapdelvendor.Utils.CircularTextView;
 import com.utility.hapdelvendor.Utils.Common;
-import com.utility.hapdelvendor.Utils.LocalStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -256,7 +255,6 @@ public class OrderActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setUpBadge();
 
 //            if(getCurrentUser()==null){
 //                showSliderLayout("Kindly login to view your orders", true, "login", null);
@@ -266,17 +264,6 @@ public class OrderActivity extends AppCompatActivity {
             i = 1;
             total_order_list = new ArrayList<>();
             fetchVendorOrders(i);
-    }
-
-    public void setUpBadge() {
-        if(cart_badge!=null){
-            if(LocalStorage.getCart().size()<=0){
-                cart_badge.setVisibility(View.INVISIBLE);
-            } else {
-                cart_badge.setVisibility(View.VISIBLE);
-                cart_badge.setText(LocalStorage.getCart().size()+"");
-            }
-        }
     }
 
 

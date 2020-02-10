@@ -27,15 +27,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 
-import com.utility.hapdelvendor.Model.LoginModel.Datum;
-import com.utility.hapdelvendor.Model.LoginModel.UserModel;
-import com.utility.hapdelvendor.Model.ProducModel.Product;
-import com.utility.hapdelvendor.R;
-import com.utility.hapdelvendor.RetrofitClient.HapdelApi;
-import com.utility.hapdelvendor.RetrofitClient.RetrofitClient;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
+import com.utility.hapdelvendor.Model.LoginModel.Datum;
+import com.utility.hapdelvendor.Model.LoginModel.UserModel;
+import com.utility.hapdelvendor.R;
+import com.utility.hapdelvendor.RetrofitClient.HapdelApi;
+import com.utility.hapdelvendor.RetrofitClient.RetrofitClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -146,16 +145,6 @@ public class Common {
     }
 
 
-    public static boolean isAllProduct() {
-        Log.d(TAG, "isAllProduct: " + LocalStorage.getCart().size()+ " "+new Gson().toJson(LocalStorage.getCart()));
-
-        for (Product product : LocalStorage.getCart()) {
-            if (!product.getType().trim().equalsIgnoreCase("product")) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     public static void showEmptyDialog(Context context, String dialog_subtitle, String dialog_desc) {
         final Dialog dialog = new Dialog(new ContextThemeWrapper(context, R.style.DialogSlideAnim));
@@ -184,16 +173,6 @@ public class Common {
 
     }
 
-
-    //Checks if all the products 
-    public static boolean isAllService() {
-        for (Product product : LocalStorage.getCart()) {
-            if (!product.getType().trim().equalsIgnoreCase("service")) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     public static void hideKeyboardFrom(Context context) {
         View view = ((Activity)context).getCurrentFocus();

@@ -4,18 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.utility.hapdelvendor.Activity.BaseApp;
 import com.utility.hapdelvendor.Model.LoginModel.UserModel;
-import com.utility.hapdelvendor.Model.ProducModel.Product;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 
 
 public class LocalStorage {
@@ -64,68 +55,58 @@ public class LocalStorage {
     }
 
 
-    public static void addToCart(Product product) {
-        ArrayList<Product> cartList = getCart();
-        cartList.add(product);
-        Log.d(TAG, "addToCart: "+cartList.size());
-        storeString("cartItems"+getCurrentUser().getId(), new Gson().toJson(cartList));
+    public static void setIsNotificationRereshed(boolean b) {
+        storeBoolean("isRefreshed", b);
     }
 
-    public static void removeFromCart(Product product, boolean isAll){
-        ArrayList<Product> cartList = getCart();
-        for(Product product1: cartList){
-            Log.d(TAG, "removeFromCart: product loop "+ product.getProductName());
-        }
-        Log.d(TAG, "removeFromCart: "+Boolean.valueOf(product==null)+"  "+product.getProductName());
-        Log.d(TAG, "removeFromCart: "+cartList.size());
-        if(isAll){
-            Log.d(TAG, "removeFromCart: all products");
-            while (cartList.contains(product)){
-                cartList.remove(product);
-            }
-        } else {
-            Iterator<Product> it = cartList.iterator();
-            while (it.hasNext()) {
-                Product p = it.next();
-                if (p.getPid().equals(product.getPid())) {
-                    it.remove();
-                    break;
-                }
-            }
-        }
-        storeString("cartItems"+ getCurrentUser().getId(), new Gson().toJson(cartList));
+    public static Boolean isNotificationRereshed() {
+        return getBoolean("isRefreshed");
     }
 
-    public static int getCartCount(Product p){
-        ArrayList<Product> cartList = getCart();
-        Log.d(TAG, "getCartCount: "+cartList.size());
-        int count = 0;
-        Iterator<Product> productIterator = cartList.iterator();
-        while (productIterator.hasNext()){
-            Product product = productIterator.next();
-            if(p.getPid().equals(product.getPid())){
-                count++;
-            }
-        }
-        return count;
+
+
+    public static String getNotificationToken() {
+        return getString("notificationToken");
     }
 
-    public static ArrayList<Product> getCart() {
-        if(getCurrentUser()==null || getString("cartItems"+ getCurrentUser().getId()) == null ){
-            return new ArrayList<Product>();
-        }
-        Type type = new TypeToken<ArrayList<Product>>(){}.getType();
-        return new Gson().fromJson(getString("cartItems"+ getCurrentUser().getId()), type);
+    public static void setNotificationToken(String s) {
+        storeString("notificationToken", s);
     }
 
-    public static void setCart(List<Product> productArrayList) {
-        if(productArrayList == null){
-            storeString("cartItems"+ getCurrentUser().getId(), new Gson().toJson(new ArrayList<Product>()));
-        }
-        storeString("cartItems"+ getCurrentUser().getId(), new Gson().toJson(productArrayList));
+    public static void setNotificationCount(int i) {
+        SharedPreferences sharedPreferences = getSharedPreferences();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("notificationCount", i);
+        editor.apply();
     }
 
-    public static void clearCart() {
-        storeString("cartItems"+ getCurrentUser().getId(), new Gson().toJson(new ArrayList<Product>()));
+    public static int getNotificationCount() {
+        SharedPreferences sharedPreferences = null;
+        try {
+            sharedPreferences = getSharedPreferences();
+        } catch (Exception e) {
+            Log.d(TAG, "getUser: " + e.toString());
+        }
+        int notificationCount = sharedPreferences.getInt("notificationCount", 0);
+        return notificationCount;
     }
+
+    public static void setRideNotificationCount(int i) {
+        SharedPreferences sharedPreferences = getSharedPreferences();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("rideNotificationCount", i);
+        editor.apply();
+    }
+
+    public static int getRideNotificationCount() {
+        SharedPreferences sharedPreferences = null;
+        try {
+            sharedPreferences = getSharedPreferences();
+        } catch (Exception e) {
+            Log.d(TAG, "getUser: " + e.toString());
+        }
+        int rideNotificationCount = sharedPreferences.getInt("rideNotificationCount", 0);
+        return rideNotificationCount;
+    }
+
 }

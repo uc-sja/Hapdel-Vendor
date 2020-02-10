@@ -8,6 +8,7 @@ import com.utility.hapdelvendor.Model.CouponModel.CouponModel;
 import com.utility.hapdelvendor.Model.DeliveryModel.DeliveryFareModel;
 import com.utility.hapdelvendor.Model.FilterModel.WeightListModel.WeightListModel;
 import com.utility.hapdelvendor.Model.LoginModel.UserModel;
+import com.utility.hapdelvendor.Model.NotificationModel.NotificationModel;
 import com.utility.hapdelvendor.Model.PackageCategoryModel.PackageContentModel.PackageContentModel;
 import com.utility.hapdelvendor.Model.PackageCategoryModel.WeightTypeModel.WeightTypeModel;
 import com.utility.hapdelvendor.Model.ProducModel.ProductModel;
@@ -68,7 +69,7 @@ public interface HapdelApi {
     );
 
     @FormUrlEncoded
-    @POST("users/user/verify_otp")
+    @POST("user/verify_otp")
     Call<UserModel> verifyOtp(
             @Field("otp") String otp,
             @Field("mobile") String mobile
@@ -230,12 +231,12 @@ public interface HapdelApi {
 
 
     @FormUrlEncoded
-    @POST("users/products/search")
+    @POST("products/fetch_category_products")
     Call<SearchResultModel> searchItem(
-            @Field("query") String keyword,
-            @Field("lat") String latitude,
-            @Field("long") String longitude,
-            @Field("category_id") String categoryId
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("category_id") String categoryId,
+            @Field("query") String keyword
     );
 
     @FormUrlEncoded
@@ -378,6 +379,14 @@ public interface HapdelApi {
             @Field("access_token") String access_token
     );
 
+
+    @FormUrlEncoded
+    @POST("notifications/get_notifications")
+    Call<NotificationModel> getNotifications(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("page") String page
+    );
 }
 
 

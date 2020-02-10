@@ -106,8 +106,6 @@ public class OtpVerificationActivity extends AppCompatActivity {
         if(getIntent() != null){
             mobileNumber = getIntent().getStringExtra("mobile");
         }
-
-
     }
 
     private void fetchOtpforMobile(final String mobileNumber) {

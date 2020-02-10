@@ -147,6 +147,7 @@
             android:layout_margin="@dimen/_10sdp"
             android:fontFamily="@font/allerta"
             android:gravity="center"
+            android:visibility="gone"
             android:text="Skip SignIn"
             android:textColor="@color/com_facebook_blue" />
 
