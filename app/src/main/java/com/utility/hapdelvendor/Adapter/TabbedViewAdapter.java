@@ -19,7 +19,6 @@ import com.utility.hapdelvendor.Activity.OpenProductActivity;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Subcategory;
 import com.utility.hapdelvendor.R;
-import com.utility.hapdelvendor.Utils.Common;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +130,7 @@ public class TabbedViewAdapter extends RecyclerView.Adapter<TabbedViewAdapter.Ta
             Log.d(TAG, "onClick: no ");
             //Reinitializing total products list on tab click
             ((OpenProductActivity) context).setSelectedDatum(datum);
-            ((OpenProductActivity) context).fetchProducts(datum, Common.currentLat, Common.currentLong ,"1");
+            ((OpenProductActivity) context).fetchProducts(datum ,"1");
         }
     }
 

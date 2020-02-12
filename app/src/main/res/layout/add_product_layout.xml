@@ -18,11 +18,11 @@
 
 
         <RelativeLayout
+            android:background="@drawable/curve_layout"
             android:id="@+id/quarter_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="5dp"
             android:orientation="vertical">
 
 
@@ -30,20 +30,23 @@
                 android:id="@+id/add_product_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
                 android:gravity="center"
+                android:background="@color/colorPrimaryGreen"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/add_product"
+                    android:id="@+id/update_title"
                     style="@style/TextView.InputLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/_5sdp"
                     android:layout_gravity="center"
                     android:text="Add Product"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_15ssp"
+                     />
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
@@ -223,7 +226,7 @@
                 android:padding="@dimen/_10sdp">
 
                 <RelativeLayout
-                    android:id="@+id/price_layout"
+                    android:id="@+id/discout_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -249,7 +252,7 @@
                         android:theme="@style/TextInputCustomStyle">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/set_product_price"
+                            android:id="@+id/set_discount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textAlignment="center"
@@ -267,7 +270,7 @@
                     android:id="@+id/stock_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/price_layout"
+                    android:layout_below="@+id/discout_layout"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -294,7 +297,7 @@
                         android:theme="@style/TextInputCustomStyle">
 
                         <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/set_stock_count"
+                            android:id="@+id/max_discount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textAlignment="center"
@@ -329,7 +332,6 @@
                     android:layout_marginHorizontal="5dp"
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/submit_btn"
-                    android:enabled="false"
                     android:text="Submit"
                     android:textColor="@color/colorWhite" />
 

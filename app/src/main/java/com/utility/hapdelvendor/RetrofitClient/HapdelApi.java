@@ -1,7 +1,6 @@
 package com.utility.hapdelvendor.RetrofitClient;
 
 import com.utility.hapdelvendor.Model.AddressModel.AddressModel;
-import com.utility.hapdelvendor.Model.CartModel.CartModel;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.ParentCategoryModel;
 import com.utility.hapdelvendor.Model.CouponModel.ApplyCouponModel.ApplyCouponModel;
 import com.utility.hapdelvendor.Model.CouponModel.CouponModel;
@@ -11,7 +10,7 @@ import com.utility.hapdelvendor.Model.LoginModel.UserModel;
 import com.utility.hapdelvendor.Model.NotificationModel.NotificationModel;
 import com.utility.hapdelvendor.Model.PackageCategoryModel.PackageContentModel.PackageContentModel;
 import com.utility.hapdelvendor.Model.PackageCategoryModel.WeightTypeModel.WeightTypeModel;
-import com.utility.hapdelvendor.Model.ProducModel.ProductModel;
+import com.utility.hapdelvendor.Model.ProducModel.ProducModel;
 import com.utility.hapdelvendor.Model.ProfileModel.UserDetailModel;
 import com.utility.hapdelvendor.Model.RecentOrderModel.RecentOrderModel;
 import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
@@ -46,7 +45,7 @@ public interface HapdelApi {
 
     @FormUrlEncoded
     @POST("products/list")
-    Call<ProductModel> fetchProducts(
+    Call<ProducModel> fetchProducts(
             @Field("user_id") String userId,
             @Field("access_token") String accessToken,
             @Field("category_id") String category_id,
@@ -87,30 +86,10 @@ public interface HapdelApi {
 
 
     @FormUrlEncoded
-    @POST("users/user/logout")
+    @POST("user/logout")
     Call<ResponseModel> logoutUser(
             @Field("user_id") String userId,
             @Field("access_token") String access_token
-    );
-
-    @FormUrlEncoded
-    @POST("users/cart/user_cart")
-    Call<CartModel> fetchCart(
-            @Field("user_id") String userId,
-            @Field("access_token") String access_token,
-            @Field("latitude") String lat,
-            @Field("longitude") String lng
-    );
-
-
-    @FormUrlEncoded
-    @POST("users/cart/update_seller")
-    Call<CartModel> changeSeller(
-            @Field("user_id") String userId,
-            @Field("access_token") String access_token,
-            @Field("latitude") String lat,
-            @Field("longitude") String lng,
-            @Field("seller_id") String sellerId
     );
 
     @FormUrlEncoded
@@ -202,7 +181,7 @@ public interface HapdelApi {
 
     @FormUrlEncoded
     @POST("users/products/filter_products")
-    Call<ProductModel> applyFilter(
+    Call<ProducModel> applyFilter(
             @Field("category_id") String category_id,
             @Field("weight[]") List<String> weightFilter,
             @Field("brand[]") List<String> brandFilter,
@@ -296,7 +275,7 @@ public interface HapdelApi {
 
     @FormUrlEncoded
     @POST("users/products/get_products_by_seller")
-    Call<ProductModel> fetchProductsBySeller(
+    Call<ProducModel> fetchProductsBySeller(
             @Field("user_id") String userId,
             @Field("access_token") String access_token,
             @Field("seller_id") String seller_id,
@@ -373,7 +352,7 @@ public interface HapdelApi {
             );
 
     @FormUrlEncoded
-    @POST("profile/user_info")
+    @POST("user/get_profile")
     Call<UserDetailModel> fetchUserDetails(
             @Field("user_id") String userId,
             @Field("access_token") String access_token
@@ -387,6 +366,38 @@ public interface HapdelApi {
             @Field("access_token") String access_token,
             @Field("page") String page
     );
+
+    @FormUrlEncoded
+    @POST("products/add_product")
+    Call<ResponseModel> addProduct(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("category_id") String catId,
+            @Field("product_id") String current_product_id,
+            @Field("stock") String stock,
+            @Field("price") String price
+    );
+
+    @FormUrlEncoded
+    @POST("products/remove_product")
+    Call<ResponseModel> deleteProduct(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("category_id") String catId,
+            @Field("product_id") String current_product_id
+    );
+
+    @FormUrlEncoded
+    @POST("categories/add_discount")
+    Call<ResponseModel> addDiscount(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("category_id") String category_id,
+            @Field("discount") String discount,
+            @Field("expiry_date") String expiry_date,
+            @Field("max_discount_amount") String max_discount_amount,
+            @Field("minimum_order_amount") String minimum_order_amount
+        );
 }
 
 

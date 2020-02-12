@@ -134,6 +134,7 @@
     <string name="number_picker_formatter">%02d</string>
     <string name="add_prod">Add Product</string>
     <string name="add_discout">Add Discount</string>
+    <string name="discout_list">View Discounts</string>
 
 
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +41,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull NotificationViewHolder notificationViewHolder, final int i) {
-        notificationViewHolder.notificationTitle.setText(notificationList.get(i).getNotificationTitle());
-        notificationViewHolder.notificationDetails.setText(notificationList.get(i).getNotificationBody());
+        notificationViewHolder.notificationTitle.setText(Html.fromHtml(notificationList.get(i).getContent()));
+        notificationViewHolder.notificationDetails.setText(notificationList.get(i).getSummary());
         if(notificationList.get(i).getSeen().equals("n")){
             notificationViewHolder.notificationTitle.setTypeface(null, Typeface.BOLD);
             notificationViewHolder.notificationTitle.setTextColor(Color.parseColor("#000000"));
@@ -51,7 +52,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         notificationViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: "+notificationList.get(i).getNotificationTitle());
+                Log.d(TAG, "onClick: "+notificationList.get(i).getContent());
                 String notificationId = notificationList.get(i).getId();
                 Log.d(TAG, "onClick: "+notificationId);
 //                markAsSeen(notificationId);
@@ -59,7 +60,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 notificationViewHolder.notificationDetails.setTextColor(Color.parseColor("#746f6f"));
                 notificationViewHolder.notificationTitle.setTextColor(Color.parseColor("#746f6f"));
 
-                OpenNotification openNotification = new OpenNotification(context, notificationList.get(i).getNotificationTitle(), notificationList.get(i).getNotificationBody());
+                OpenNotification openNotification = new OpenNotification(context, notificationList.get(i).getContent(), notificationList.get(i).getSummary());
                 openNotification.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 openNotification.show();
             }

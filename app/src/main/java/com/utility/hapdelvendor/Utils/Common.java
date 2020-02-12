@@ -188,7 +188,6 @@ public class Common {
 
     public static void setStatusColor(Context context, @Nullable int color){
         Window window = ((Activity)context).getWindow();
-
 // clear FLAG_TRANSLUCENT_STATUS flag:
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 

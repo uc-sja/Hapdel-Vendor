@@ -1,10 +1,7 @@
 package com.utility.hapdelvendor.Activity;
 
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,29 +27,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
-import com.google.android.gms.common.api.Status;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.snackbar.Snackbar;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.utility.hapdelvendor.Adapter.ProductsAdapter;
 import com.utility.hapdelvendor.Interfaces.ResponseResult;
-import com.utility.hapdelvendor.Model.ProducModel.Product;
-import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.Model.SearchModel.SearchResultModel;
 import com.utility.hapdelvendor.R;
-import com.utility.hapdelvendor.Utils.AutoSuggestAdapter;
 import com.utility.hapdelvendor.Utils.BottomNavigation;
 import com.utility.hapdelvendor.Utils.CircularTextView;
 import com.utility.hapdelvendor.Utils.Common;
-import com.utility.hapdelvendor.Utils.LocalStorage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -66,9 +51,8 @@ public class SearchActivity extends AppCompatActivity {
     private Handler handler;
     private static final int TRIGGER_AUTO_COMPLETE = 100;
     private static final long AUTO_COMPLETE_DELAY = 300;
-    private AutoSuggestAdapter autoSuggestAdapter;
+    private com.utility.hapdelvendorvendor.Utils.AutoSuggestAdapter autoSuggestAdapter;
     private static final String TAG = "SearchActivity";
-    private ProductsAdapter productAdapter;
 
 
     private ShimmerRecyclerView shimmerRecycler;
@@ -107,6 +91,7 @@ public class SearchActivity extends AppCompatActivity {
     //location
     private TextView location_text;
     private LinearLayout location_layout;
+    private ProductsAdapter productAdapter;
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -183,7 +168,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
         products_search_view = findViewById(R.id.product_search_view);
-        productAdapter = new ProductsAdapter(this, new ArrayList<Product>());
+        productAdapter = new com.utility.hapdelvendor.Adapter.ProductsAdapter(this, new ArrayList<com.utility.hapdelvendor.Model.ProducModel.Product>());
         products_search_view.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         products_search_view.setAdapter(productAdapter);
         products_search_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -234,7 +219,7 @@ public class SearchActivity extends AppCompatActivity {
         Call<SearchResultModel> searchResultModelCall = Common.getApiInstance().searchItem(keyword, Common.currentLat, Common.currentLong, categoryId);
         hideErrorMessage();
 //        shimmerRecycler.showShimmerAdapter();
-        searchResultModelCall.enqueue(new Callback<SearchResultModel>() {
+        searchResultModelCall.enqueue(new Callback<com.utility.hapdelvendor.Model.SearchModel.SearchResultModel>() {
             @Override
             public void onResponse(Call<SearchResultModel> call, Response<SearchResultModel> response) {
 //                shimmerRecycler.hideShimmerAdapter();

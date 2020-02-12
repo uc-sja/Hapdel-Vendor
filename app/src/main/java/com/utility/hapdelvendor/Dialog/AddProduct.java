@@ -21,13 +21,12 @@ import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.cardview.widget.CardView;
 
 import com.squareup.picasso.Picasso;
+import com.utility.hapdelvendor.Activity.OpenProductActivity;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum;
 import com.utility.hapdelvendor.Model.ProducModel.Product;
 import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.Model.SearchModel.SearchResultModel;
-import com.utility.hapdelvendor.OtpVerificationActivity;
 import com.utility.hapdelvendor.R;
-import com.utility.hapdelvendor.Utils.AutoSuggestAdapter;
 
 import java.util.ArrayList;
 
@@ -42,20 +41,23 @@ import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 public class AddProduct extends Dialog {
     Context context;
     AppCompatAutoCompleteTextView search_bar;
-    private AutoSuggestAdapter autoSuggestAdapter;
+    private com.utility.hapdelvendorvendor.Utils.AutoSuggestAdapter autoSuggestAdapter;
     private static final String TAG = "AddProduct";
     private CardView product_card;
     private TextView product_name, product_desc, product_price;
     private ImageView product_img;
     private EditText set_stock_count, set_product_price;
-    private Product product;
     private Datum selected_category;
     private Button submit_result;
+    private String updateType;
+    private TextView update_title;
+    private Product current_product;
 
-    public AddProduct(@NonNull Context context, Datum selectedDatum) {
+    public AddProduct(@NonNull Context context, Datum selectedDatum, String updateType) {
         super(context);
         this.context = context;
         selected_category = selectedDatum;
+        this.updateType = updateType;
     }
 
     @Override
@@ -69,11 +71,12 @@ public class AddProduct extends Dialog {
         product_img = findViewById(R.id.product_img);
         product_card = findViewById(R.id.product_card);
         product_price = findViewById(R.id.product_price);
-        set_stock_count = findViewById(R.id.set_stock_count);
-        set_product_price = findViewById(R.id.set_product_price);
+        set_stock_count = findViewById(R.id.max_discount);
+        set_product_price = findViewById(R.id.set_discount);
         submit_result = findViewById(R.id.submit_result);
+        update_title = findViewById(R.id.update_title);
 
-        autoSuggestAdapter = new AutoSuggestAdapter(context, android.R.layout.simple_spinner_dropdown_item, new ArrayList());
+        autoSuggestAdapter = new com.utility.hapdelvendorvendor.Utils.AutoSuggestAdapter(context, android.R.layout.simple_spinner_dropdown_item, new ArrayList());
         search_bar.setAdapter(autoSuggestAdapter);
 
         search_bar.addTextChangedListener(new TextWatcher() {
@@ -105,9 +108,9 @@ public class AddProduct extends Dialog {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(product!=null){
-                    product.setPrice(s.toString());
-                    setProductPrice(product);
+                if(current_product!=null){
+                    current_product.setPrice(s.toString());
+                    setProductPrice(current_product);
                 }
             }
         });
@@ -116,61 +119,69 @@ public class AddProduct extends Dialog {
         search_bar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                product = autoSuggestAdapter.getItem(position);
-                if(product!=null){
-
-                    product_card.setVisibility(View.VISIBLE);
-                    String[] images;
-                    product_name.setText(product.getProductName());
-                    product_desc.setText(product.getShortDescription() == null || isEmpty(product.getShortDescription()) ? "No description available" : product.getShortDescription());
-                    setProductPrice(product);
-
-                    //Initiating
-                    set_product_price.setText(product.getPrice());
-                    set_stock_count.setText("1");
-
-                    if (product.getImage() != null && !isEmpty(product.getImage())) {
-                        Log.d(TAG, "onBindViewHolder: " + product.getImage());
-                        if (product.getImage().contains("|")) {
-                            images = product.getImage().split("\\|");
-                            Log.d(TAG, "onBindViewHolder: length " + images[1]);
-                            Picasso.get().load(product.getBaseUrl() + "" + images[0]).placeholder(R.drawable.app_icon_small_png).into(product_img);
-                        } else {
-                            Picasso.get().load(product.getBaseUrl() + "" + product.getImage()).placeholder(R.drawable.app_icon_small_png).into(product_img);
-                        }
-                    } else {
-                        product_img.setImageResource(R.drawable.app_icon_small_png);
-                    }
-                } else {
-                    product_card.setVisibility(View.GONE);
-                    Toast.makeText(context, "Product not loaded", Toast.LENGTH_SHORT).show();
-                }
+                current_product = autoSuggestAdapter.getItem(position);
+                initializeProduct(current_product);
             }
         });
-
 
         submit_result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(TAG, "onClick: ");
                 if(validateInput()){
                     addProduct();
+                } else {
                 }
             }
         });
+
+
+        if(updateType.equalsIgnoreCase("edit") && current_product!=null){
+            search_bar.setVisibility(View.GONE);
+            update_title.setText("Edit product");
+            initializeProduct(current_product);
+        } else if(updateType.equalsIgnoreCase("add")){
+            search_bar.setVisibility(View.VISIBLE);
+            update_title.setText("Add product");
+        }
+    }
+
+    private void initializeProduct(Product product) {
+        if(product!=null){
+
+            product_card.setVisibility(View.VISIBLE);
+            String[] images;
+            product_name.setText(product.getProductName());
+            product_desc.setText(product.getShortDescription() == null || isEmpty(product.getShortDescription()) ? "No description available" : product.getShortDescription());
+            setProductPrice(product);
+            current_product = product;
+
+            //Initiating
+            set_product_price.setText(product.getPrice());
+            set_stock_count.setText("1");
+
+            if (product.getImage() != null && !isEmpty(product.getImage())) {
+                Picasso.get().load(product.getImage()).placeholder(R.drawable.app_icon_small_png).into(product_img);
+            } else {
+                product_img.setImageResource(R.drawable.app_icon_small_png);
+            }
+        } else {
+            product_card.setVisibility(View.GONE);
+            Toast.makeText(context, "Product not loaded", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void addProduct() {
 
-        final ProgressDialog progressDialog = new ProgressDialog(OtpVerificationActivity.this, R.style.MyDialogTheme);
+        final ProgressDialog progressDialog = new ProgressDialog(context, R.style.MyDialogTheme);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Adding product...");
+        progressDialog.setMessage("Updating product...");
         progressDialog.setCancelable(false);
-        if(!((Activity)OtpVerificationActivity.this).isFinishing()){
+        if(!((Activity)context).isFinishing()){
             progressDialog.show();
         }
 
-
-        Call<ResponseModel> responseModelCall = getApiInstance().addProduct(getCurrentUser().getId(), getCurrentUser().getAccessToken(), datum.getId());
+        Call<ResponseModel> responseModelCall = getApiInstance().addProduct(getCurrentUser().getId(), getCurrentUser().getAccessToken(), selected_category.getId(),  current_product.getPid(), set_stock_count.getText().toString(), set_product_price.getText().toString());
         responseModelCall.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
@@ -190,10 +201,13 @@ public class AddProduct extends Dialog {
                         Toast.makeText(context, "Error in response", Toast.LENGTH_SHORT).show();
                         return;
                     }
+
                     String content="";
                     Log.d(TAG, "onResponse: response msg"+response.body().getResult()+"  msg  ");
                     if (responseModel.getResult().equals("success")){ //very important conditon
-
+                        Toast.makeText(context, responseModel.getMsg(), Toast.LENGTH_SHORT).show();
+                        ((OpenProductActivity)context).fetchProducts(((OpenProductActivity)context).selectedDatum, "1");
+                        dismiss();
                     }else{
                         content+= responseModel.getMsg();
                         Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
@@ -218,8 +232,6 @@ public class AddProduct extends Dialog {
         String stock_count = set_stock_count.getText().toString();
         String product_price = set_product_price.getText().toString();
 
-        boolean isValid = false;
-
         try {
             int stock = Integer.valueOf(stock_count.trim());
         } catch (NumberFormatException e) {
@@ -230,7 +242,7 @@ public class AddProduct extends Dialog {
         }
 
         try {
-            int price = Integer.valueOf(product_price.trim());
+            double price = Double.valueOf(product_price.trim());
         } catch (NumberFormatException e) {
             Log.d(TAG, "validateInput: "+e.toString());
             set_product_price.setError("Kindly enter valid product price");
@@ -238,21 +250,31 @@ public class AddProduct extends Dialog {
             return false;
         }
 
+        if(current_product !=null && isEmpty(current_product.getPid().trim())){
+            search_bar.setError("Kindly select a product first");
+            search_bar.requestFocus();
+            return false;
+        }
         return true;
     }
 
-    private void setProductPrice(Product product) {
-        if (product.getType().trim().equalsIgnoreCase("product")) {
-            product_price.setText(context.getResources().getString(R.string.rupee_icon) + " " + product.getPrice() + " / " + product.getPer() + " " + product.getUnit());
+    private void setProductPrice(com.utility.hapdelvendor.Model.ProducModel.Product product) {
+        if(product.getPrice() != null && !isEmpty(product.getPrice().trim())){
+            Log.d(TAG, "setProductPrice: "+product.getPrice());
+            if (product.getType().trim().equalsIgnoreCase("product")) {
+                product_price.setText(context.getResources().getString(R.string.rupee_icon) + " " + product.getPrice() + " / " + product.getPer() + " " + product.getUnit());
             } else if (product.getType().trim().equalsIgnoreCase("service")) {
-            product_price.setText(context.getResources().getString(R.string.rupee_icon) + " " + product.getPrice());
-
+                product_price.setText(context.getResources().getString(R.string.rupee_icon) + " " + product.getPrice());
+            }
+        } else {
+            product_price.setText(null);
+            product_price.setHint("Kindly set product price");
         }
     }
 
     private void searchItem(final String keyword, com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum category) {
         Log.d(TAG, "searchItem: catID "+category.getIcon());
-        Call<SearchResultModel> searchResultModelCall = getApiInstance().searchItem(getCurrentUser().getId(), getCurrentUser().getAccessToken(), category.getId(), "");
+        Call<SearchResultModel> searchResultModelCall = getApiInstance().searchItem(getCurrentUser().getId(), getCurrentUser().getAccessToken(), category.getId(), keyword);
 //        shimmerRecycler.showShimmerAdapter();
         searchResultModelCall.enqueue(new Callback<SearchResultModel>() {
             @Override
@@ -303,4 +325,7 @@ public class AddProduct extends Dialog {
 
     }
 
+    public void setProduct(Product product) {
+        this.current_product = product;
+    }
 }

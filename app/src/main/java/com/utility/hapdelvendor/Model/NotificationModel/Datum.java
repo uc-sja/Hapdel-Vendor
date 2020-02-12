@@ -9,21 +9,33 @@ public class Datum {
     @SerializedName("id")
     @Expose
     private String id;
-    @SerializedName("user_id")
+    @SerializedName("order_type")
     @Expose
-    private String userId;
+    private String orderType;
+    @SerializedName("txn_id")
+    @Expose
+    private String txnId;
+    @SerializedName("product_id")
+    @Expose
+    private String productId;
+    @SerializedName("summary")
+    @Expose
+    private String summary;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    @SerializedName("content")
+    @Expose
+    private String content;
     @SerializedName("seen")
     @Expose
     private String seen;
-    @SerializedName("seen_date")
-    @Expose
-    private String seenDate;
-    @SerializedName("notification_title")
-    @Expose
-    private String notificationTitle;
-    @SerializedName("notification_body")
-    @Expose
-    private String notificationBody;
 
     public String getId() {
         return id;
@@ -33,12 +45,36 @@ public class Datum {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getOrderType() {
+        return orderType;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
+    }
+
+    public String getTxnId() {
+        return txnId;
+    }
+
+    public void setTxnId(String txnId) {
+        this.txnId = txnId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
     public String getSeen() {
@@ -47,30 +83,6 @@ public class Datum {
 
     public void setSeen(String seen) {
         this.seen = seen;
-    }
-
-    public String getSeenDate() {
-        return seenDate;
-    }
-
-    public void setSeenDate(String seenDate) {
-        this.seenDate = seenDate;
-    }
-
-    public String getNotificationTitle() {
-        return notificationTitle;
-    }
-
-    public void setNotificationTitle(String notificationTitle) {
-        this.notificationTitle = notificationTitle;
-    }
-
-    public String getNotificationBody() {
-        return notificationBody;
-    }
-
-    public void setNotificationBody(String notificationBody) {
-        this.notificationBody = notificationBody;
     }
 
 }

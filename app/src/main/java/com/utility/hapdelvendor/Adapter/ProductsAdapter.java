@@ -1,6 +1,10 @@
 package com.utility.hapdelvendor.Adapter;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,29 +15,39 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.squareup.picasso.Picasso;
+import com.utility.hapdelvendor.Activity.OpenProductActivity;
+import com.utility.hapdelvendor.Dialog.AddProduct;
 import com.utility.hapdelvendor.Model.ProducModel.Product;
+import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static android.text.TextUtils.isEmpty;
+import static com.utility.hapdelvendor.Utils.Common.getApiInstance;
+import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 import static com.utility.hapdelvendor.Utils.Common.showEmptyDialog;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductViewHolder> {
     private Context context;
-    private static List<Product> productsList;
+    private static List<com.utility.hapdelvendor.Model.ProducModel.Product> productsList;
 
     private static final String TAG = "ProductsAdapter";
     private int mRowIndex = -1;
 
-    public ProductsAdapter(Context context, List<Product> productsList) {
+    public ProductsAdapter(Context context, ArrayList<com.utility.hapdelvendor.Model.ProducModel.Product> productsList) {
         this.context = context;
         this.productsList = productsList;
     }
@@ -47,14 +61,13 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
     @Override
     public void onBindViewHolder(@NonNull final ProductViewHolder productViewHolder, final int i) {
-        final Product datum = productsList.get(i);
-        String[] images;
+        final com.utility.hapdelvendor.Model.ProducModel.Product datum = productsList.get(i);
         productViewHolder.product_name.setText(datum.getProductName());
         productViewHolder.product_desc.setText(datum.getShortDescription() == null || isEmpty(datum.getShortDescription()) ? "No description available" : datum.getShortDescription());
-        productViewHolder.store_name.setText(datum.getStoreName());
+        productViewHolder.store_name.setText("Stock Available: " + datum.getStocks());
 
         //initializing
-        productViewHolder.cart_btn.setVisibility(View.VISIBLE);
+        productViewHolder.edit_btn.setVisibility(View.VISIBLE);
         productViewHolder.change_number_btn.setVisibility(View.GONE);
 
 
@@ -72,13 +85,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         Log.d(TAG, "onBindViewHolder: type  " + datum.getType());
         if (datum.getImage() != null && !isEmpty(datum.getImage())) {
             Log.d(TAG, "onBindViewHolder: " + datum.getImage());
-            if (datum.getImage().contains("|")) {
-                images = datum.getImage().split("\\|");
-                Log.d(TAG, "onBindViewHolder: length " + images[1]);
-                Picasso.get().load(datum.getBaseUrl() + "" + images[0]).placeholder(R.drawable.app_icon_small_png).into(productViewHolder.product_img);
-            } else {
-                Picasso.get().load(datum.getBaseUrl() + "" + datum.getImage()).placeholder(R.drawable.app_icon_small_png).into(productViewHolder.product_img);
-            }
+            Picasso.get().load(datum.getImage()).placeholder(R.drawable.app_icon_small_png).into(productViewHolder.product_img);
         } else {
             productViewHolder.product_img.setImageResource(R.drawable.app_icon_small_png);
         }
@@ -99,6 +106,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             }
         });
 
+
         productViewHolder.product_desc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +114,81 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             }
         });
         productViewHolder.itemView.setTag(i);
+
+        productViewHolder.delete_product.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteProduct(datum);
+            }
+        });
+
+        productViewHolder.edit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AddProduct addProduct = new AddProduct(context, ((OpenProductActivity) context).selectedDatum, "edit");
+                addProduct.setProduct(datum);
+                addProduct.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+                addProduct.show();
+
+            }
+        });
+    }
+
+    private void deleteProduct(Product datum) {
+
+        final ProgressDialog progressDialog = new ProgressDialog(context, R.style.MyDialogTheme);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Removing product...");
+        progressDialog.setCancelable(false);
+        if (!((Activity) context).isFinishing()) {
+            progressDialog.show();
+        }
+
+        Call<ResponseModel> responseModelCall = getApiInstance().deleteProduct(getCurrentUser().getId(), getCurrentUser().getAccessToken(), datum.getCategoryId(), datum.getPid());
+        responseModelCall.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                progressDialog.dismiss();
+                if (!response.isSuccessful()) {
+                    Toast.makeText(context, "" + response.message(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onResponse: fail " + response.code());
+                    return;
+                }
+
+                Log.d(TAG, "onResponse: success" + response.code() + response.body());
+                if (response.body() != null) {
+                    ResponseModel responseModel = null;
+                    try {
+                        responseModel = response.body();
+                    } catch (Exception e) {
+                        Toast.makeText(context, "Error in response", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    String content = "";
+                    Log.d(TAG, "onResponse: response msg" + response.body().getResult() + "  msg  ");
+                    if (responseModel.getResult().equals("success")) { //very important conditon
+                        Toast.makeText(context, responseModel.getMsg(), Toast.LENGTH_SHORT).show();
+                        ((OpenProductActivity) context).fetchProducts(((OpenProductActivity) context).selectedDatum, "1");
+                    } else {
+                        content += responseModel.getMsg();
+                        Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
+                    }
+
+                    Log.d(TAG, "onResponse: delete address res" + content);
+                } else {
+                    Toast.makeText(context, "Invalid response from server", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(context, "" + t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
 
@@ -118,11 +201,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         return (productsList != null ? productsList.size() : 0);
     }
 
-    public void updateItems(List<Product> data) {
+    public void updateItems(List<com.utility.hapdelvendor.Model.ProducModel.Product> data) {
         Log.d(TAG, "updateItems: " + data.size());
         if (data != null && data.size() > 0) {
-            this.productsList = new ArrayList<>();
-            for (Product product : data) {
+            this.productsList = new ArrayList<Product>();
+            for (com.utility.hapdelvendor.Model.ProducModel.Product product : data) {
                 Log.d(TAG, "updateItems: " + product.getProductName());
                 productsList.add(product);
             }
@@ -131,9 +214,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     }
 
     public class ProductViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView delete_product;
         RelativeLayout product_layout, root_layout;
         ImageView product_img;
-        private Button cart_btn, remove_btn;
+        private Button edit_btn, remove_btn;
         private ElegantNumberButton change_number_btn;
         TextView product_name, product_price, store_name, product_desc, status, unit, quantity, stock_quantity, stock_unit;
 
@@ -145,7 +229,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             product_layout = itemView.findViewById(R.id.product_layout);
             root_layout = itemView.findViewById(R.id.root_layout);
             change_number_btn = itemView.findViewById(R.id.change_number_btn);
-            cart_btn = itemView.findViewById(R.id.cart_btn);
+            edit_btn = itemView.findViewById(R.id.edit_btn);
             remove_btn = itemView.findViewById(R.id.remove_btn);
             product_name = itemView.findViewById(R.id.product_name);
             product_price = itemView.findViewById(R.id.product_price);
@@ -155,6 +239,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             product_img = itemView.findViewById(R.id.product_img);
             quantity = itemView.findViewById(R.id.quantity);
             stock_quantity = itemView.findViewById(R.id.stock_quantity);
+            delete_product = itemView.findViewById(R.id.delete_product);
 
             FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(0, 0, 0, context.getResources().getDimensionPixelOffset(R.dimen._12sdp));

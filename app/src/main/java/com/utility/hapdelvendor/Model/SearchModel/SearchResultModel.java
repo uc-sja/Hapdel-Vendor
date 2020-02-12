@@ -3,7 +3,6 @@ package com.utility.hapdelvendor.Model.SearchModel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.utility.hapdelvendor.Model.ProducModel.Product;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class SearchResultModel {
     private String msg;
     @SerializedName("data")
     @Expose
-    private List<Product> data = null;
+    private List<com.utility.hapdelvendor.Model.ProducModel.Product> data = null;
 
     public String getResult() {
         return result;
@@ -46,11 +45,11 @@ public class SearchResultModel {
         this.msg = msg;
     }
 
-    public List<Product> getData() {
+    public List<com.utility.hapdelvendor.Model.ProducModel.Product> getData() {
         return data;
     }
 
-    public void setData(List<Product> data) {
+    public void setData(List<com.utility.hapdelvendor.Model.ProducModel.Product> data) {
         this.data = data;
     }
 

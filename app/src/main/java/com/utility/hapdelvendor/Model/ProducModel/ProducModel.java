@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ProductModel {
+public class ProducModel {
 
     @SerializedName("result")
     @Expose
@@ -19,7 +19,7 @@ public class ProductModel {
     private String msg;
     @SerializedName("data")
     @Expose
-    private List<Datum> data = null;
+    private List<com.utility.hapdelvendor.Model.ProducModel.Product> data = null;
 
     public String getResult() {
         return result;
@@ -45,11 +45,11 @@ public class ProductModel {
         this.msg = msg;
     }
 
-    public List<Datum> getData() {
+    public List<com.utility.hapdelvendor.Model.ProducModel.Product> getData() {
         return data;
     }
 
-    public void setData(List<Datum> data) {
+    public void setData(List<com.utility.hapdelvendor.Model.ProducModel.Product> data) {
         this.data = data;
     }
 

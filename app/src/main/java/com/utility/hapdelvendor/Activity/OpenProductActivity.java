@@ -44,15 +44,14 @@ import com.utility.hapdelvendor.Adapter.ProductsAdapter;
 import com.utility.hapdelvendor.Adapter.TabbedViewAdapter;
 import com.utility.hapdelvendor.Dialog.AddDiscount;
 import com.utility.hapdelvendor.Dialog.AddProduct;
+import com.utility.hapdelvendor.DiscountList;
 import com.utility.hapdelvendor.ExpandableCheckboxView.DataItem;
 import com.utility.hapdelvendor.ExpandableCheckboxView.MyCategoriesExpandableListAdapter;
 import com.utility.hapdelvendor.ExpandableCheckboxView.SubCategoryItem;
 import com.utility.hapdelvendor.Interfaces.ResponseResult;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.ParentCategoryModel;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Subcategory;
-import com.utility.hapdelvendor.Model.ProducModel.Datum;
-import com.utility.hapdelvendor.Model.ProducModel.Product;
-import com.utility.hapdelvendor.Model.ProducModel.ProductModel;
+import com.utility.hapdelvendor.Model.ProducModel.ProducModel;
 import com.utility.hapdelvendor.Model.SearchModel.SearchResultModel;
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.BottomNavigation;
@@ -69,7 +68,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.utility.hapdelvendor.Utils.Common.getApiInstance;
-import static com.utility.hapdelvendor.Utils.Common.hideKeyboard;
+import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 
 public class OpenProductActivity extends AppCompatActivity {
     Toolbar tl;
@@ -133,7 +132,7 @@ public class OpenProductActivity extends AppCompatActivity {
     private String tabCategoryId;
     private LinearLayoutManager productLayoutManager;
     private boolean isScrolling,firstLoad;
-    public List<Product> total_products_list;
+    public List<com.utility.hapdelvendor.Model.ProducModel.Product> total_products_list;
     private int scrolledOutItems,currentItems,totalItems;
 
     public com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum selectedDatum = null;
@@ -210,7 +209,7 @@ public class OpenProductActivity extends AppCompatActivity {
 
         products_view = findViewById(R.id.products_view);
         products_view.setVisibility(View.GONE);
-        productAdapter = new ProductsAdapter(this, new ArrayList<Product>());
+        productAdapter = new ProductsAdapter(this, new ArrayList<com.utility.hapdelvendor.Model.ProducModel.Product>());
         productLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         products_view.setLayoutManager(productLayoutManager);
         products_view.setAdapter(productAdapter);
@@ -230,7 +229,7 @@ public class OpenProductActivity extends AppCompatActivity {
                         //Since we cannot assign a variable to final int i
                         Log.d(TAG, "onScrolled: if "+isScrolling+" "+totalItems+" "+scrolledOutItems+" "+currentItems);
 
-                        fetchProducts(selectedDatum, Common.currentLat, Common.currentLong, ++page +"");
+                        fetchProducts(selectedDatum,++page +"");
                         Log.d(TAG, "onScrolled: page "+page);
                     }else {
                         Log.d(TAG, "onScrolled: else "+isScrolling+" "+totalItems+" "+scrolledOutItems+" "+currentItems);
@@ -305,12 +304,22 @@ public class OpenProductActivity extends AppCompatActivity {
                 .setLabelClickable(false)
                 .create());
 
+        speedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_disc_list, R.drawable.ic_hot_sale)
+                .setFabBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorWhite, getTheme()))
+                .setFabImageTintColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, getTheme()))
+                .setLabel(getString(R.string.discout_list))
+                .setFabSize(20)
+                .setLabelColor(ResourcesCompat.getColor(getResources(), R.color.darkGray,getTheme()))
+                .setLabelBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorWhite,getTheme()))
+                .setLabelClickable(false)
+                .create());
+
         speedDialView.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
             @Override
             public boolean onActionSelected(SpeedDialActionItem actionItem) {
                 switch (actionItem.getId()){
                     case R.id.fab_add_btn :
-                        AddProduct addProduct = new AddProduct(OpenProductActivity.this, selectedDatum);
+                        AddProduct addProduct = new AddProduct(OpenProductActivity.this, selectedDatum, "add");
                         addProduct.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                         addProduct.show();
                         break;
@@ -320,6 +329,11 @@ public class OpenProductActivity extends AppCompatActivity {
                         addDiscount.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                         addDiscount.show();
                         break;
+
+                    case R.id.fab_disc_list :
+                        Intent intent = new Intent(OpenProductActivity.this, DiscountList.class);
+                        startActivity(intent);
+                        break;
                 }
                 return false;
             }
@@ -327,19 +341,18 @@ public class OpenProductActivity extends AppCompatActivity {
     }
 
     private void searchItem(final String keyword, com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum categoryId) {
-        Call<SearchResultModel> searchResultModelCall = Common.getApiInstance().searchItem(keyword, Common.currentLat, Common.currentLong, categoryId.getId());
+        Call<SearchResultModel> searchResultModelCall = getApiInstance().searchItem(getCurrentUser().getId(), getCurrentUser().getAccessToken(), categoryId.getId(), keyword);
         hideErrorMessage();
-//        shimmerRecycler.showShimmerAdapter();
+//      shimmerRecycler.showShimmerAdapter();
         searchResultModelCall.enqueue(new Callback<SearchResultModel>() {
             @Override
             public void onResponse(Call<SearchResultModel> call, Response<SearchResultModel> response) {
-//                shimmerRecycler.hideShimmerAdapter();
+//              shimmerRecycler.hideShimmerAdapter();
                 if(!response.isSuccessful()){
                     Toast.makeText(OpenProductActivity.this, ""+response.message(), Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onResponse: fail "+response.code());
                     return;
                 }
-
                 Log.d(TAG, "onResponse: success"+response.code()+response.body());
                 if(response.body()!=null ){
                     SearchResultModel searchResultModel = null;
@@ -469,7 +482,7 @@ public class OpenProductActivity extends AppCompatActivity {
 
     }
 
-    public void fetchProducts(final com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum datum, String lat, String lng, final String page) {
+    public void fetchProducts(final com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum datum, final String page) {
         //needed while fetching filters
         Log.d(TAG, "fetchProducts: page "+page);
         if(page.equalsIgnoreCase("1")){
@@ -484,13 +497,13 @@ public class OpenProductActivity extends AppCompatActivity {
         dialog = null;
 
         Log.d(TAG, "fetchProducts: product_id "+ datum.getId());
-        Call<ProductModel> productModel = getApiInstance().fetchProducts(datum.getId(), lat, lng, page);
+        Call<ProducModel> productModel = getApiInstance().fetchProducts(getCurrentUser().getId(), getCurrentUser().getAccessToken(), datum.getId(), page);
         shimmerRecycler.showShimmerAdapter();
 
-        productModel.enqueue(new Callback<ProductModel>() {
+        productModel.enqueue(new Callback<ProducModel>() {
             @SuppressLint("RestrictedApi")
             @Override
-            public void onResponse(Call<ProductModel> call, Response<ProductModel> response) {
+            public void onResponse(Call<ProducModel> call, Response<ProducModel> response) {
                 shimmerRecycler.hideShimmerAdapter();
                 if(!response.isSuccessful()){
 
@@ -500,7 +513,7 @@ public class OpenProductActivity extends AppCompatActivity {
                 }
 
                 if(response.body() != null){
-                    ProductModel productModel = null;
+                    ProducModel productModel = null;
                     try {
                         productModel = response.body();
                     } catch (Exception e) {
@@ -512,21 +525,14 @@ public class OpenProductActivity extends AppCompatActivity {
                     String content = "";
                     if(productModel.getResult().equals("success")){
                         Log.d(TAG, "onResponse: parentcategory fetch success");
-                        Datum datum1 = productModel.getData()!= null ? productModel.getData().get(0): null;
-                        if(datum1 != null && datum1.getProducts()!=null && datum1.getProducts().size()>0){
+                        if(productModel.getData() != null && productModel.getData().size()>0){
                             hideErrorMessage();
                             products_view.setVisibility(View.VISIBLE);
 
-                            Log.d(TAG, "onResponse: parentcategory size "+ productModel.getData().get(0).getProducts().size());
 
-                            for(Product product: datum1.getProducts()){
-                                if(product.getType().trim().equalsIgnoreCase("service")){
-                                    break;
-                                }
-                            }
                             firstLoad = false;
                             isScrolling = false;
-                            total_products_list.addAll(datum1.getProducts());
+                            total_products_list.addAll(productModel.getData());
                             productAdapter.updateItems(total_products_list);
 
 
@@ -546,7 +552,7 @@ public class OpenProductActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ProductModel> call, Throwable t) {
+            public void onFailure(Call<ProducModel> call, Throwable t) {
                 showErrorMessage("There are no products under this category", true);
                 shimmerRecycler.hideShimmerAdapter();
                 Log.d(TAG, "onFailure: "+t.getLocalizedMessage());
@@ -572,7 +578,7 @@ public class OpenProductActivity extends AppCompatActivity {
     }
 
     public void showSliderLayout(String msg, boolean showBtns, String btn_function, final ResponseResult cleartCartResponseResult){
-        hideKeyboard(this);
+        Common.hideKeyboard(this);
         slider_msg.setText(msg);
         sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
         if(!showBtns){

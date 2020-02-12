@@ -4,6 +4,7 @@ package com.utility.hapdelvendor.Dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
@@ -45,7 +46,7 @@ public class OpenNotification extends Dialog implements
         text_title = findViewById(R.id.event_title);
         text_content = findViewById(R.id.event_content);
 
-        text_title.setText(title);
+        text_title.setText(Html.fromHtml(title));
         text_content.setText(content);
         text_content.setScroller(new Scroller(getContext()));
         text_content.setVerticalScrollBarEnabled(true);

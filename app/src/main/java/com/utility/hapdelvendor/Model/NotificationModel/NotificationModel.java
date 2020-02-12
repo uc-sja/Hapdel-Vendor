@@ -1,10 +1,9 @@
 
 package com.utility.hapdelvendor.Model.NotificationModel;
 
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 public class NotificationModel {
 
@@ -19,7 +18,7 @@ public class NotificationModel {
     private String msg;
     @SerializedName("data")
     @Expose
-    private List<com.utility.hapdelvendor.Model.NotificationModel.Datum> data = null;
+    private List<Datum> data = null;
 
     public String getResult() {
         return result;

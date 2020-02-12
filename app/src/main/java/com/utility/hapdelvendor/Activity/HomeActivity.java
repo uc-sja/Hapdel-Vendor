@@ -48,7 +48,6 @@ import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.ParentCa
 import com.utility.hapdelvendor.Model.RecentOrderModel.Datum;
 import com.utility.hapdelvendor.Model.RecentOrderModel.RecentOrderModel;
 import com.utility.hapdelvendor.R;
-import com.utility.hapdelvendor.Utils.AutoSuggestAdapter;
 import com.utility.hapdelvendor.Utils.BottomNavigation;
 import com.utility.hapdelvendor.Utils.CircularTextView;
 import com.utility.hapdelvendor.Utils.Common;
@@ -101,7 +100,7 @@ public class HomeActivity extends AppCompatActivity {
     private Handler handler;
     private static final int TRIGGER_AUTO_COMPLETE = 100;
     private static final long AUTO_COMPLETE_DELAY = 300;
-    private AutoSuggestAdapter autoSuggestAdapter;
+    private com.utility.hapdelvendorvendor.Utils.AutoSuggestAdapter autoSuggestAdapter;
     private NestedScrollView nested_scroll_view;
     private int i = 1;
     private int scrolledOutItems, currentItems, totalItems;
