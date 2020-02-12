@@ -332,6 +332,7 @@ public class OpenProductActivity extends AppCompatActivity {
 
                     case R.id.fab_disc_list :
                         Intent intent = new Intent(OpenProductActivity.this, DiscountList.class);
+                        intent.putExtra("category", new Gson().toJson(selectedDatum));
                         startActivity(intent);
                         break;
                 }

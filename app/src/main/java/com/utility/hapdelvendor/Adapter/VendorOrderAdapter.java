@@ -120,8 +120,8 @@ public class VendorOrderAdapter extends RecyclerView.Adapter<VendorOrderAdapter.
             product_name = itemView.findViewById(R.id.product_name);
             order_status = itemView.findViewById(R.id.order_status);
             product_img = itemView.findViewById(R.id.product_img);
-            order_amount = itemView.findViewById(R.id.order_amount);
-            order_date = itemView.findViewById(R.id.order_date);
+            order_amount = itemView.findViewById(R.id.discount_expiry);
+            order_date = itemView.findViewById(R.id.discount_value);
             status_color = itemView.findViewById(R.id.status_color);
             quantity = itemView.findViewById(R.id.quantity);
             items_view = itemView.findViewById(R.id.items_view);

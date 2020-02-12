@@ -5,6 +5,7 @@ import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.ParentCa
 import com.utility.hapdelvendor.Model.CouponModel.ApplyCouponModel.ApplyCouponModel;
 import com.utility.hapdelvendor.Model.CouponModel.CouponModel;
 import com.utility.hapdelvendor.Model.DeliveryModel.DeliveryFareModel;
+import com.utility.hapdelvendor.Model.DiscountModel.DiscountModel;
 import com.utility.hapdelvendor.Model.FilterModel.WeightListModel.WeightListModel;
 import com.utility.hapdelvendor.Model.LoginModel.UserModel;
 import com.utility.hapdelvendor.Model.NotificationModel.NotificationModel;
@@ -398,6 +399,14 @@ public interface HapdelApi {
             @Field("max_discount_amount") String max_discount_amount,
             @Field("minimum_order_amount") String minimum_order_amount
         );
+
+    @FormUrlEncoded
+    @POST("categories/get_discounts")
+    Call<DiscountModel> getDiscount(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("category_id") String category_id
+    );
 }
 
 

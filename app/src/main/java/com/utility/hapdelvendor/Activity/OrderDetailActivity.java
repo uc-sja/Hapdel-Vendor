@@ -158,8 +158,8 @@ public class OrderDetailActivity extends AppCompatActivity {
         city_details2 = findViewById(R.id.city_details2);
 
         //Initializing Order Details Layout
-        order_date = findViewById(R.id.order_date);
-        order_amount = findViewById(R.id.order_amount);
+        order_date = findViewById(R.id.discount_value);
+        order_amount = findViewById(R.id.discount_expiry);
         payment_method = findViewById(R.id.payment_method);
         order_id = findViewById(R.id.order_id);
 
