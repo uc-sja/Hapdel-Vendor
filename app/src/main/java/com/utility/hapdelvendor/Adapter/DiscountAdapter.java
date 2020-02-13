@@ -42,6 +42,18 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.Discou
         holder.min_amt.setText("Minimum order amount: " +context.getString(R.string.rupee_icon)+" "+datum.getMinOrder());
         holder.max_amt.setText("Max order amount: "+context.getString(R.string.rupee_icon)+" "+datum.getMaxDiscount());
         holder.discout_expiry.setText("Expiry Date: "+datum.getExpiryDate());
+
+
+        boolean expanded = datum.isExpanded();
+        // Set the visibility based on state
+        holder.items_view_layout.setVisibility(expanded ? View.VISIBLE : View.GONE);
+
+
+        if(expanded){
+            holder.click_info_layout.setVisibility(View.GONE);
+        } else {
+            holder.click_info_layout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -59,12 +71,15 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.Discou
     public class DiscountViewHolder extends RecyclerView.ViewHolder{
         TextView discount_value, min_amt, max_amt, discout_expiry;
         RelativeLayout root_layout;
+        LinearLayout click_info_layout,items_view_layout;
         public DiscountViewHolder(@NonNull View itemView) {
             super(itemView);
             discount_value = itemView.findViewById(R.id.discount_value);
             min_amt = itemView.findViewById(R.id.min_amt);
             max_amt = itemView.findViewById(R.id.max_amt);
             discout_expiry = itemView.findViewById(R.id.discount_expiry);
+            click_info_layout = itemView.findViewById(R.id.click_info_layout);
+            items_view_layout = itemView.findViewById(R.id.items_view_layout);
 
             root_layout = itemView.findViewById(R.id.root_layout);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

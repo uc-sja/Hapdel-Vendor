@@ -1,10 +1,7 @@
 package com.utility.hapdelvendor;
 
 import android.app.Activity;
-import android.app.MediaRouteButton;
-import android.app.NotificationManager;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -167,8 +164,7 @@ public class DiscountList extends AppCompatActivity {
             }
             @Override
                 public void onFailure
-                (Call < com.utility.hapdelvendor.Model.DiscountModel.DiscountModel > call, Throwable
-                t){
+                (Call < com.utility.hapdelvendor.Model.DiscountModel.DiscountModel > call, Throwable t){
                     Log.d(TAG, "onFailure: " + t.toString());
                     progressDialog.dismiss();
 

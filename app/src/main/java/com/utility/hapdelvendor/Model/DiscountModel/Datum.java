@@ -31,6 +31,16 @@ public class Datum {
     @Expose
     private String expiryDate;
 
+    private boolean isExpanded;
+
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
+    }
+
     public String getId() {
         return id;
     }
