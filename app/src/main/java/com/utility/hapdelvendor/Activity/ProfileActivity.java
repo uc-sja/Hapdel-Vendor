@@ -338,7 +338,7 @@ public class ProfileActivity extends AppCompatActivity {
             progressDialog.show();
         }
 
-        Call<ResponseModel> responseModelCall = getApiInstance().updateProfile(getCurrentUser().getId(), getCurrentUser().getAccessToken(), email, mobile, name);
+        Call<ResponseModel> responseModelCall = getApiInstance().updateProfile(getCurrentUser().getId(), getCurrentUser().getAccessToken(), email, mobile, name, "", "Sun City Gola Road Danapur Patna 801503");
         responseModelCall.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {

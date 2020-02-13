@@ -11,19 +11,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
-import android.widget.TimePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.utility.hapdelvendor.Activity.OpenProductActivity;
+import com.utility.hapdelvendor.DiscountList;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum;
 import com.utility.hapdelvendor.Model.ProducModel.Product;
 import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.Common;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,22 +42,28 @@ import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 
 public class AddDiscount extends Dialog {
 
+    private final String updateType;
     private Context context;
     private Datum selected_category;
     private TextInputEditText set_discount, max_discount, min_order, expiry_disc;
     private Button submit_result;
     private LinearLayout disc_layout;
     private static final String TAG = "AddDiscount";
-    private Product current_product;
 
     private long time;
     private String dateTimeText;
+    private TextView update_title;
+    private com.utility.hapdelvendor.Model.DiscountModel.Datum current_discount = null;
+    private SimpleDateFormat originalFormatter;
+    private SimpleDateFormat newFormatter;
 
 
-    public AddDiscount(@NonNull Context context, Datum selectedDatum) {
+    public AddDiscount(@NonNull Context context, Datum selectedDatum, String updateType, com.utility.hapdelvendor.Model.DiscountModel.Datum current_discount) {
         super(context);
         this.context = context;
         selected_category = selectedDatum;
+        this.updateType = updateType;
+        this.current_discount = current_discount;
     }
 
     @Override
@@ -68,6 +76,7 @@ public class AddDiscount extends Dialog {
         min_order = findViewById(R.id.min_order);
         expiry_disc = findViewById(R.id.expiry_disc);
 
+        update_title = findViewById(R.id.update_title);
         submit_result = findViewById(R.id.submit_result);
         disc_layout = findViewById(R.id.discout_layout);
 
@@ -88,6 +97,34 @@ public class AddDiscount extends Dialog {
                 }
             }
         });
+
+        originalFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        newFormatter = new SimpleDateFormat("d MMM yyyy");
+
+        if(updateType.equalsIgnoreCase("edit") && current_discount!=null){
+            update_title.setText("Edit product");
+            initializeDiscount(current_discount);
+        } else if(updateType.equalsIgnoreCase("add")){
+            update_title.setText("Add product");
+        }
+    }
+
+    private void initializeDiscount(com.utility.hapdelvendor.Model.DiscountModel.Datum current_discount) {
+        set_discount.setText(current_discount.getDiscount());
+        max_discount.setText(current_discount.getMaxDiscount());
+        min_order.setText(current_discount.getMinOrder());
+
+        dateTimeText = current_discount.getExpiryDate();
+        Date date = null;
+        try {
+            date = originalFormatter.parse(current_discount.getExpiryDate());
+        } catch (ParseException e) {
+            Log.d(TAG, "initializeDiscount: "+e.toString());
+            expiry_disc.setText(newFormatter.format(date));
+            return;
+        }
+
+        expiry_disc.setText(newFormatter.format(date));
 
     }
 
@@ -116,12 +153,11 @@ public class AddDiscount extends Dialog {
                 time = calendar.getTimeInMillis();
 
                 Date date = calendar.getTime();
-                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat format2 = new SimpleDateFormat("EE, d MMM yyyy");
+
                 String selectedDateTime = null, formattedDateTime=null;
 
-                selectedDateTime = format1.format(date);
-                formattedDateTime = format2.format(date);
+                selectedDateTime = originalFormatter.format(date);
+                formattedDateTime = newFormatter.format(date);
 
                 //setting selected date globally
                 dateTimeText = selectedDateTime;
@@ -143,13 +179,13 @@ public class AddDiscount extends Dialog {
     private void addDiscount() {
             final ProgressDialog progressDialog = new ProgressDialog(context, R.style.MyDialogTheme);
             progressDialog.setIndeterminate(true);
-            progressDialog.setMessage("Adding discount...");
+            progressDialog.setMessage("Updating discount...");
             progressDialog.setCancelable(false);
             if(!((Activity)context).isFinishing()){
                 progressDialog.show();
             }
 
-            Call<ResponseModel> responseModelCall = getApiInstance().addDiscount(getCurrentUser().getId(), getCurrentUser().getAccessToken(), selected_category.getId(),  set_discount.getText().toString(), dateTimeText, max_discount.getText().toString(), min_order.getText().toString());
+            Call<ResponseModel> responseModelCall = getApiInstance().addDiscount(getCurrentUser().getId(), getCurrentUser().getAccessToken(), selected_category.getId(),  set_discount.getText().toString(), dateTimeText, max_discount.getText().toString(), min_order.getText().toString(), current_discount==null?null:current_discount.getId());
             responseModelCall.enqueue(new Callback<ResponseModel>() {
                 @Override
                 public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
@@ -174,7 +210,11 @@ public class AddDiscount extends Dialog {
                         Log.d(TAG, "onResponse: response msg"+response.body().getResult()+"  msg  ");
                         if (responseModel.getResult().equals("success")){ //very important conditon
                             Toast.makeText(context, responseModel.getMsg(), Toast.LENGTH_SHORT).show();
-                            ((OpenProductActivity)context).fetchProducts(((OpenProductActivity)context).selectedDatum, "1");
+                            if(updateType.trim().equalsIgnoreCase("add")){
+                                ((OpenProductActivity)context).fetchProducts(((OpenProductActivity)context).selectedDatum, "1");
+                            } else {
+                                ((DiscountList)context).fetchDiscounts();
+                            }
                             dismiss();
                         }else{
                             content+= responseModel.getMsg();
@@ -219,8 +259,8 @@ public class AddDiscount extends Dialog {
             }
 
         if(dateTimeText == null || isEmpty(dateTimeText)){
-            expiry_disc.setError("Kindly enter valid discount expiry date");
             expiry_disc.requestFocus();
+            expiry_disc.setError("Invalid expiry date");
             return false;
         }
 

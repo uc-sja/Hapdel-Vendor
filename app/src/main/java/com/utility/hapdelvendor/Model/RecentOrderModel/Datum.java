@@ -6,9 +6,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Datum {
 
-    @SerializedName("id")
+    @SerializedName("txn_id")
     @Expose
-    private String id;
+    private String txnId;
     @SerializedName("order_status")
     @Expose
     private String orderStatus;
@@ -23,7 +23,7 @@ public class Datum {
     private String modifiedDate;
     @SerializedName("store_name")
     @Expose
-    private Object storeName;
+    private String storeName;
     @SerializedName("txn_date")
     @Expose
     private String txnDate;
@@ -34,12 +34,12 @@ public class Datum {
     @Expose
     private String name;
 
-    public String getId() {
-        return id;
+    public String getTxnId() {
+        return txnId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setTxnId(String txnId) {
+        this.txnId = txnId;
     }
 
     public String getOrderStatus() {
@@ -74,11 +74,11 @@ public class Datum {
         this.modifiedDate = modifiedDate;
     }
 
-    public Object getStoreName() {
+    public String getStoreName() {
         return storeName;
     }
 
-    public void setStoreName(Object storeName) {
+    public void setStoreName(String storeName) {
         this.storeName = storeName;
     }
 

@@ -8,11 +8,43 @@
         layout="@layout/appbar_layout"/>
 
 
+    <LinearLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:paddingVertical="@dimen/_5sdp"
+        android:background="@color/colordarkbackground"
+        android:layout_below="@+id/appbar_layout"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/discount_title_text"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/_15sdp"
+            android:text="Discount List"
+            android:textColor="@color/colorWhite"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/discount_title"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:maxWidth="@dimen/_250sdp"
+            android:textStyle="bold"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/colorWhite"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_navigation"
-        android:layout_below="@+id/appbar_layout"
+        android:layout_below="@+id/title_layout"
         >
 
         <RelativeLayout
@@ -66,51 +98,6 @@
                 android:textSize="@dimen/_13ssp" />
 
 
-            <RelativeLayout
-                android:id="@+id/log_btn_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/_20sdp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/slider_btn_one"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/center_view"
-                    android:background="@drawable/slider_btn"
-                    android:paddingHorizontal="@dimen/_12sdp"
-                    android:text="Register"
-                    android:textAlignment="center"
-                    android:textAllCaps="true"
-                    android:textColor="@color/colorWhite"
-                    android:visibility="gone"
-                    android:textSize="@dimen/_10ssp" />
-
-                <View
-                    android:id="@+id/center_view"
-                    android:visibility="gone"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="0dp"
-                    android:layout_centerHorizontal="true" />
-
-                <Button
-                    android:id="@+id/slider_btn_two"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_toRightOf="@+id/center_view"
-                    android:background="@drawable/slider_btn"
-                    android:paddingHorizontal="@dimen/_12sdp"
-                    android:text="Login Now"
-                    android:textAlignment="center"
-                    android:textAllCaps="true"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/_10ssp" />
-
-            </RelativeLayout>
 
 
         </RelativeLayout>

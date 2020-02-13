@@ -1,11 +1,11 @@
 
-package com.utility.hapdelvendor.Model.RecentOrderModel;
+package com.utility.hapdelvendor.Model.TransactionModel;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class RecentOrderModel {
+public class TransactionModel {
 
     @SerializedName("result")
     @Expose

@@ -44,8 +44,8 @@ import java.util.Locale;
 import static android.text.TextUtils.isEmpty;
 
 public class Common {
-//    public static final String baseUrl = "https:/hapdel.in/api/v1/vendors";
-    public static final String baseUrl = "http://192.168.0.143/hapdel/api/v1/vendors/";
+    public static final String baseUrl = "https:/test.hapdel.in/api/v1/vendors/";
+//    public static final String baseUrl = "http://192.168.0.143/hapdel/api/v1/vendors/";
     private static final String TAG = "Common";
     public static boolean service_available = false;
     public static String currentCity = "";
@@ -199,7 +199,7 @@ public class Common {
             window.setStatusBarColor(ContextCompat.getColor(((Activity)context), R.color.colorPrimaryGreen));
         } else {
             //hard coded for now
-            window.setStatusBarColor(ContextCompat.getColor(((Activity)context), R.color.colorPrimaryGreen));
+            window.setStatusBarColor(ContextCompat.getColor(((Activity)context), R.color.colorPrimaryTrans));
         }
     }
 

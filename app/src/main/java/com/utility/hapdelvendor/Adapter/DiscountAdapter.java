@@ -1,9 +1,12 @@
 package com.utility.hapdelvendor.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -11,6 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.utility.hapdelvendor.Dialog.AddDiscount;
+import com.utility.hapdelvendor.DiscountList;
 import com.utility.hapdelvendor.Model.DiscountModel.Datum;
 import com.utility.hapdelvendor.R;
 
@@ -38,22 +43,38 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.Discou
 
         Datum datum = discountList.get(position);
 
-        holder.discount_value.setText("Discount Value: "+context.getString(R.string.rupee_icon)+" "+datum.getDiscount());
-        holder.min_amt.setText("Minimum order amount: " +context.getString(R.string.rupee_icon)+" "+datum.getMinOrder());
-        holder.max_amt.setText("Max order amount: "+context.getString(R.string.rupee_icon)+" "+datum.getMaxDiscount());
-        holder.discout_expiry.setText("Expiry Date: "+datum.getExpiryDate());
+        holder.discount_value.setText(context.getString(R.string.rupee_icon)+" "+datum.getDiscount());
+        holder.min_amt.setText(context.getString(R.string.rupee_icon)+" "+datum.getMinOrder());
+        holder.max_amt.setText(context.getString(R.string.rupee_icon)+" "+datum.getMaxDiscount());
+        holder.discout_expiry.setText(datum.getExpiryDate());
 
 
         boolean expanded = datum.isExpanded();
         // Set the visibility based on state
         holder.items_view_layout.setVisibility(expanded ? View.VISIBLE : View.GONE);
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datum.setExpanded(!expanded);
+                notifyDataSetChanged();
+            }
+        });
 
         if(expanded){
             holder.click_info_layout.setVisibility(View.GONE);
         } else {
             holder.click_info_layout.setVisibility(View.VISIBLE);
         }
+
+        holder.edit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddDiscount addDiscount = new AddDiscount(context, ((DiscountList)context).parentCategory, "edit", datum);
+                addDiscount.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+                addDiscount.show();
+            }
+        });
     }
 
     @Override
@@ -72,6 +93,7 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.Discou
         TextView discount_value, min_amt, max_amt, discout_expiry;
         RelativeLayout root_layout;
         LinearLayout click_info_layout,items_view_layout;
+        ImageView edit_btn;
         public DiscountViewHolder(@NonNull View itemView) {
             super(itemView);
             discount_value = itemView.findViewById(R.id.discount_value);
@@ -80,6 +102,7 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.Discou
             discout_expiry = itemView.findViewById(R.id.discount_expiry);
             click_info_layout = itemView.findViewById(R.id.click_info_layout);
             items_view_layout = itemView.findViewById(R.id.items_view_layout);
+            edit_btn = itemView.findViewById(R.id.edit_btn);
 
             root_layout = itemView.findViewById(R.id.root_layout);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

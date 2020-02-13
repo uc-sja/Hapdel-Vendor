@@ -159,7 +159,7 @@ public class OpenProductActivity extends AppCompatActivity {
 
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimaryGreen));
+            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
             Common.setStatusColor(OpenProductActivity.this, R.color.colorPrimary);
         }
 
@@ -325,7 +325,7 @@ public class OpenProductActivity extends AppCompatActivity {
                         break;
 
                     case R.id.fab_disc_btn :
-                        AddDiscount addDiscount = new AddDiscount(OpenProductActivity.this, selectedDatum);
+                        AddDiscount addDiscount = new AddDiscount(OpenProductActivity.this, selectedDatum, "add", null);
                         addDiscount.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                         addDiscount.show();
                         break;

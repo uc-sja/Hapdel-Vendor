@@ -97,147 +97,12 @@
                                 android:textSize="@dimen/_11ssp"
                                 android:textStyle="bold" />
 
-                            <RelativeLayout
-                                xmlns:android="http://schemas.android.com/apk/res/android"
-                                android:orientation="vertical"
-                                android:layout_marginTop="@dimen/_10sdp"
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:id="@+id/items_view"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:orientation="vertical"
-                                    android:layout_height="wrap_content">
-
-                                    <LinearLayout
-                                        android:layout_marginTop="@dimen/_5sdp"
-                                        android:layout_width="match_parent"
-                                        android:gravity="center"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="horizontal">
-
-                                        <TextView
-                                            android:id="@+id/status_color"
-                                            android:layout_gravity="center"
-                                            android:layout_width="@dimen/_7sdp"
-                                            android:background="@color/colorRed"
-                                            android:layout_height="@dimen/_7sdp"
-                                            />
-
-                                        <TextView
-                                            android:id="@+id/order_status"
-                                            android:layout_gravity="center"
-                                            android:layout_marginStart="@dimen/_10sdp"
-                                            android:layout_width="wrap_content"
-                                            android:textSize="@dimen/_11ssp"
-                                            android:text="completed"
-                                            android:layout_height="wrap_content"/>
-
-
-
-
-                                        <View
-                                            android:layout_width="0dp"
-                                            android:layout_height="0dp"
-                                            android:layout_weight="1"/>
-
-                                        <TextView
-                                            android:id="@+id/textViewOptions"
-                                            android:layout_alignParentTop="true"
-                                            android:layout_alignParentEnd="true"
-                                            android:layout_alignParentRight="true"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginRight="@dimen/_10sdp"
-                                            android:paddingLeft="@dimen/activity_horizontal_margin"
-                                            android:text="&#8942;"
-                                            android:layout_gravity="top"
-                                            android:textSize="@dimen/_13ssp"
-                                            android:textAppearance="?android:textAppearanceLarge" />
-
-
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:id="@+id/ordered_items_layout"
-                                        android:layout_marginTop="@dimen/_7sdp"
-                                        android:orientation="horizontal"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content">
-
-                                        <ImageView
-                                            android:layout_gravity="center_vertical"
-                                            android:id="@+id/product_img"
-                                            android:padding="@dimen/_5sdp"
-                                            android:layout_width="@dimen/_50sdp"
-                                            android:layout_height="@dimen/_50sdp"/>
-
-                                        <LinearLayout
-                                            android:id="@+id/item_details_layout"
-                                            android:layout_marginHorizontal="@dimen/_10sdp"
-                                            android:layout_width="wrap_content"
-                                            android:orientation="vertical"
-                                            android:layout_height="wrap_content">
-
-                                            <TextView
-                                                android:id="@+id/product_name"
-                                                android:maxWidth="@dimen/_100sdp"
-                                                android:maxLines="5"
-                                                android:textSize="@dimen/_12ssp"
-                                                android:ellipsize="end"
-                                                android:textColor="@color/colorBlack"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"/>
-
-                                            <TextView
-                                                android:id="@+id/product_quantity"
-                                                android:maxLines="1"
-                                                android:layout_marginTop="@dimen/_2sdp"
-                                                android:textSize="@dimen/_11ssp"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"/>
-
-                                            <TextView
-                                                android:id="@+id/product_seller"
-                                                android:layout_width="wrap_content"
-                                                android:maxWidth="@dimen/_100sdp"
-                                                android:layout_marginTop="@dimen/_2sdp"
-                                                android:maxLines="3"
-                                                android:ellipsize="end"
-                                                android:textSize="@dimen/_11ssp"
-                                                android:layout_height="wrap_content"/>
-
-                                        </LinearLayout>
-
-                                        <View
-                                            android:layout_width="0dp"
-                                            android:layout_height="0dp"
-                                            android:layout_weight="1"/>
-
-                                        <LinearLayout
-                                            android:orientation="vertical"
-                                            android:id="@+id/price_menu_layout"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content">
-
-
-                                            <TextView
-                                                android:id="@+id/product_price"
-                                                android:layout_width="wrap_content"
-                                                android:layout_gravity="bottom"
-                                                android:layout_height="wrap_content"
-                                                android:textColor="@color/colorBlack"
-                                                android:textSize="@dimen/_13ssp"
-                                                />
-
-
-                                        </LinearLayout>
-
-                                    </LinearLayout>
-
-                                </LinearLayout>
-
-                            </RelativeLayout>
+                                android:layout_height="wrap_content"
+                                />
 
                         </RelativeLayout>
                     </androidx.cardview.widget.CardView>
@@ -480,7 +345,7 @@
                                     android:theme="@style/user_order_table"></TextView>
 
                                 <TextView
-                                    android:id="@+id/discount_value"
+                                    android:id="@+id/order_date"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
@@ -505,7 +370,7 @@
                                     android:theme="@style/user_order_table"></TextView>
 
                                 <TextView
-                                    android:id="@+id/discount_expiry"
+                                    android:id="@+id/order_amount"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"

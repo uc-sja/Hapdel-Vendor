@@ -52,7 +52,7 @@ public class RecentOrderAdapter extends RecyclerView.Adapter<RecentOrderAdapter.
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, OrderDetailActivity.class);
-                intent.putExtra("order", new Gson().toJson(datum));
+                intent.putExtra("order", datum.getTxnId());
                 context.startActivity(intent);
             }
         });

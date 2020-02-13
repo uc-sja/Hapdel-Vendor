@@ -62,6 +62,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.utility.hapdelvendor.Utils.Common.getApiInstance;
+import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 import static com.utility.hapdelvendor.Utils.Common.hideKeyboard;
 
 public class HomeActivity extends AppCompatActivity {
@@ -127,7 +128,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimaryGreen));
+            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
             Common.setStatusColor(HomeActivity.this, R.color.colorPrimaryGreen);
         }
 
@@ -262,7 +263,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         //initially
-        Call<RecentOrderModel> loginResponseCall = getApiInstance().fetchRecentOrders("2", "");
+        Call<RecentOrderModel> loginResponseCall = getApiInstance().fetchRecentOrders(getCurrentUser().getId(), getCurrentUser().getAccessToken());
         loginResponseCall.enqueue(new Callback<RecentOrderModel>() {
             @Override
             public void onResponse(Call<RecentOrderModel> call, Response<RecentOrderModel> response) {

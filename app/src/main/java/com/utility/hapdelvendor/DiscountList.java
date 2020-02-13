@@ -71,14 +71,15 @@ public class DiscountList extends AppCompatActivity {
     private LottieAnimationView error_image;
     private RelativeLayout error_msg_layout;
     private TextView error_msg;
-    private RelativeLayout open_product_layout;
+    private ScrollView scroll_layout;
     private AHBottomNavigation bottomNavigation;
-    private com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum parentCategory;
+    public com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum parentCategory;
     private EditText search_bar;
     private LinearLayoutManager discountLayoutManager;
     private DiscountAdapter discountAdapter;
     private static final String TAG = "DiscountList";
     private RelativeLayout discount_container_layout;
+    private TextView discount_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +87,7 @@ public class DiscountList extends AppCompatActivity {
         setContentView(R.layout.activity_discount_list);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimaryGreen));
+            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
             Common.setStatusColor(DiscountList.this, R.color.colorPrimary);
         }
 
@@ -96,10 +97,11 @@ public class DiscountList extends AppCompatActivity {
 
         containerLayout = findViewById(R.id.container_layout);
         discount_container_layout = findViewById(R.id.discount_container_layout);
-        
+        discount_title = findViewById(R.id.discount_title);
         tl = findViewById(R.id.toolbar);
         tl.setTitle("");
         setSupportActionBar(tl);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setElevation(0);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -120,11 +122,26 @@ public class DiscountList extends AppCompatActivity {
             discounts_view.setLayoutManager(discountLayoutManager);
             discounts_view.setAdapter(discountAdapter);
 
+            discount_title.setText("Category: "+parentCategory.getName());
             fetchDiscounts();
         }
+
+        //Error Msg Initializtion
+        scroll_layout = findViewById(R.id.scroll_layout);
+        error_msg_layout = findViewById(R.id.error_layout);
+        error_msg = findViewById(R.id.error_msg);
+        error_image = findViewById(R.id.error_image);
+
+        error_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                error_image.playAnimation();
+            }
+        });
+
     }
 
-    private void fetchDiscounts() {
+    public void fetchDiscounts() {
 
         final ProgressDialog progressDialog = new ProgressDialog(DiscountList.this, R.style.MyDialogTheme);
         progressDialog.setIndeterminate(true);

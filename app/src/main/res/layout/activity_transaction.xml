@@ -1,0 +1,180 @@
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sliding_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    sothree:umanoPanelHeight="0dp"
+    sothree:umanoShadowHeight="0dp">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:id="@+id/container_layout"
+        android:background="@color/colorWhite"
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/appbar_layout"/>
+
+        <RelativeLayout
+            android:layout_below="@+id/appbar_layout"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_above="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/view_txn_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/user_txn_view"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/error_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite"
+                android:visibility="gone">
+
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="@dimen/_200sdp"
+                    android:id="@+id/error_image"
+                    android:layout_height="@dimen/_200sdp"
+                    android:layout_centerInParent="true"
+                    app:lottie_rawRes="@raw/empty_box"
+                    app:lottie_autoPlay="true" />
+
+                <TextView
+                    android:id="@+id/error_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/error_image"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/abeezee"
+                    android:padding="@dimen/_10sdp"
+                    android:text="No Products in Cart"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_13ssp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+
+        <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/slider_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_300sdp"
+        android:background="@color/colorWhite"
+        android:paddingBottom="@dimen/_10sdp"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimary"
+            android:layout_alignParentTop="true"
+            android:layout_height="@dimen/_60sdp">
+
+            <ImageView
+                android:src="@drawable/ic_problem"
+                android:layout_centerInParent="true"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp" />
+
+        </RelativeLayout>
+        <ImageView
+            android:id="@+id/slider_img"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/slider_error" />
+
+        <TextView
+            android:id="@+id/slider_msg"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/slider_img"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:fontFamily="@font/abeezee"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/_40sdp"
+            android:text="Slider Msg"
+            android:textAlignment="center"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12ssp" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/slider_btn_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryGreen"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_4sdp"
+                android:text="Back"
+                android:layout_centerHorizontal="true"
+                android:textAlignment="center"
+                android:layout_toLeftOf="@+id/central_view"
+                android:textAllCaps="true"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_12ssp" />
+
+            <View
+
+                android:id="@+id/central_view"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="0dp"/>
+
+            <Button
+                android:id="@+id/slider_btn_two"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/central_view"
+                android:background="@color/colorPrimaryGreen"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_4sdp"
+                android:text="Sign Up"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_12ssp" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>

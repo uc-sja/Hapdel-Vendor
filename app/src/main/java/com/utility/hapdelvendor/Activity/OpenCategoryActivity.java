@@ -98,7 +98,7 @@ public class OpenCategoryActivity extends AppCompatActivity {
 
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimaryGreen));
+            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
             Common.setStatusColor(OpenCategoryActivity.this, R.color.colorPrimary);
         }
 

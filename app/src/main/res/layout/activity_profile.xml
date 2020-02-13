@@ -285,7 +285,7 @@
                             android:layout_height="wrap_content"
                             android:drawableStart="@drawable/ic_orders"
                             android:drawablePadding="@dimen/_10ssp"
-                            android:text="My Pending Jobs" />
+                            android:text="All Orders" />
 
                         <View
                             android:layout_width="match_parent"
@@ -301,7 +301,7 @@
                             android:clickable="true"
                             android:drawableStart="@drawable/ic_address"
                             android:drawablePadding="@dimen/_10ssp"
-                            android:text="My Transactions" />
+                            android:text="All Transactions" />
 
                         <View
                             android:layout_width="match_parent"

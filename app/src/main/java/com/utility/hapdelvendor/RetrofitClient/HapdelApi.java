@@ -17,6 +17,7 @@ import com.utility.hapdelvendor.Model.RecentOrderModel.RecentOrderModel;
 import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.Model.SearchModel.SearchResultModel;
 import com.utility.hapdelvendor.Model.SlotModel.DeliverySlotModel;
+import com.utility.hapdelvendor.Model.TransactionModel.TransactionModel;
 import com.utility.hapdelvendor.Model.UserOrderModel.OrderDetailModel.OrderDetailModel;
 import com.utility.hapdelvendor.Model.UserOrderModel.OrderModel.OrderModel;
 import com.utility.hapdelvendor.Model.VendorModel.VendorModel;
@@ -220,13 +221,15 @@ public interface HapdelApi {
     );
 
     @FormUrlEncoded
-    @POST("users/user/update_profile")
+    @POST("user/update_profile")
     Call<ResponseModel> updateProfile(
             @Field("user_id") String userId,
             @Field("access_token") String access_token,
             @Field("email") String email,
             @Field("mobile") String mobile,
-            @Field("name") String name
+            @Field("display_name") String name,
+            @Field("store_name") String store_name,
+            @Field("store_addres") String store_addres
     );
 
 
@@ -397,7 +400,8 @@ public interface HapdelApi {
             @Field("discount") String discount,
             @Field("expiry_date") String expiry_date,
             @Field("max_discount_amount") String max_discount_amount,
-            @Field("minimum_order_amount") String minimum_order_amount
+            @Field("minimum_order_amount") String minimum_order_amount,
+            @Field("discount_id") String discount_id
         );
 
     @FormUrlEncoded
@@ -406,6 +410,23 @@ public interface HapdelApi {
             @Field("user_id") String userId,
             @Field("access_token") String access_token,
             @Field("category_id") String category_id
+    );
+
+    @FormUrlEncoded
+    @POST("categories/get_discounts")
+    Call<TransactionModel> fetchTransactions(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("filter") String filter
+    );
+
+
+    @FormUrlEncoded
+    @POST("order/get_order_by_txn_id")
+    Call<OrderDetailModel> fetchUserOrderDetails(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("txn_id") String txn_id
     );
 }
 
