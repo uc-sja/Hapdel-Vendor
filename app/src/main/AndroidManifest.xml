@@ -12,7 +12,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateAlwaysHidden">
-        <activity android:name=".Activity.TransactionActivity"></activity>
+        <activity android:name=".Activity.TransactionActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
         <activity android:name=".DiscountList" />
 
         <service

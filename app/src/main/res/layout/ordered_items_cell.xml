@@ -84,7 +84,7 @@
 
                 <TextView
                     android:id="@+id/product_name"
-                    android:maxWidth="@dimen/_100sdp"
+                    android:maxWidth="@dimen/_130sdp"
                     android:maxLines="5"
                     android:textSize="@dimen/_12ssp"
                     android:ellipsize="end"

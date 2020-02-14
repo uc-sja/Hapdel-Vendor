@@ -52,6 +52,18 @@ public class Item {
     @Expose
     private String txnId;
 
+    @SerializedName("image")
+    @Expose
+    private String product_image;
+
+    public String getProductImage() {
+        return product_image;
+    }
+
+    public void setProduct_image(String product_image) {
+        this.product_image = product_image;
+    }
+
     public String getId() {
         return id;
     }

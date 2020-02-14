@@ -2,7 +2,6 @@ package com.utility.hapdelvendor.Adapter;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.utility.hapdelvendor.Model.TransactionModel.Datum;
 import com.utility.hapdelvendor.R;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.JobsViewHolder> {
@@ -43,7 +40,9 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
 
             holder.order_id.setText("Order ID: #"+datum.getOrderId());
-                setStatusColor(holder.status_color, datum.getPaid());
+
+            setStatusColor(holder.approved_img, datum.getPaid());
+
             holder.txn_amt.setText(context.getResources().getString(R.string.rupee_icon)+ datum.getPrice());
 
             holder.commission_amt.setText(context.getResources().getString(R.string.rupee_icon)+ datum.getCommissionAmount());
@@ -54,7 +53,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
             holder.coupon_disc.setText(context.getResources().getString(R.string.rupee_icon)+ datum.getCouponDiscount());
 
-
+            holder.items_ordered.setText(datum.getQuantity());
 
     }
 
@@ -63,11 +62,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         return txnList.size();
     }
 
-    private void setStatusColor(TextView status_color, String orderStatus) {
+    private void setStatusColor(ImageView approved_img, String orderStatus) {
         switch (orderStatus){
-            case "y": status_color.setBackgroundColor(context.getResources().getColor(R.color.colorGreen));
+            case "y": approved_img.setVisibility(View.VISIBLE);
                 break;
-            case "n": status_color.setBackgroundColor(context.getResources().getColor(R.color.red));
+            case "n": approved_img.setVisibility(View.GONE);
                 break;
             default:break;
         }
@@ -83,8 +82,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     public class JobsViewHolder extends RecyclerView.ViewHolder {
         private RelativeLayout root_layout;
-        TextView order_id, order_status, txn_amt, commission_amt, admin_disc, vendor_disc, coupon_disc, status_color;
-        ImageView product_img;
+        TextView order_id, order_status, txn_amt, commission_amt, admin_disc, vendor_disc, coupon_disc, items_ordered;
+        ImageView approved_img, status_color;
 
         public JobsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -96,6 +95,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             vendor_disc = itemView.findViewById(R.id.vendor_disc);
             coupon_disc = itemView.findViewById(R.id.coupon_disc);
             status_color = itemView.findViewById(R.id.status_color);
+            items_ordered = itemView.findViewById(R.id.items_ordered);
+            approved_img = itemView.findViewById(R.id.approved_img);
 
             root_layout = itemView.findViewById(R.id.root_layout);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

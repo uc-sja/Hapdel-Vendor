@@ -189,13 +189,13 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-//        my_transactions.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(ProfileActivity.this, TransactionActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        my_transactions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, TransactionActivity.class);
+                startActivity(intent);
+            }
+        });
 
 //        upload_docs.setOnClickListener(new View.OnClickListener() {
 //            @Override

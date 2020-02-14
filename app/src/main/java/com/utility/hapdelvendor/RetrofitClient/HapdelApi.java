@@ -413,7 +413,7 @@ public interface HapdelApi {
     );
 
     @FormUrlEncoded
-    @POST("categories/get_discounts")
+    @POST("user/get_transactions")
     Call<TransactionModel> fetchTransactions(
             @Field("user_id") String userId,
             @Field("access_token") String access_token,

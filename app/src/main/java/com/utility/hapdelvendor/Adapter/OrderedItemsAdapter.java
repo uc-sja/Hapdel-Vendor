@@ -24,7 +24,6 @@ import com.squareup.picasso.Picasso;
 import com.utility.hapdelvendor.Activity.OrderDetailActivity;
 import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.Model.UserOrderModel.OrderDetailModel.Item;
-import com.utility.hapdelvendor.Model.UserOrderModel.OrderDetailModel.Item;
 import com.utility.hapdelvendor.R;
 
 import java.util.List;
@@ -66,9 +65,9 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
         holder.product_quantity.setText("Qty:" + item.getQuantity());
         holder.product_seller.setText("Sold By: "   );
 
-//        if(item.getImage()!=null && !isEmpty(item.getIm())){
-//            Picasso.get().load(item.getBaseUrl()+item.getImage()).placeholder(R.drawable.app_icon_png).fit().into(holder.product_img);
-//        }
+        if(item.getProductImage()!=null && !isEmpty(item.getProductImage())){
+            Picasso.get().load(item.getProductImage()).placeholder(R.drawable.app_icon_png).fit().into(holder.product_img);
+        }
 //
         holder.product_price.setText(context.getString(R.string.rupee_icon)+item.getPrice());
 
