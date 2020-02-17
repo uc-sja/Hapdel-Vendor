@@ -56,6 +56,32 @@ public class Item {
     @Expose
     private String product_image;
 
+    @SerializedName("payment_method")
+    @Expose
+    private String payment_method;
+
+    public String getPayment_method() {
+        return payment_method;
+    }
+
+    public void setPayment_method(String payment_method) {
+        this.payment_method = payment_method;
+    }
+
+    private boolean expanded;
+
+    public String getProduct_image() {
+        return product_image;
+    }
+
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
+
     public String getProductImage() {
         return product_image;
     }

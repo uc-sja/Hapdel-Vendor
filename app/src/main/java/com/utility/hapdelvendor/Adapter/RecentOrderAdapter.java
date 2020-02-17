@@ -39,20 +39,20 @@ public class RecentOrderAdapter extends RecyclerView.Adapter<RecentOrderAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull RecentOrderViewHolder holder, int position) {
+
         final Datum datum = data.get(position);
         holder.order_id_text.setText("Order Id: #"+datum.getOrderId());
+
 //        Double order_amt = (Double.valueOf(datum.getPrice())-(Double.valueOf(datum.getTotalDiscount())) + Double.valueOf(datum.getCouponDiscount()));
+
         holder.order_amount.setText(context.getResources().getString(R.string.rupee_icon)+" "+datum.getAmount());
-
-
         holder.customer_name.setText("Customer: "+datum.getName());
-//        holder.quantity.setText("(x"+datum.getQuantity()+")  ");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, OrderDetailActivity.class);
-                intent.putExtra("order", datum.getTxnId());
+                intent.putExtra("order", new Gson().toJson(datum));
                 context.startActivity(intent);
             }
         });
@@ -71,7 +71,6 @@ public class RecentOrderAdapter extends RecyclerView.Adapter<RecentOrderAdapter.
 //        } else {
 //            productViewHolder.product_img.setImageResource(R.drawable.app_icon_small_png);
 //        }
-
 
     }
 

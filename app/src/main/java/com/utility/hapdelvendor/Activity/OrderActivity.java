@@ -25,10 +25,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.utility.hapdelvendor.Adapter.VendorOrderAdapter;
+import com.utility.hapdelvendor.Adapter.RecentOrderAdapter;
 import com.utility.hapdelvendor.Interfaces.ResponseResult;
-import com.utility.hapdelvendor.Model.UserOrderModel.OrderModel.Datum;
-import com.utility.hapdelvendor.Model.UserOrderModel.OrderModel.OrderModel;
+import com.utility.hapdelvendor.Model.RecentOrderModel.Datum;
+import com.utility.hapdelvendor.Model.RecentOrderModel.RecentOrderModel;
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.BottomNavigation;
 import com.utility.hapdelvendor.Utils.CircularTextView;
@@ -42,6 +42,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.utility.hapdelvendor.Utils.Common.getApiInstance;
+import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 
 public class OrderActivity extends AppCompatActivity {
     private static final int AUTOCOMPLETE_REQUEST_CODE = 4144;
@@ -51,7 +52,7 @@ public class OrderActivity extends AppCompatActivity {
     private AppCompatAutoCompleteTextView search_bar;
     private static final String TAG = "OrderActivity";
     private RecyclerView user_order_view;
-    private VendorOrderAdapter vendorOrderAdapter;
+    private RecentOrderAdapter recentOrderAdapter;
     private LinearLayoutManager layoutManager;
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean firstLoad = true;
@@ -131,8 +132,8 @@ public class OrderActivity extends AppCompatActivity {
         user_order_view = findViewById(R.id.user_order_view);
         layoutManager = new LinearLayoutManager(OrderActivity.this, LinearLayoutManager.VERTICAL, false);
         user_order_view.setLayoutManager(layoutManager);
-        vendorOrderAdapter = new VendorOrderAdapter(OrderActivity.this, new ArrayList<Datum>());
-        user_order_view.setAdapter(vendorOrderAdapter);
+        recentOrderAdapter = new RecentOrderAdapter(OrderActivity.this, new ArrayList<Datum>());
+        user_order_view.setAdapter(recentOrderAdapter);
 
         user_order_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -185,10 +186,10 @@ public class OrderActivity extends AppCompatActivity {
             progressDialog.show();
         }
 
-        Call<OrderModel> orderModelCall = getApiInstance().fetchVendorOrder("1", "", i+"");
-        orderModelCall.enqueue(new Callback<OrderModel>() {
+        Call<RecentOrderModel> recentOrderModelCall = getApiInstance().fetchRecentOrders(getCurrentUser().getId(), Common.getCurrentUser().getAccessToken(), i+"");
+        recentOrderModelCall.enqueue(new Callback<RecentOrderModel>() {
             @Override
-            public void onResponse(Call<OrderModel> call, Response<OrderModel> response) {
+            public void onResponse(Call<RecentOrderModel> call, Response<RecentOrderModel> response) {
                 progressDialog.dismiss();
                 if(!response.isSuccessful()){
                     Toast.makeText(OrderActivity.this, ""+response.message(), Toast.LENGTH_SHORT).show();
@@ -198,9 +199,9 @@ public class OrderActivity extends AppCompatActivity {
 
                 Log.d(TAG, "onResponse: success"+response.code()+response.body());
                 if(response.body()!=null ){
-                    OrderModel orderModel = null;
+                    RecentOrderModel recentOrderModel = null;
                     try {
-                        orderModel = response.body();
+                        recentOrderModel = response.body();
                     } catch (Exception e) {
                         Toast.makeText(OrderActivity.this, "Error in response", Toast.LENGTH_SHORT).show();
                         return;
@@ -208,12 +209,12 @@ public class OrderActivity extends AppCompatActivity {
 
                     String content="";
                     Log.d(TAG, "onResponse: response msg"+response.body().getResult()+"  msg  ");
-                    if (orderModel.getResult().equals("success")){ //very important conditon
-                        if(orderModel.getData()!=null && orderModel.getData().size()>0){
+                    if (recentOrderModel.getResult().equals("success")){ //very important conditon
+                        if(recentOrderModel.getData()!=null && recentOrderModel.getData().size()>0){
                             firstLoad = false;
                             isScrolling = false;
-                            total_order_list.addAll(orderModel.getData());
-                            vendorOrderAdapter.updateItems(total_order_list);
+                            total_order_list.addAll(recentOrderModel.getData());
+                            recentOrderAdapter.updateItems(total_order_list);
                         } else {
                             isScrolling = true;
                             if(firstLoad){
@@ -221,7 +222,7 @@ public class OrderActivity extends AppCompatActivity {
                             }
                         }
                     }else{
-                        content+= orderModel.getMsg();
+                        content+= recentOrderModel.getMsg();
                         Toast.makeText(OrderActivity.this, content, Toast.LENGTH_SHORT).show();
                     }
 
@@ -232,7 +233,7 @@ public class OrderActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<OrderModel> call, Throwable t) {
+            public void onFailure(Call<RecentOrderModel> call, Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(OrderActivity.this, ""+t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }

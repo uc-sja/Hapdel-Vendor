@@ -31,7 +31,7 @@
             <ImageView
                 android:id="@+id/logo_img"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_height="@dimen/_50sdp"
                 android:layout_below="@+id/contraint_layout"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_15sdp"
@@ -58,6 +58,33 @@
                 android:paddingHorizontal="@dimen/_10sdp">
 
 
+
+                <LinearLayout
+                    android:id="@+id/driver_pic_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    >
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/seller_logo"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_width="@dimen/_50sdp"
+                        android:src="@drawable/user_img"
+                        android:layout_height="@dimen/_50sdp">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:id="@+id/dp_msg"
+                        android:layout_marginVertical="@dimen/_5sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_8ssp"
+                        android:text="Upload seller logo here"/>
+
+                </LinearLayout>
+
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -67,7 +94,7 @@
                     android:text="Registration"
                     android:textAllCaps="true"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_12ssp"
+                    android:textSize="@dimen/_13ssp"
                     android:textStyle="bold" />
 
 
@@ -109,6 +136,7 @@
 
 
                     </com.google.android.material.textfield.TextInputLayout>
+
 
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -157,6 +185,55 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/store_name_input_layout"
+                        android:theme="@style/TextInputCustomStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:hint="Store Name">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/store_name_edit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_person_pin_black_24dp"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:hint=""
+                            android:inputType="textPersonName"
+                            android:paddingVertical="@dimen/_10sdp"
+                            android:textSize="@dimen/_12ssp" />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/store_address_input_layout"
+                        android:theme="@style/TextInputCustomStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:hint="Store Address">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/store_address_edit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_lock_black_24dp"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:hint=""
+                            android:inputType="text"
+                            android:maxLength="14"
+                            android:paddingVertical="@dimen/_10sdp"
+                            android:textSize="@dimen/_12ssp" />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/pswd_input_layout"
                         android:theme="@style/TextInputCustomStyle"
@@ -179,6 +256,7 @@
 
 
                     </com.google.android.material.textfield.TextInputLayout>
+
 
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -204,6 +282,235 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+
+
+
+                    <LinearLayout
+                        android:id="@+id/store_pic_layout"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <ImageView
+                            android:id="@+id/store_pic_img"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="@dimen/_100sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:scaleType="centerCrop"
+                            android:visibility="visible">
+                        </ImageView>
+
+                        <TextView
+                            android:id="@+id/store_pic"
+                            android:focusable="false"
+                            android:text="Store Photo"
+                            android:textColor="@color/colorWhite"
+                            android:background="@drawable/upload_btn"
+                            android:paddingVertical="@dimen/_10sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:textSize="@dimen/_11ssp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/document_one_layout"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/document_one_img"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="@dimen/_100sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone">
+
+
+                        </ImageView>
+
+                        <TextView
+                            android:id="@+id/doc_one"
+                            android:focusable="false"
+                            android:text="Doc 1"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:textColor="@color/colorWhite"
+                            android:background="@drawable/upload_btn"
+                            android:paddingVertical="@dimen/_5sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:textSize="@dimen/_11ssp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/document_two_layout"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/document_two_img"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="@dimen/_100sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone">
+
+
+                        </ImageView>
+
+                        <TextView
+                            android:id="@+id/doc_two"
+                            android:focusable="false"
+                            android:text="Doc 2"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:textColor="@color/colorWhite"
+                            android:background="@drawable/upload_btn"
+                            android:paddingVertical="@dimen/_5sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:textSize="@dimen/_11ssp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+
+
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/document_three_layout"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/document_three_img"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="@dimen/_100sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone">
+
+
+                        </ImageView>
+
+                        <TextView
+                            android:id="@+id/doc_three"
+                            android:focusable="false"
+                            android:text="Doc 3"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:textColor="@color/colorWhite"
+                            android:background="@drawable/upload_btn"
+                            android:paddingVertical="@dimen/_5sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:textSize="@dimen/_11ssp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+
+
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/document_four_layout"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/document_four_img"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="@dimen/_100sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone">
+
+
+                        </ImageView>
+
+                        <TextView
+                            android:id="@+id/doc_four"
+                            android:focusable="false"
+                            android:text="Doc 4"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:textColor="@color/colorWhite"
+                            android:background="@drawable/upload_btn"
+                            android:paddingVertical="@dimen/_5sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:textSize="@dimen/_11ssp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+
+
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/document_five_layout"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/document_five_img"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="@dimen/_100sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone">
+
+
+                        </ImageView>
+
+                        <TextView
+                            android:id="@+id/doc_five"
+                            android:focusable="false"
+                            android:text="Doc 5"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:textColor="@color/colorWhite"
+                            android:background="@drawable/upload_btn"
+                            android:paddingVertical="@dimen/_5sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:textSize="@dimen/_11ssp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+
+
+
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

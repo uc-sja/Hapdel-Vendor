@@ -20,7 +20,6 @@
 
         <RelativeLayout
             android:layout_below="@+id/appbar_layout"
-            android:paddingHorizontal="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:layout_above="@+id/bottom_navigation"
             android:layout_width="match_parent"

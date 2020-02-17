@@ -6,27 +6,44 @@ import com.google.gson.annotations.SerializedName;
 
 public class Datum {
 
+    @SerializedName("id")
+    @Expose
+    private String id;
     @SerializedName("email")
     @Expose
     private String email;
     @SerializedName("mobile")
     @Expose
     private String mobile;
-    @SerializedName("profile")
-    @Expose
-    private String profile;
     @SerializedName("display_name")
     @Expose
     private String displayName;
-    @SerializedName("last_login")
+    @SerializedName("store_name")
     @Expose
-    private String lastLogin;
-    @SerializedName("user_id")
+    private String storeName;
+    @SerializedName("store_address")
     @Expose
-    private String userId;
-    @SerializedName("vehicle_no")
+    private String storeAddress;
+
+    @SerializedName("profile")
     @Expose
-    private String vehicleNo;
+    private String profile;
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;
@@ -44,14 +61,6 @@ public class Datum {
         this.mobile = mobile;
     }
 
-    public String getProfile() {
-        return profile;
-    }
-
-    public void setProfile(String profile) {
-        this.profile = profile;
-    }
-
     public String getDisplayName() {
         return displayName;
     }
@@ -60,28 +69,20 @@ public class Datum {
         this.displayName = displayName;
     }
 
-    public String getLastLogin() {
-        return lastLogin;
+    public String getStoreName() {
+        return storeName;
     }
 
-    public void setLastLogin(String lastLogin) {
-        this.lastLogin = lastLogin;
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getStoreAddress() {
+        return storeAddress;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getVehicleNo() {
-        return vehicleNo;
-    }
-
-    public void setVehicleNo(String vehicleNo) {
-        this.vehicleNo = vehicleNo;
+    public void setStoreAddress(String storeAddress) {
+        this.storeAddress = storeAddress;
     }
 
 }

@@ -138,6 +138,140 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/product_detail_layout"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:id="@+id/total_disc_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp">
+
+                <TextView
+                    android:id="@+id/total_disc_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="Total Discount"
+                    android:theme="@style/user_order_table"></TextView>
+
+                <TextView
+                    android:id="@+id/total_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:theme="@style/user_order_table"></TextView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:id="@+id/admin_disc_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp">
+
+                <TextView
+                    android:id="@+id/admin_disc_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="Coupon Discount"
+                    android:theme="@style/user_order_table"></TextView>
+
+                <TextView
+                    android:id="@+id/admin_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:theme="@style/user_order_table"></TextView>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:id="@+id/coupon_disc_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp">
+
+                <TextView
+                    android:id="@+id/coupon_disc_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="Coupon Discount"
+                    android:theme="@style/user_order_table"></TextView>
+
+                <TextView
+                    android:id="@+id/coupon_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:theme="@style/user_order_table"></TextView>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:id="@+id/vendor_disc_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp">
+
+                <TextView
+                    android:id="@+id/vendor_disc_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="Vendor Discount"
+                    android:theme="@style/user_order_table"></TextView>
+
+                <TextView
+                    android:id="@+id/vendor_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:theme="@style/user_order_table"></TextView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:id="@+id/commissio_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp">
+
+                <TextView
+                    android:id="@+id/commission_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="Vendor Discount"
+                    android:theme="@style/user_order_table"></TextView>
+
+                <TextView
+                    android:id="@+id/commission"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:theme="@style/user_order_table"></TextView>
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

@@ -135,6 +135,7 @@
     <string name="add_prod">Add Product</string>
     <string name="add_discout">Add Discount</string>
     <string name="discout_list">View Discounts</string>
+    <string name="internal_storage">Internal Storage</string>
 
 
 </resources>

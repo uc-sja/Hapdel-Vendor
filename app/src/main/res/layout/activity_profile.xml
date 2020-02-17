@@ -27,7 +27,8 @@
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appbar_layout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_150sdp"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/_150sdp"
                 android:layout_alignParentTop="true"
                 android:background="@drawable/app_bar_background"
                 android:elevation="@dimen/_1sdp"
@@ -159,7 +160,7 @@
                             android:orientation="horizontal"
                             android:paddingHorizontal="@dimen/_10sdp"
                             android:paddingVertical="@dimen/_5sdp"
-                            android:visibility="gone">
+                            android:visibility="visible">
 
                             <ImageView
                                 android:id="@+id/default_location_logo"
@@ -180,10 +181,11 @@
                                     android:id="@+id/address_name"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:maxWidth="@dimen/_200sdp"
+                                    android:maxWidth="@dimen/_140sdp"
                                     tools:text="Arjun Dixit"
+                                    android:textSize="@dimen/_12ssp"
                                     android:textColor="@color/darkGray"
-                                    android:visibility="gone">
+                                    android:visibility="visible">
 
                                 </TextView>
 
@@ -191,6 +193,7 @@
                                     android:id="@+id/brief_address"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_2sdp"
                                     android:ellipsize="end"
                                     android:maxWidth="@dimen/_140sdp"
                                     android:maxLines="3"
@@ -232,18 +235,18 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/icon"
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
                 android:layout_below="@+id/appbar_layout"
                 android:layout_gravity="bottom|center_horizontal"
-                android:layout_margin="@dimen/_10sdp"
+                android:layout_margin="@dimen/_15sdp"
                 android:cropToPadding="false"
                 android:elevation="@dimen/_10sdp"
                 android:outlineProvider="none"
                 android:paddingBottom="@dimen/_10sdp"
                 android:src="@drawable/app_icon_png"
                 sothree:civ_border_color="@color/colorWhite"
-                sothree:civ_border_width="@dimen/_7sdp"
+                sothree:civ_border_width="@dimen/_5sdp"
                 sothree:civ_circle_background_color="@color/colorWhite"
                 sothree:layout_constraintBottom_toBottomOf="@+id/appbar_layout"
                 sothree:layout_constraintEnd_toEndOf="parent"
@@ -314,6 +317,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
+                            android:visibility="gone"
                             android:drawableStart="@drawable/ic_exit"
                             android:drawablePadding="@dimen/_10ssp"
                             android:text="Upload Documents" />
@@ -321,6 +325,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
+                            android:visibility="gone"
                             android:layout_marginVertical="@dimen/_10sdp"
                             android:background="@drawable/faded_line" />
 
@@ -597,6 +602,65 @@
                     </RelativeLayout>
 
 
+                    <RelativeLayout
+                        android:id="@+id/store_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/email_layout"
+                        android:layout_marginTop="@dimen/_10sdp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/store_name_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusableInTouchMode="true"
+                            android:theme="@style/TextInputAddressStyle">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/store_name_edit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/ic_call_black_24dp"
+                                android:drawablePadding="@dimen/_10sdp"
+                                android:ellipsize="end"
+                                android:hint="Store Name"
+                                android:inputType="textPostalAddress"
+                                android:maxLength="100"
+                                android:maxLines="1"
+                                android:textSize="@dimen/_12ssp" />
+
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/store_address_layout"
+                            android:layout_below="@+id/store_name_layout"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusableInTouchMode="true"
+                            android:theme="@style/TextInputAddressStyle">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/store_address_edit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/ic_call_black_24dp"
+                                android:drawablePadding="@dimen/_10sdp"
+                                android:ellipsize="end"
+                                android:hint="Store Address"
+                                android:inputType="textPostalAddress"
+                                android:maxLength="100"
+                                android:maxLines="1"
+                                android:textSize="@dimen/_12ssp" />
+
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                    </RelativeLayout>
+
+
                 </RelativeLayout>
 
             </ScrollView>
@@ -633,7 +697,6 @@
                             android:fontFamily="@font/abeezee"
                             android:text="Save Details"
                             android:textAllCaps="true"
-
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_10ssp"
                             android:visibility="visible" />

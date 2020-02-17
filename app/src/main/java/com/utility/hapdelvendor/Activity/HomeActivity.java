@@ -263,7 +263,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         //initially
-        Call<RecentOrderModel> loginResponseCall = getApiInstance().fetchRecentOrders(getCurrentUser().getId(), getCurrentUser().getAccessToken());
+        Call<RecentOrderModel> loginResponseCall = getApiInstance().fetchRecentOrders(getCurrentUser().getId(), getCurrentUser().getAccessToken(), null);
         loginResponseCall.enqueue(new Callback<RecentOrderModel>() {
             @Override
             public void onResponse(Call<RecentOrderModel> call, Response<RecentOrderModel> response) {

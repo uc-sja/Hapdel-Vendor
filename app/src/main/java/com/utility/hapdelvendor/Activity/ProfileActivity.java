@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -74,12 +73,13 @@ public class ProfileActivity extends AppCompatActivity {
     private SlidingUpPanelLayout sliding_layout;
     private ImageView slider_img;
     private TextView slider_msg;
-    private TextInputEditText full_name, contact, email_id;
+    private TextInputEditText full_name_edit, contact_edit, email_id_edit, store_address_edit, store_name_edit;
     private Toolbar toolbar1;
     private TextView save_here_btn, upload_docs;
     private Button slider_one_btn,slider_two_btn;
     private LinearLayout default_address_layout;
     private AHBottomNavigation bottomNavigation;
+    private com.utility.hapdelvendor.Model.ProfileModel.Datum currentProifile;
 
 
     @Override
@@ -139,8 +139,6 @@ public class ProfileActivity extends AppCompatActivity {
         slider_two_btn = findViewById(R.id.slider_btn_two);
         log_btn_layout = findViewById(R.id.log_btn_layout);
 
-
-
         edit_default_details = findViewById(R.id.edit_default_details);
 
         address_name = findViewById(R.id.address_name);
@@ -197,13 +195,13 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-//        upload_docs.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(ProfileActivity.this, UploadDocActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        upload_docs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, UploadDocActivity.class);
+                startActivity(intent);
+            }
+        });
 
         fetchUserDetails();
     }
@@ -243,8 +241,8 @@ public class ProfileActivity extends AppCompatActivity {
                     if (userDetailModel.getResult().equals("success")){
                         //very important conditon
                         if(userDetailModel.getData()!=null && userDetailModel.getData().size()>0){
-                            com.utility.hapdelvendor.Model.ProfileModel.Datum profileDatum = userDetailModel.getData().get(0);
-                            setUserDetails(profileDatum);
+                            currentProifile = userDetailModel.getData().get(0);
+                            setUserDetails(currentProifile);
                         } else {
                             Toast.makeText(ProfileActivity.this, "Empty Response from server", Toast.LENGTH_SHORT).show();
                         }
@@ -286,14 +284,14 @@ public class ProfileActivity extends AppCompatActivity {
             user_initial.setText(profileDatum.getDisplayName().charAt(0)+"");
 
         }
-        if (profileDatum.getVehicleNo()!=null){
+        if (profileDatum.getStoreAddress()!=null){
+            address_name.setText("Store: "+profileDatum.getStoreName());
             brief_address.setVisibility(View.VISIBLE);
-            brief_address.setText("Vehicle No. : "+ profileDatum.getVehicleNo());
+            brief_address.setText("Address : "+ profileDatum.getStoreAddress());
             change_address_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Intent intent = new Intent(ProfileActivity.this, DocActivity.class);
-//                    startActivity(intent);
+                    showSliderLayout();
                 }
             });
         } else {
@@ -306,30 +304,36 @@ public class ProfileActivity extends AppCompatActivity {
         LinearLayout update_profile_layout = findViewById(R.id.update_profile_layout);
 
         toolbar1 = findViewById(R.id.toolbar1);
-        full_name = findViewById(R.id.full_name);
-        contact = findViewById(R.id.contact_number);
-        email_id = findViewById(R.id.email_id);
+        full_name_edit = findViewById(R.id.full_name);
+        contact_edit = findViewById(R.id.contact_number);
+        email_id_edit = findViewById(R.id.email_id);
+        store_address_edit = findViewById(R.id.store_address_edit);
+        store_name_edit = findViewById(R.id.store_name_edit);
         save_here_btn = findViewById(R.id.save_here_btn);
 
         setSupportActionBar(toolbar1);
         getSupportActionBar().setTitle("Update Profile");
 
-        full_name.setText(getCurrentUser().getDisplayName());
-        contact.setText(getCurrentUser().getMobile());
-        email_id.setText(getCurrentUser().getEmail());
+        full_name_edit.setText(getCurrentUser().getDisplayName());
+        contact_edit.setText(getCurrentUser().getMobile());
+        email_id_edit.setText(getCurrentUser().getEmail());
+        if(currentProifile != null){
+            store_address_edit.setText(currentProifile.getStoreAddress());
+            store_name_edit.setText(currentProifile.getStoreName());
+        }
         sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
 
         update_profile_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(performValidation((ViewGroup) v)){
-                    updateProfile(full_name.getText().toString(), contact.getText().toString(), email_id.getText().toString());
+                    updateProfile(full_name_edit.getText().toString(), contact_edit.getText().toString(), email_id_edit.getText().toString(), store_name_edit.getText().toString(), store_address_edit.getText().toString());
                 }
             }
         });
     }
 
-    private void updateProfile(final String name, final String mobile, final String email) {
+    private void updateProfile(final String name, final String mobile, final String email, String store_name, String store_address) {
         final ProgressDialog progressDialog = new ProgressDialog(ProfileActivity.this, R.style.MyDialogTheme);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Updating Profile...");
@@ -338,7 +342,7 @@ public class ProfileActivity extends AppCompatActivity {
             progressDialog.show();
         }
 
-        Call<ResponseModel> responseModelCall = getApiInstance().updateProfile(getCurrentUser().getId(), getCurrentUser().getAccessToken(), email, mobile, name, "", "Sun City Gola Road Danapur Patna 801503");
+        Call<ResponseModel> responseModelCall = getApiInstance().updateProfile(getCurrentUser().getId(), getCurrentUser().getAccessToken(), email, mobile, name, store_name, store_address);
         responseModelCall.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
@@ -378,6 +382,8 @@ public class ProfileActivity extends AppCompatActivity {
                         profileDatum.setEmail(email);
                         profileDatum.setDisplayName(name);
                         profileDatum.setMobile(mobile);
+                        profileDatum.setStoreAddress(store_address);
+                        profileDatum.setStoreName(store_name);
                         setUserDetails(profileDatum);
                         Toast.makeText(ProfileActivity.this, "Update Profile Success", Toast.LENGTH_SHORT).show();
 //                            hideKeyboardFrom(ProfileActivity.this);
@@ -451,14 +457,6 @@ public class ProfileActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == CHANGE_VEHICAL_DOC_REQUEST){
-            if(resultCode == RESULT_OK && data != null){
-            }
-        }
-
-    }
 
 
 

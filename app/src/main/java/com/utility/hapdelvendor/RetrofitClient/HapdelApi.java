@@ -24,10 +24,14 @@ import com.utility.hapdelvendor.Model.VendorModel.VendorModel;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface HapdelApi {
     @FormUrlEncoded
@@ -250,11 +254,19 @@ public interface HapdelApi {
     );
 
     @FormUrlEncoded
-    @POST("users/order/cancel_order")
+    @POST("order/cancel_item")
     Call<ResponseModel> cancelOrder(
             @Field("user_id") String userId,
             @Field("access_token") String access_token,
-            @Field("id") String item_id
+            @Field("order_id") String item_id
+    );
+
+    @FormUrlEncoded
+    @POST("order/cancel_item")
+    Call<ResponseModel> acceptOrder(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("item_id") String item_id
     );
 
 
@@ -352,7 +364,8 @@ public interface HapdelApi {
     @POST("order/recent_orders")
     Call<RecentOrderModel> fetchRecentOrders(
             @Field("user_id") String userId,
-            @Field("access_token") String access_token
+            @Field("access_token") String access_token,
+            @Field("page") String page
             );
 
     @FormUrlEncoded
@@ -428,6 +441,20 @@ public interface HapdelApi {
             @Field("access_token") String access_token,
             @Field("txn_id") String txn_id
     );
+
+
+    @Multipart
+    @POST("user/register")
+    Call<ResponseModel> uploadDoc(
+            @Part MultipartBody.Part body,
+            @Part("name") RequestBody name,
+            @Part("email") RequestBody email,
+            @Part("mobile") RequestBody mobile,
+            @Part("password") RequestBody pass,
+            @Part("store_name") RequestBody store_name,
+            @Part("store_address") RequestBody store_add
+    );
+
 }
 
 

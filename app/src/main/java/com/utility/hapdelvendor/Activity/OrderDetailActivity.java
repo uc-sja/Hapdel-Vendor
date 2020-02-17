@@ -1,17 +1,10 @@
 package com.utility.hapdelvendor.Activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,20 +19,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.gson.Gson;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.squareup.picasso.Picasso;
 import com.utility.hapdelvendor.Adapter.OrderedItemsAdapter;
-import com.utility.hapdelvendor.Interfaces.ResponseResult;
+import com.utility.hapdelvendor.Model.UserOrderModel.OrderDetailModel.Customer;
 import com.utility.hapdelvendor.Model.UserOrderModel.OrderDetailModel.Datum;
 import com.utility.hapdelvendor.Model.UserOrderModel.OrderDetailModel.Item;
 import com.utility.hapdelvendor.Model.UserOrderModel.OrderDetailModel.OrderDetailModel;
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.Common;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,13 +50,13 @@ public class OrderDetailActivity extends AppCompatActivity {
     private TextView error_msg;
     private RelativeLayout order_detail_layout;
     private RecyclerView items_view;
-    private String  parentOrder;
+    private com.utility.hapdelvendor.Model.RecentOrderModel.Datum parentOrder;
     private static final String TAG = "OrderDetailActivity";
     private OrderedItemsAdapter orderedItemsAdapter;
     private ShimmerRecyclerView shimmerRecycler;
 
-    private TextView house_no,apartment_name,street_details,landmark,city_details;
-    private TextView house_no2,apartment_name2,street_details2,landmark2,city_details2;
+    private TextView customer_name,customer_contact,customer_address,landmark,city_details;
+    private TextView customer_name2,customer_contact2,customer_address2,landmark2,city_details2;
     private TextView shipping_text;
 
     CardView shipping_cardview, shipping_cardview2, item_cardview;
@@ -108,31 +96,25 @@ public class OrderDetailActivity extends AppCompatActivity {
             }
         });
 
-        parentOrder = getIntent().getStringExtra("order");
+        parentOrder = new Gson().fromJson(getIntent().getStringExtra("order"), com.utility.hapdelvendor.Model.RecentOrderModel.Datum.class);
         shimmerRecycler = (ShimmerRecyclerView) findViewById(R.id.shimmer_recycler_view);
 
         items_view = findViewById(R.id.items_view);
         orderedItemsAdapter = new OrderedItemsAdapter(this, new ArrayList<Item>());
         items_view.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         items_view.setAdapter(orderedItemsAdapter);
-
-
         shipping_text = findViewById(R.id.shipping_text);
 
         //Initializing shipping layout
-        house_no = findViewById(R.id.house_no);
-        apartment_name = findViewById(R.id.apartment_name);
-        street_details = findViewById(R.id.street_details);
-        landmark = findViewById(R.id.landmark);
-        city_details = findViewById(R.id.city_details);
+        customer_name = findViewById(R.id.customer_name);
+        customer_contact = findViewById(R.id.customer_contact);
+        customer_address = findViewById(R.id.customer_address);
 
 
         //Initializing shipping layout
-        house_no2 = findViewById(R.id.house_no2);
-        apartment_name2 = findViewById(R.id.apartment_name2);
-        street_details2 = findViewById(R.id.street_details2);
-        landmark2 = findViewById(R.id.landmark2);
-        city_details2 = findViewById(R.id.city_details2);
+//        customer_name2 = findViewById(R.id.customer_name2);
+//        customer_contact2 = findViewById(R.id.customer_contact2);
+//        customer_address2 = findViewById(R.id.customer_address2);
 
         //Initializing Order Details Layout
         order_date = findViewById(R.id.order_date);
@@ -157,7 +139,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     public void fetchOrderDetails() {
 
-        Call<OrderDetailModel> orderDetailModelCall = getApiInstance().fetchUserOrderDetails(getCurrentUser().getId(), getCurrentUser().getAccessToken(), parentOrder);
+        Call<OrderDetailModel> orderDetailModelCall = getApiInstance().fetchUserOrderDetails(getCurrentUser().getId(), getCurrentUser().getAccessToken(), parentOrder.getTxnId());
         shimmerRecycler.showShimmerAdapter();
         container_layout.setVisibility(View.GONE);
         orderDetailModelCall.enqueue(new Callback<OrderDetailModel>() {
@@ -188,80 +170,22 @@ public class OrderDetailActivity extends AppCompatActivity {
                             orderedItemsAdapter.updateItems(orderDetailModel.getData().get(0).getItems());
 
                             Datum datum = orderDetailModel.getData().get(0);
+                            Item item = datum.getItems().get(0);
+                            Customer customer = datum.getCustomer().get(0);
+                            customer_name.setText(customer.getName());
+                            customer_contact.setText(customer.getMobile());
 
+                            if(isEmpty(customer.getHouseNo().trim()) && isEmpty(customer.getApartmentName().trim())){
+                                customer_address.setText(customer.getAddress());
+                            } else {
+                                customer_address.setText(customer.getHouseNo()+", "+customer.getApartmentName()+", "+
+                                        customer.getStreetAddress()+", "+customer.getAddress()+", "+customer.getState()+"- "+customer.getPincode());
+                            }
 
-//                            if(datum.getType().equals("product")||datum.getType().equals("service")){
-//                                house_no.setText(datum.getHouseNo());
-//                                apartment_name.setText(datum.getApartmentName());
-//                                street_details.setText(datum.getStreetAddress());
-//                                landmark.setText(datum.getLandmark());
-//                                city_details.setText(datum.getState()+", "+datum.getCity()+"- "+datum.getPincode()) ;
-//                                //when location was updated by google place picker
-//
-//                                if(isEmpty(datum.getHouseNo().trim()) && isEmpty(datum.getApartmentName().trim())){
-//                                    //if location was updated from placee picker
-//                                    house_no.setVisibility(View.GONE);
-//                                    landmark.setVisibility(View.GONE);
-//                                    street_details.setVisibility(View.GONE);
-//                                    city_details.setVisibility(View.GONE);
-//                                    apartment_name.setText(datum.getAddress());
-//                                }
-//
-//                            } else if(datum.getType().equals("delivery")){
-//                                Log.d(TAG, "onResponse: del ");
-//
-//                                shipping_text.setText("Pickup Address");
-//                                shipping_cardview2.setVisibility(View.VISIBLE);
-//                                item_cardview.setVisibility(View.GONE);
-//
-//                                house_no.setText(datum.getPickupAddress().getHouseNo());
-//                                apartment_name.setText(datum.getPickupAddress().getApartmentName());
-//                                street_details.setText(datum.getPickupAddress().getStreetAddress());
-//                                landmark.setText(datum.getPickupAddress().getLandmark());
-//                                city_details.setText(datum.getPickupAddress().getState()+", "+datum.getPickupAddress().getCity()+"- "+datum.getPickupAddress().getPincode());
-//
-//                                house_no2.setText(datum.getDropAddress().getHouseNo());
-//                                apartment_name2.setText(datum.getDropAddress().getApartmentName());
-//                                street_details2.setText(datum.getDropAddress().getStreetAddress());
-//                                landmark2.setText(datum.getDropAddress().getLandmark());
-//                                city_details2.setText(datum.getDropAddress().getState()+", "+datum.getDropAddress().getCity()+"- "+datum.getDropAddress().getPincode());
-//
-//                                Log.d(TAG, "onResponse: getAddress  "+datum.getDropAddress().getAddress());
-//
-//                                if(isEmpty(datum.getPickupAddress().getHouseNo().trim()) && isEmpty(datum.getPickupAddress().getApartmentName().trim())){
-//                                    //if location was updated from placee picker
-//                                    house_no.setVisibility(View.GONE);
-//                                    landmark.setVisibility(View.GONE);
-//                                    street_details.setVisibility(View.GONE);
-//                                    city_details.setVisibility(View.GONE);
-//                                    apartment_name.setText(datum.getPickupAddress().getAddress());
-//                                }
-//                                if(isEmpty(datum.getDropAddress().getHouseNo().trim()) && isEmpty(datum.getDropAddress().getApartmentName().trim())){
-//                                    //if location was updated from placee picker
-//                                    house_no2.setVisibility(View.GONE);
-//                                    landmark2.setVisibility(View.GONE);
-//                                    street_details2.setVisibility(View.GONE);
-//                                    city_details2.setVisibility(View.GONE);
-//                                    apartment_name2.setText(datum.getDropAddress().getAddress());
-//                                }
-
-//                            }
-
-//
-//                            SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                            SimpleDateFormat format2 = new SimpleDateFormat("EE, d MMM yyyy hh:mm a");
-//                            Date date = null;
-//                            try {
-//                                date = format1.parse(datum.getTxnDate());
-//                            } catch (ParseException e) {
-//                                e.printStackTrace();
-//                            }
-//
-//
-//                            order_date.setText(""+format2.format(date));
-//                            order_amount.setText(getResources().getString(R.string.rupee_icon)+" "+parentOrder.getTxnAmount());
-//                            payment_method.setText(parentOrder.getPaymentMethod());
-//                            order_id.setText("#"+parentOrder.getOrderId());
+                            order_id.setText("#"+item.getOrderId());
+                            order_date.setText(item.getTxnDate());
+                            payment_method.setText(item.getPayment_method());
+                            order_amount.setText(getResources().getString(R.string.rupee_icon)+parentOrder.getAmount());
 
                         } else {
                             showErrorMessage("There is no item in this order");
