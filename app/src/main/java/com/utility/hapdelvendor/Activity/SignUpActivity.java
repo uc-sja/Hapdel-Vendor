@@ -47,15 +47,12 @@ import com.utility.hapdelvendor.OtpVerificationActivity;
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.Common;
 import com.utility.hapdelvendor.Utils.FileUtils;
-import com.utility.hapdelvendor.Utils.ProgressRequestBody;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -354,75 +351,75 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 
-    private void startRegistration() {
-
-        String phoneWithCode  = phone_edit.getText().toString();
-        String phone = phoneWithCode.substring(4);
-
-        final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this, R.style.MyDialogTheme);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Processing Registration...");
-        progressDialog.setCancelable(false);
-        if(!((Activity)this).isFinishing()){
-            progressDialog.show();
-        }
-
-
-        final String mobileNumber = phone_edit.getText().toString().substring(3);
-
-
-        Log.d(TAG, "login: "+mobileNumber);
-        // TODO: Implement your own authentication logic here.
-
-        Call<ResponseModel> loginResponseCall = getApiInstance().signUpUser(full_name_edit.getText().toString(), email_edit.getText().toString(),phone,password_edit.getText().toString());
-        showProgress();
-        loginResponseCall.enqueue(new Callback<ResponseModel>() {
-            @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                hideProgress();
-                progressDialog.dismiss();
-                if(!response.isSuccessful()){
-                    Toast.makeText(SignUpActivity.this, ""+response.message(), Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "onResponse: fail "+response.code());
-                    return;
-                }
-
-                Log.d(TAG, "onResponse: success"+response.code()+response.body());
-                if(response.body()!=null ){
-                    ResponseModel responseModel = null;
-                    try {
-                        responseModel = response.body();
-                    } catch (Exception e) {
-                        Toast.makeText(SignUpActivity.this, "Error in response", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    String content="";
-                    Log.d(TAG, "onResponse: response msg"+response.body().getResult()+"  msg  ");
-                    if (responseModel.getResult().equals("success")){ //very important conditon
-                        Toast.makeText(SignUpActivity.this, ""+responseModel.getMsg(), Toast.LENGTH_SHORT).show();
-                        fetchOtpforMobile(mobileNumber);
-                    }else{
-                        content+= responseModel.getMsg();
-
-                        showSliderLayout(content);
-                    }
-
-                    Log.d(TAG, "onResponse: login res"+content);
-                } else {
-                    Toast.makeText(SignUpActivity.this, "Invalid response from server", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
-                hideProgress();
-                progressDialog.dismiss();
-                Toast.makeText(SignUpActivity.this, ""+t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-    }
+//    private void startRegistration() {
+//
+//        String phoneWithCode  = phone_edit.getText().toString();
+//        String phone = phoneWithCode.substring(4);
+//
+//        final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this, R.style.MyDialogTheme);
+//        progressDialog.setIndeterminate(true);
+//        progressDialog.setMessage("Processing Registration...");
+//        progressDialog.setCancelable(false);
+//        if(!((Activity)this).isFinishing()){
+//            progressDialog.show();
+//        }
+//
+//
+//        final String mobileNumber = phone_edit.getText().toString().substring(3);
+//
+//
+//        Log.d(TAG, "login: "+mobileNumber);
+//        // TODO: Implement your own authentication logic here.
+//
+//        Call<ResponseModel> loginResponseCall = getApiInstance().signUpUser(full_name_edit.getText().toString(), email_edit.getText().toString(),phone,password_edit.getText().toString());
+//        showProgress();
+//        loginResponseCall.enqueue(new Callback<ResponseModel>() {
+//            @Override
+//            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+//                hideProgress();
+//                progressDialog.dismiss();
+//                if(!response.isSuccessful()){
+//                    Toast.makeText(SignUpActivity.this, ""+response.message(), Toast.LENGTH_SHORT).show();
+//                    Log.d(TAG, "onResponse: fail "+response.code());
+//                    return;
+//                }
+//
+//                Log.d(TAG, "onResponse: success"+response.code()+response.body());
+//                if(response.body()!=null ){
+//                    ResponseModel responseModel = null;
+//                    try {
+//                        responseModel = response.body();
+//                    } catch (Exception e) {
+//                        Toast.makeText(SignUpActivity.this, "Error in response", Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//                    String content="";
+//                    Log.d(TAG, "onResponse: response msg"+response.body().getResult()+"  msg  ");
+//                    if (responseModel.getResult().equals("success")){ //very important conditon
+//                        Toast.makeText(SignUpActivity.this, ""+responseModel.getMsg(), Toast.LENGTH_SHORT).show();
+//                        fetchOtpforMobile(mobileNumber);
+//                    }else{
+//                        content+= responseModel.getMsg();
+//
+//                        showSliderLayout(content);
+//                    }
+//
+//                    Log.d(TAG, "onResponse: login res"+content);
+//                } else {
+//                    Toast.makeText(SignUpActivity.this, "Invalid response from server", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseModel> call, Throwable t) {
+//                hideProgress();
+//                progressDialog.dismiss();
+//                Toast.makeText(SignUpActivity.this, ""+t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
+//
+//    }
 
     private void fetchOtpforMobile(final String mobileNumber) {
         final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this, R.style.MyDialogTheme);
@@ -464,6 +461,7 @@ public class SignUpActivity extends AppCompatActivity {
                         intent.putExtra("mobile", mobileNumber);
                         intent.putExtra("category", new Gson().toJson(parentCategory));
                         startActivity(intent);
+                        finish();
                     }else{
                         content+= responseModel.getMsg();
                         showSliderLayout(content);
@@ -713,15 +711,17 @@ public class SignUpActivity extends AppCompatActivity {
         Log.d(TAG, "performUploadTask: ");
         HashMap<String, Uri> uriListClone = new HashMap<>();
         uriListClone.putAll(imgUrisList);
-        if (uriListClone.size() > 0) {
+            if (uriListClone.size() > 0) {
+                //By validation we have made sure that size of imgUrisList is always going to be6
             if (getValidationResult()) {
-                Iterator it = uriListClone.entrySet().iterator();
-                int i = 0;
-                while (it.hasNext()) {
-                    Map.Entry pair = (Map.Entry) it.next();
-                    uploadFile(pair.getKey().toString(), (Uri) pair.getValue(), ++i);
-                    it.remove(); // avoids a ConcurrentModificationException
-                }
+//                Iterator it = uriListClone.entrySet().iterator();
+//                int i = 0;
+//                while (it.hasNext()) {
+//                    Map.Entry pair = (Map.Entry) it.next();
+//                    uploadFile(pair.getKey().toString(), (Uri) pair.getValue(), ++i);
+//                    it.remove(); // avoids a ConcurrentModificationException
+                uploadFile(uriListClone);
+//                }
             }
         } else {
             Toast.makeText(SignUpActivity.this, "Kindly upload documents", Toast.LENGTH_SHORT).show();
@@ -729,7 +729,8 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 
-    private void uploadFile(String docType, Uri fileUri, int count) {
+
+    private void uploadFile(HashMap<String, Uri> uriListClone) {
         // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
         // use the FileUtils to get the actual file by uri
         progressDialog = new ProgressDialog(SignUpActivity.this, R.style.MyDialogTheme);
@@ -738,56 +739,73 @@ public class SignUpActivity extends AppCompatActivity {
         if (progressDialog != null) {
             progressDialog = new ProgressDialog(SignUpActivity.this);
         }
-        progressDialog.setMessage("Uploading file " + count + " of " + imgUrisList.size() + " ...");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setMessage("Uploading files...Please Wait");
         progressDialog.setIndeterminate(false);
         progressDialog.setProgress(0);
-        progressDialog.setMax(100);
         if (!((Activity) SignUpActivity.this).isFinishing()) {
             progressDialog.show();
         }
 
+        File store_logo_file = FileUtils.getFile(SignUpActivity.this, uriListClone.get("store_logo"));
+        RequestBody logo_requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), store_logo_file);
+        MultipartBody.Part body1 = MultipartBody.Part.createFormData("store_logo", store_logo_file.getName(), logo_requestFile);
 
-        File file = FileUtils.getFile(SignUpActivity.this, fileUri);
+        File document1_file = FileUtils.getFile(SignUpActivity.this, uriListClone.get("document_1"));
+        RequestBody requestFile1 = RequestBody.create(MediaType.parse("multipart/form-data"), document1_file);
+        MultipartBody.Part body2 = MultipartBody.Part.createFormData("document_1", store_logo_file.getName(), requestFile1);
 
-        // create RequestBody instance from file
-        ProgressRequestBody requestFile = new ProgressRequestBody(file, "image", new ProgressRequestBody.UploadCallbacks() {
-            @Override
-            public void onProgressUpdate(int percentage) {
+        File document2_file = FileUtils.getFile(SignUpActivity.this, uriListClone.get("document_2"));
+        RequestBody requestFile2 = RequestBody.create(MediaType.parse("multipart/form-data"), document2_file);
+        MultipartBody.Part body3 = MultipartBody.Part.createFormData("document_2", store_logo_file.getName(), requestFile2);
 
-                if (progressDialog != null && progressDialog.isShowing()) {
+        File document3_file = FileUtils.getFile(SignUpActivity.this, uriListClone.get("document_3"));
+        RequestBody requestFile3 = RequestBody.create(MediaType.parse("multipart/form-data"), document3_file);
+        MultipartBody.Part body4 = MultipartBody.Part.createFormData("document_3", store_logo_file.getName(), requestFile3);
 
-                    progressDialog.setProgress(percentage);
-                    Log.d(TAG, "onProgressUpdate: " + percentage);
-                }
-            }
+        File document4_file = FileUtils.getFile(SignUpActivity.this, uriListClone.get("document_4"));
+        RequestBody requestFile4 = RequestBody.create(MediaType.parse("multipart/form-data"), document4_file);
+        MultipartBody.Part body5 = MultipartBody.Part.createFormData("document_4", store_logo_file.getName(), requestFile4);
 
-            @Override
-            public void onError() {
+        File document5_file = FileUtils.getFile(SignUpActivity.this, uriListClone.get("document_5"));
+        RequestBody requestFile5 = RequestBody.create(MediaType.parse("multipart/form-data"), document5_file);
+        MultipartBody.Part body6 = MultipartBody.Part.createFormData("document_5", store_logo_file.getName(), requestFile5);
 
-            }
+//        // create RequestBody instance from file
+//        ProgressRequestBody requestFile = new ProgressRequestBody(file, "image", new ProgressRequestBody.UploadCallbacks() {
+//            @Override
+//            public void onProgressUpdate(int percentage) {
+//
+//                if (progressDialog != null && progressDialog.isShowing()) {
+//
+//                    progressDialog.setProgress(percentage);
+//                    Log.d(TAG, "onProgressUpdate: " + percentage);
+//                }
+//            }
+//
+//            @Override
+//            public void onError() {
+//
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                progressDialog.setProgress(100);
+//            }
+//        });
 
-            @Override
-            public void onFinish() {
-                progressDialog.setProgress(100);
-            }
-        });
-
-//        RequestBody requestFile = RequestBody.create(MediaType.parse(SignUpActivity.this().getContentResolver().getType(imageUri)), file);
 
 
-        // MultipartBody.Part is used to send also the actual file name
-        MultipartBody.Part body = MultipartBody.Part.createFormData(docType, file.getName(), requestFile);
+        final String mobileNumber = phone_edit.getText().toString().substring(3);
 
         RequestBody full_name_edit_body = RequestBody.create(MediaType.parse("text/plain"), full_name_edit.getText().toString());
         RequestBody email_edit_body = RequestBody.create(MediaType.parse("text/plain"), email_edit.getText().toString());
-        RequestBody phone_edit_body = RequestBody.create(MediaType.parse("text/plain"), phone_edit.getText().toString());
+        RequestBody phone_edit_body = RequestBody.create(MediaType.parse("text/plain"), mobileNumber);
         RequestBody password_edit_body = RequestBody.create(MediaType.parse("text/plain"), password_edit.getText().toString());
         RequestBody store_name_edit_body = RequestBody.create(MediaType.parse("text/plain"), store_name_edit.getText().toString());
         RequestBody store_address_edit_body = RequestBody.create(MediaType.parse("text/plain"), store_address_edit.getText().toString());
 
         // finally, execute the request
-        Call<ResponseModel> call = getApiInstance().uploadDoc(body, full_name_edit_body, email_edit_body,  phone_edit_body, password_edit_body, store_name_edit_body, store_address_edit_body);
+        Call<ResponseModel> call = getApiInstance().registration(body1, body2, body3, body4, body5, body6, full_name_edit_body, email_edit_body,  phone_edit_body, password_edit_body, store_name_edit_body, store_address_edit_body);
         call.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call,
@@ -811,9 +829,10 @@ public class SignUpActivity extends AppCompatActivity {
                     Log.d(TAG, "onResponse: response msg" + response.body().getResult() + "  msg  ");
                     if (responseModel.getResult().equals("success")) {
                         //very important condition
+                        Log.d(TAG, "onResponse: registration  success");
                         Toast.makeText(SignUpActivity.this, "" + responseModel.getMsg(), Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "onResponse: success upload images");
-                        finish();
+                        fetchOtpforMobile(mobileNumber);
                     } else {
                         content += responseModel.getMsg();
                         Log.d(TAG, "onResponse: invalid response" + content);

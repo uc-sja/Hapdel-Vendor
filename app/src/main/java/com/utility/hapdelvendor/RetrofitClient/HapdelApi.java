@@ -18,6 +18,7 @@ import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.Model.SearchModel.SearchResultModel;
 import com.utility.hapdelvendor.Model.SlotModel.DeliverySlotModel;
 import com.utility.hapdelvendor.Model.TransactionModel.TransactionModel;
+import com.utility.hapdelvendor.Model.UploadDocModel.UploadDocModel;
 import com.utility.hapdelvendor.Model.UserOrderModel.OrderDetailModel.OrderDetailModel;
 import com.utility.hapdelvendor.Model.UserOrderModel.OrderModel.OrderModel;
 import com.utility.hapdelvendor.Model.VendorModel.VendorModel;
@@ -445,8 +446,13 @@ public interface HapdelApi {
 
     @Multipart
     @POST("user/register")
-    Call<ResponseModel> uploadDoc(
-            @Part MultipartBody.Part body,
+    Call<ResponseModel> registration(
+            @Part MultipartBody.Part body1,
+            @Part MultipartBody.Part body2,
+            @Part MultipartBody.Part body3,
+            @Part MultipartBody.Part body4,
+            @Part MultipartBody.Part body5,
+            @Part MultipartBody.Part body6,
             @Part("name") RequestBody name,
             @Part("email") RequestBody email,
             @Part("mobile") RequestBody mobile,
@@ -455,6 +461,24 @@ public interface HapdelApi {
             @Part("store_address") RequestBody store_add
     );
 
+
+    @FormUrlEncoded
+    @POST("user/get_uploaded_documents")
+    Call<UploadDocModel> fetchDocs(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token
+    );
+
+    @FormUrlEncoded
+    @POST("user/upload_documents")
+    Call<ResponseModel> uploadDoc(
+            @Part MultipartBody.Part body1,
+            @Part MultipartBody.Part body2,
+            @Part MultipartBody.Part body3,
+            @Part MultipartBody.Part body4,
+            @Part MultipartBody.Part body5,
+            @Part MultipartBody.Part body6
+    );
 }
 
 
