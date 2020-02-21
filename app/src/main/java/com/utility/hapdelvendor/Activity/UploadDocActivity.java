@@ -15,14 +15,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.Selection;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -37,22 +33,23 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
-import com.google.gson.Gson;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum;
 import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.Model.UploadDocModel.UploadDocModel;
-import com.utility.hapdelvendor.OtpVerificationActivity;
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.Common;
 import com.utility.hapdelvendor.Utils.FileUtils;
+import com.utility.hapdelvendor.Utils.ProgressRequestBody;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -69,7 +66,6 @@ public class UploadDocActivity extends AppCompatActivity {
     Toolbar toolbar;
     private static final String TAG = "SignInActivity";
     private Button proceed, back;
-    private EditText email_edit, phone_edit, full_name_edit, password_edit, confirm_password, store_name_edit, store_address_edit;
     TextView full_name_text;
     TextView continue_txt;
     ProgressBar toolbar_progress_bar;
@@ -86,7 +82,6 @@ public class UploadDocActivity extends AppCompatActivity {
     List<MultipartBody.Part> parts;
     private static HashMap<String, Uri> imgUrisList;
     private Bitmap bitmap;
-    private File f;
     private Uri mImageUri;
     private String current_doc_type;
 
@@ -119,13 +114,6 @@ public class UploadDocActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        email_edit = findViewById(R.id.email_edit);
-        phone_edit = findViewById(R.id.phone_edit);
-        full_name_edit = findViewById(R.id.full_name_edit);
-        password_edit = findViewById(R.id.password_edit);
-        confirm_password = findViewById(R.id.confirm_password_edit);
-        store_name_edit = findViewById(R.id.store_name_edit);
-        store_address_edit = findViewById(R.id.store_address_edit);
 
         store_pic = findViewById(R.id.store_pic);
         doc_one = findViewById(R.id.doc_one);
@@ -141,12 +129,6 @@ public class UploadDocActivity extends AppCompatActivity {
         doc_four_img = findViewById(R.id.document_four_img);
         doc_five_img = findViewById(R.id.document_five_img);
 
-//        store_pic.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                openFileChooser("store_pic");
-//            }
-//        });
 
         store_pic_img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,8 +181,6 @@ public class UploadDocActivity extends AppCompatActivity {
 //
 //        toolbar_progress_bar = findViewById(R.id.toolbar_progress_bar);
         continue_txt = findViewById(R.id.continue_txt);
-
-
         sliding_layout = findViewById(R.id.sliding_layout);
         slider_img = findViewById(R.id.slider_img);
         slider_msg = findViewById(R.id.slider_msg);
@@ -215,10 +195,8 @@ public class UploadDocActivity extends AppCompatActivity {
             }
         });
 
-
         parts = new ArrayList<>();
         imgUrisList = new HashMap<>();
-
 
         fetchUserDocs();
     }
@@ -283,47 +261,43 @@ public class UploadDocActivity extends AppCompatActivity {
 
     private void setSavedData(UploadDocModel uploadDocModel) {
         for (com.utility.hapdelvendor.Model.UploadDocModel.Datum datumL : uploadDocModel.getData()) {
-            if (!isEmpty(datumL.getStoreLogo())) {
+            if (!isEmpty(datumL.getProfile())) {
                 store_pic_img.setVisibility(View.VISIBLE);
                 logo_updated = true;
-                Picasso.get().load(datumL.getStoreLogo()).fit().into(store_pic_img);
+                Picasso.get().load(datumL.getProfile()).placeholder(R.drawable.app_icon_small_png).fit().into(store_pic_img);
             }
 
-            if (!isEmpty(datumL.getStoreLogo())) {
+            if (!isEmpty(datumL.getDocument1())) {
                 doc_one_img.setVisibility(View.VISIBLE);
-                Picasso.get().load(datumL.getStoreLogo()).fit().into(doc_one_img);
+                Picasso.get().load(datumL.getDocument1() ).fit().into(doc_one_img);
             }
 
-            if (!isEmpty(datumL.getStoreLogo())) {
+            if (!isEmpty(datumL.getDocument2())) {
                 doc_two_img.setVisibility(View.VISIBLE);
-                Picasso.get().load(datumL.getStoreLogo()).fit().into(doc_two_img);
+                Picasso.get().load(datumL.getDocument2()).fit().into(doc_two_img);
             }
 
-            if (!isEmpty(datumL.getStoreLogo())) {
+            if (!isEmpty(datumL.getDocument3())) {
                 doc_three_img.setVisibility(View.VISIBLE);
-                Picasso.get().load(datumL.getStoreLogo()).fit().into(doc_three_img);
+                Picasso.get().load(datumL.getDocument3()).fit().into(doc_three_img);
             }
 
-            if (!isEmpty(datumL.getStoreLogo())) {
+            if (!isEmpty(datumL.getDocument4())) {
                 doc_four_img.setVisibility(View.VISIBLE);
-                Picasso.get().load(datumL.getStoreLogo()).fit().into(doc_four_img);
+                Picasso.get().load(datumL.getDocument4()).fit().into(doc_four_img);
             }
 
-            if (!isEmpty(datumL.getStoreLogo())) {
+            if (!isEmpty(datumL.getDocument5())) {
                 doc_five_img.setVisibility(View.VISIBLE);
-                Picasso.get().load(datumL.getStoreLogo()).fit().into(doc_five_img);
+                Picasso.get().load(datumL.getDocument5()).fit().into(doc_five_img);
             }
-
         }
     }
-
-
 
     private void openFileChooser(String doctype) {
         current_doc_type = doctype;
         startDialog();
     }
-
 
     private void startDialog() {
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(
@@ -332,17 +306,17 @@ public class UploadDocActivity extends AppCompatActivity {
         myAlertDialog.setMessage("How do you want to choose your document?");
 
         myAlertDialog.setPositiveButton("Gallery",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if ((ContextCompat.checkSelfPermission(UploadDocActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) || (ContextCompat.checkSelfPermission(UploadDocActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
-                                ActivityCompat.requestPermissions((Activity) UploadDocActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, FILE_PERMISSION_CODE);
-                                return;
-                            }
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface arg0, int arg1) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if ((ContextCompat.checkSelfPermission(UploadDocActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) || (ContextCompat.checkSelfPermission(UploadDocActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+                            ActivityCompat.requestPermissions((Activity) UploadDocActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, FILE_PERMISSION_CODE);
+                            return;
                         }
-                        startGalleryIntent();
                     }
-                });
+                    startGalleryIntent();
+                }
+            });
 
         myAlertDialog.setNegativeButton("Camera",
                 new DialogInterface.OnClickListener() {
@@ -358,8 +332,6 @@ public class UploadDocActivity extends AppCompatActivity {
                 });
         myAlertDialog.show();
     }
-
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -378,10 +350,8 @@ public class UploadDocActivity extends AppCompatActivity {
                     startCamertaIntent();
                 } else {
                     Toast.makeText(UploadDocActivity.this, "Permission Denied to access your camera", Toast.LENGTH_SHORT).show();
-
                 }
                 break;
-
             default:
                 break;
         }
@@ -395,8 +365,7 @@ public class UploadDocActivity extends AppCompatActivity {
             // place where to store camera taken picture
             photo = createTemporaryFile("picture", ".jpg");
             photo.delete();
-        }
-        catch(Exception e) {
+        } catch(Exception e) {
             Log.d(TAG, "Can't create file to take picture! "+e.toString());
             Toast.makeText(UploadDocActivity.this, "Please check SD card! Image shot is impossible!", Toast.LENGTH_SHORT);
             return;
@@ -413,151 +382,7 @@ public class UploadDocActivity extends AppCompatActivity {
         startActivityForResult(pictureActionIntent, GALLERY_PICTURE);
     }
 
-
-//    private void startRegistration() {
-//
-//        String phoneWithCode  = phone_edit.getText().toString();
-//        String phone = phoneWithCode.substring(4);
-//
-//        final ProgressDialog progressDialog = new ProgressDialog(UploadDocActivity.this, R.style.MyDialogTheme);
-//        progressDialog.setIndeterminate(true);
-//        progressDialog.setMessage("Processing Registration...");
-//        progressDialog.setCancelable(false);
-//        if(!((Activity)this).isFinishing()){
-//            progressDialog.show();
-//        }
-//
-//
-//        final String mobileNumber = phone_edit.getText().toString().substring(3);
-//
-//
-//        Log.d(TAG, "login: "+mobileNumber);
-//        // TODO: Implement your own authentication logic here.
-//
-//        Call<ResponseModel> loginResponseCall = getApiInstance().signUpUser(full_name_edit.getText().toString(), email_edit.getText().toString(),phone,password_edit.getText().toString());
-//        showProgress();
-//        loginResponseCall.enqueue(new Callback<ResponseModel>() {
-//            @Override
-//            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-//                hideProgress();
-//                progressDialog.dismiss();
-//                if(!response.isSuccessful()){
-//                    Toast.makeText(UploadDocActivity.this, ""+response.message(), Toast.LENGTH_SHORT).show();
-//                    Log.d(TAG, "onResponse: fail "+response.code());
-//                    return;
-//                }
-//
-//                Log.d(TAG, "onResponse: success"+response.code()+response.body());
-//                if(response.body()!=null ){
-//                    ResponseModel responseModel = null;
-//                    try {
-//                        responseModel = response.body();
-//                    } catch (Exception e) {
-//                        Toast.makeText(UploadDocActivity.this, "Error in response", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
-//                    String content="";
-//                    Log.d(TAG, "onResponse: response msg"+response.body().getResult()+"  msg  ");
-//                    if (responseModel.getResult().equals("success")){ //very important conditon
-//                        Toast.makeText(UploadDocActivity.this, ""+responseModel.getMsg(), Toast.LENGTH_SHORT).show();
-//                        fetchOtpforMobile(mobileNumber);
-//                    }else{
-//                        content+= responseModel.getMsg();
-//
-//                        showSliderLayout(content);
-//                    }
-//
-//                    Log.d(TAG, "onResponse: login res"+content);
-//                } else {
-//                    Toast.makeText(UploadDocActivity.this, "Invalid response from server", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseModel> call, Throwable t) {
-//                hideProgress();
-//                progressDialog.dismiss();
-//                Toast.makeText(UploadDocActivity.this, ""+t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-//
-//            }
-//        });
-//
-//    }
-
-    private void fetchOtpforMobile(final String mobileNumber) {
-        final ProgressDialog progressDialog = new ProgressDialog(UploadDocActivity.this, R.style.MyDialogTheme);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.setCancelable(false);
-        if(!((Activity)this).isFinishing()){
-            progressDialog.show();
-        }
-
-        Log.d(TAG, "login: "+mobileNumber);
-        // TODO: Implement your own authentication logic here.
-
-        Call<ResponseModel> loginResponseCall = getApiInstance().loginUser(mobileNumber);
-        loginResponseCall.enqueue(new Callback<ResponseModel>() {
-            @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                progressDialog.dismiss();
-                if(!response.isSuccessful()){
-                    Toast.makeText(UploadDocActivity.this, ""+response.message(), Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "onResponse: fail "+response.code());
-                    return;
-                }
-
-                Log.d(TAG, "onResponse: success"+response.code()+response.body());
-                if(response.body()!=null ){
-                    ResponseModel responseModel = null;
-                    try {
-                        responseModel = response.body();
-                    } catch (Exception e) {
-                        Toast.makeText(UploadDocActivity.this, "Error in response", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    String content="";
-                    Log.d(TAG, "onResponse: response msg"+response.body().getResult()+"  msg  ");
-                    if (responseModel.getResult().equals("success")){ //very important conditon
-                        Log.d(TAG, "onResponse: success");
-                        Intent intent = new Intent(UploadDocActivity.this, OtpVerificationActivity.class);
-                        intent.putExtra("mobile", mobileNumber);
-                        intent.putExtra("category", new Gson().toJson(parentCategory));
-                        startActivity(intent);
-                    }else{
-                        content+= responseModel.getMsg();
-                        showSliderLayout(content);
-                    }
-
-                    Log.d(TAG, "onResponse: login res"+content);
-                } else {
-                    Toast.makeText(UploadDocActivity.this, "Invalid response from server", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(UploadDocActivity.this, ""+t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-    }
-
-    private void hideProgress() {
-//        continue_txt.setVisibility(View.VISIBLE);
-//        toolbar_progress_bar.setVisibility(View.GONE);
-    }
-
-    private void showProgress() {
-//        continue_txt.setVisibility(View.GONE);
-//        toolbar_progress_bar.setVisibility(View.VISIBLE);
-    }
-
-
     private boolean getValidationResult() {
-
         if (!logo_updated) {
             Toast.makeText(this, "Kindly upload store logo", Toast.LENGTH_SHORT).show();
             return false;
@@ -597,7 +422,6 @@ public class UploadDocActivity extends AppCompatActivity {
         if(!tempDir.exists()) {
             tempDir.mkdirs();
         }
-
         tempDir.deleteOnExit();
         return File.createTempFile(part, ext, tempDir);
     }
@@ -624,7 +448,6 @@ public class UploadDocActivity extends AppCompatActivity {
         return Uri.parse(path);
     }
 
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult: " + requestCode + "  " + resultCode + "  " + data);
@@ -646,7 +469,6 @@ public class UploadDocActivity extends AppCompatActivity {
             Toast.makeText(this, "Some error. Please retry.", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     private void changeBtnMessage(String current_doc_type, Uri selectedImage) {
         switch (current_doc_type) {
@@ -689,98 +511,65 @@ public class UploadDocActivity extends AppCompatActivity {
         if (uriListClone.size() > 0) {
             //By validation we have made sure that size of imgUrisList is always going to be6
             if (getValidationResult()) {
-//                Iterator it = uriListClone.entrySet().iterator();
-//                int i = 0;
-//                while (it.hasNext()) {
-//                    Map.Entry pair = (Map.Entry) it.next();
-//                    uploadFile(pair.getKey().toString(), (Uri) pair.getValue(), ++i);
-//                    it.remove(); // avoids a ConcurrentModificationException
-                uploadFile(uriListClone);
-//                }
+                Iterator it = uriListClone.entrySet().iterator();
+                int i = 0;
+                while (it.hasNext()) {
+                    Map.Entry pair = (Map.Entry) it.next();
+                    uploadFile(pair.getKey().toString(), (Uri) pair.getValue(), ++i);
+                    it.remove(); // avoids a ConcurrentModificationException
+
+
+                                }
             }
         } else {
             Toast.makeText(UploadDocActivity.this, "Kindly upload documents", Toast.LENGTH_SHORT).show();
         }
     }
 
-
-
-    private void uploadFile(HashMap<String, Uri> uriListClone) {
+    private void uploadFile(String doct_type, Uri mImageUri, int i) {
         // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
         // use the FileUtils to get the actual file by uri
         progressDialog = new ProgressDialog(UploadDocActivity.this, R.style.MyDialogTheme);
-
-
         if (progressDialog != null) {
             progressDialog = new ProgressDialog(UploadDocActivity.this);
         }
-        progressDialog.setMessage("Uploading files...Please Wait");
+        progressDialog.setMessage("Uploading file "+i+" of "+imgUrisList.size());
         progressDialog.setIndeterminate(false);
         progressDialog.setProgress(0);
         if (!((Activity) UploadDocActivity.this).isFinishing()) {
             progressDialog.show();
         }
 
-        File store_logo_file = FileUtils.getFile(UploadDocActivity.this, uriListClone.get("store_logo"));
-        RequestBody logo_requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), store_logo_file);
-        MultipartBody.Part body1 = MultipartBody.Part.createFormData("store_logo", store_logo_file.getName(), logo_requestFile);
+        RequestBody userId = RequestBody.create(MediaType.parse("text/plain"), getCurrentUser().getId().toString());
 
-        File document1_file = FileUtils.getFile(UploadDocActivity.this, uriListClone.get("document_1"));
-        RequestBody requestFile1 = RequestBody.create(MediaType.parse("multipart/form-data"), document1_file);
-        MultipartBody.Part body2 = MultipartBody.Part.createFormData("document_1", store_logo_file.getName(), requestFile1);
+        File file = FileUtils.getFile(UploadDocActivity.this, mImageUri);
+        // create RequestBody instance from file
+        ProgressRequestBody requestFile = new ProgressRequestBody(file, "image", new ProgressRequestBody.UploadCallbacks() {
+            @Override
+            public void onProgressUpdate(int percentage) {
 
-        File document2_file = FileUtils.getFile(UploadDocActivity.this, uriListClone.get("document_2"));
-        RequestBody requestFile2 = RequestBody.create(MediaType.parse("multipart/form-data"), document2_file);
-        MultipartBody.Part body3 = MultipartBody.Part.createFormData("document_2", store_logo_file.getName(), requestFile2);
+                if (progressDialog != null && progressDialog.isShowing()) {
 
-        File document3_file = FileUtils.getFile(UploadDocActivity.this, uriListClone.get("document_3"));
-        RequestBody requestFile3 = RequestBody.create(MediaType.parse("multipart/form-data"), document3_file);
-        MultipartBody.Part body4 = MultipartBody.Part.createFormData("document_3", store_logo_file.getName(), requestFile3);
+                    progressDialog.setProgress(percentage);
+                    Log.d(TAG, "onProgressUpdate: " + percentage);
+                }
+            }
 
-        File document4_file = FileUtils.getFile(UploadDocActivity.this, uriListClone.get("document_4"));
-        RequestBody requestFile4 = RequestBody.create(MediaType.parse("multipart/form-data"), document4_file);
-        MultipartBody.Part body5 = MultipartBody.Part.createFormData("document_4", store_logo_file.getName(), requestFile4);
+            @Override
+            public void onError() {
 
-        File document5_file = FileUtils.getFile(UploadDocActivity.this, uriListClone.get("document_5"));
-        RequestBody requestFile5 = RequestBody.create(MediaType.parse("multipart/form-data"), document5_file);
-        MultipartBody.Part body6 = MultipartBody.Part.createFormData("document_5", store_logo_file.getName(), requestFile5);
+            }
 
-//        // create RequestBody instance from file
-//        ProgressRequestBody requestFile = new ProgressRequestBody(file, "image", new ProgressRequestBody.UploadCallbacks() {
-//            @Override
-//            public void onProgressUpdate(int percentage) {
-//
-//                if (progressDialog != null && progressDialog.isShowing()) {
-//
-//                    progressDialog.setProgress(percentage);
-//                    Log.d(TAG, "onProgressUpdate: " + percentage);
-//                }
-//            }
-//
-//            @Override
-//            public void onError() {
-//
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                progressDialog.setProgress(100);
-//            }
-//        });
+            @Override
+            public void onFinish() {
+                progressDialog.setProgress(100);
+            }
+        });
 
-
-
-        final String mobileNumber = phone_edit.getText().toString().substring(3);
-
-        RequestBody full_name_edit_body = RequestBody.create(MediaType.parse("text/plain"), full_name_edit.getText().toString());
-        RequestBody email_edit_body = RequestBody.create(MediaType.parse("text/plain"), email_edit.getText().toString());
-        RequestBody phone_edit_body = RequestBody.create(MediaType.parse("text/plain"), mobileNumber);
-        RequestBody password_edit_body = RequestBody.create(MediaType.parse("text/plain"), password_edit.getText().toString());
-        RequestBody store_name_edit_body = RequestBody.create(MediaType.parse("text/plain"), store_name_edit.getText().toString());
-        RequestBody store_address_edit_body = RequestBody.create(MediaType.parse("text/plain"), store_address_edit.getText().toString());
+        MultipartBody.Part body = MultipartBody.Part.createFormData(doct_type, file.getName(), requestFile);
 
         // finally, execute the request
-        Call<ResponseModel> call = getApiInstance().uploadDoc(body1, body2, body3, body4, body5, body6);
+        Call<ResponseModel> call = getApiInstance().uploadDoc(userId, body);
         call.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call,
@@ -806,7 +595,6 @@ public class UploadDocActivity extends AppCompatActivity {
                         //very important condition
                         Toast.makeText(UploadDocActivity.this, "" + responseModel.getMsg(), Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "onResponse: success upload images");
-                        fetchOtpforMobile(mobileNumber);
                         finish();
                     } else {
                         content += responseModel.getMsg();
@@ -829,31 +617,10 @@ public class UploadDocActivity extends AppCompatActivity {
         });
     }
 
-
-
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
-    }
-
-    public void showSliderLayout(String msg){
-        Common.hideKeyboard(this);
-        slider_msg.setText(msg);
-        sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
-        slider_one_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-            }
-        });
-        slider_two_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(UploadDocActivity.this, SignInActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override

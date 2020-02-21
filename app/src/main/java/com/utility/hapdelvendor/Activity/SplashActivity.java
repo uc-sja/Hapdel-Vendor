@@ -57,8 +57,7 @@ public class SplashActivity extends AppCompatActivity {
 
     @SuppressLint("NewApi")
     @Override
-    public void onWindowFocusChanged(boolean hasFocus)
-    {
+    public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if(currentVersion >= Build.VERSION_CODES.KITKAT && hasFocus) {
             getWindow().getDecorView().setSystemUiVisibility(

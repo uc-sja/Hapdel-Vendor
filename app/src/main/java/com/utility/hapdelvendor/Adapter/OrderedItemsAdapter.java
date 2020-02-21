@@ -1,11 +1,13 @@
 package com.utility.hapdelvendor.Adapter;
 
 
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -64,7 +66,6 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
 
         holder.product_name.setText(item.getProductName());
         holder.product_quantity.setText("Qty:" + item.getQuantity());
-        holder.product_seller.setText("Sold By: "   );
 
         if(item.getProductImage()!=null && !isEmpty(item.getProductImage())){
             Picasso.get().load(item.getProductImage()).placeholder(R.drawable.app_icon_png).fit().into(holder.product_img);
@@ -104,31 +105,40 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
                 }
             });
 
-            holder.coupon_discount.setText(item.getCouponDiscount());
-            holder.admin_discount.setText(item.getDiscountAdmin());
-            holder.total_discount.setText(item.getTotalDiscount());
-            holder.commission.setText(item.getCommission());
-            holder.vendor_discount.setText(item.getDiscountVendor());
+            holder.coupon_discount.setText(context.getResources().getString(R.string.rupee_icon)+item.getCouponDiscount());
+            holder.admin_discount.setText(context.getResources().getString(R.string.rupee_icon)+item.getDiscountAdmin());
+            holder.total_discount.setText(context.getResources().getString(R.string.rupee_icon)+item.getTotalDiscount());
+            holder.commission.setText(context.getResources().getString(R.string.rupee_icon)+item.getCommission());
+            holder.vendor_discount.setText(context.getResources().getString(R.string.rupee_icon)+item.getDiscountVendor());
 
             boolean expanded = item.isExpanded();
         Log.d(TAG, "onBindViewHolder: exp" + expanded);
             // Set the visibility based on state
             holder.product_detail_layout.setVisibility(expanded ? View.VISIBLE : View.GONE);
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    item.setExpanded(!expanded);
-                    notifyDataSetChanged();
-                }
-            });
+        holder.drop_down_icon.setVisibility(expanded ? View.GONE : View.VISIBLE);
+        holder.drop_up_icon.setVisibility(expanded ? View.VISIBLE : View.GONE);
 
-            if(expanded){
-                holder.product_detail_layout.setVisibility(View.VISIBLE);
-            } else {
-                holder.product_detail_layout.setVisibility(View.GONE);
+        holder.drop_down_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                item.setExpanded(!expanded);
+                notifyDataSetChanged();
             }
-        }
+        });
+
+        holder.drop_up_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                item.setExpanded(!expanded);
+                notifyDataSetChanged();
+            }
+        });
+
+        holder.product_detail_layout.setVisibility(expanded ? View.VISIBLE : View.GONE);
+
+
+    }
 
     private void cancelOrder(Item item) {
             final ProgressDialog progressDialog = new ProgressDialog(context, R.style.MyDialogTheme);
@@ -139,7 +149,7 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
                 progressDialog.show();
             }
 
-            Call<ResponseModel> loginResponseCall = getApiInstance().cancelOrder(getCurrentUser().getId(), getCurrentUser().getAccessToken(), item.getId());
+            Call<ResponseModel> loginResponseCall = getApiInstance().cancelItem(getCurrentUser().getId(), getCurrentUser().getAccessToken(), item.getId(), "reject");
             loginResponseCall.enqueue(new Callback<ResponseModel>() {
                 @Override
                 public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
@@ -223,7 +233,7 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
                 progressDialog.show();
             }
 
-            Call<ResponseModel> loginResponseCall = getApiInstance().acceptOrder(getCurrentUser().getId(), getCurrentUser().getAccessToken(), item.getId());
+            Call<ResponseModel> loginResponseCall = getApiInstance().acceptOrder(getCurrentUser().getId(), getCurrentUser().getAccessToken(), item.getId(), "accept");
             loginResponseCall.enqueue(new Callback<ResponseModel>() {
                 @Override
                 public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
@@ -247,7 +257,7 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
                         Log.d(TAG, "onResponse: response msg"+response.body().getResult()+"  msg  ");
                         if (responseModel.getResult().equals("success")){ //very important conditon
                             Log.d(TAG, "onResponse: success");
-                            Toast.makeText(context, "Order Cancellation Success", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, ""+responseModel.getMsg(), Toast.LENGTH_SHORT).show();
                             ((OrderDetailActivity)context).fetchOrderDetails();
 
                         }else{
@@ -304,7 +314,7 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
 
     public class OrderedItemsViewHolder extends RecyclerView.ViewHolder {
         private RelativeLayout root_layout;
-        ImageView product_img;
+        ImageView product_img, drop_down_icon, drop_up_icon;
         TextView order_status, order_date, product_name, product_quantity, product_seller, product_price, status_color;
         TextView vendor_discount, coupon_discount, admin_discount, total_discount, commission, textViewOptions;
 
@@ -319,6 +329,9 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
             product_seller = itemView.findViewById(R.id.product_seller);
             product_price = itemView.findViewById(R.id.product_price);
             status_color = itemView.findViewById(R.id.status_color);
+            drop_down_icon = itemView.findViewById(R.id.dropdown_icon);
+            drop_up_icon = itemView.findViewById(R.id.dropup_icon);
+
 
             product_detail_layout = itemView.findViewById(R.id.product_detail_layout);
 
@@ -327,11 +340,16 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
             admin_discount = itemView.findViewById(R.id.admin_discount);
             total_discount = itemView.findViewById(R.id.total_discount);
             commission = itemView.findViewById(R.id.commission);
-
             textViewOptions = itemView.findViewById(R.id.textViewOptions);
             root_layout = itemView.findViewById(R.id.root_layout);
+
+
+            LayoutTransition layoutTransition = root_layout.getLayoutTransition();
+            layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
+
+
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(0,context.getResources().getDimensionPixelOffset(R.dimen._10sdp),0,context.getResources().getDimensionPixelOffset(R.dimen._10sdp));
+            layoutParams.setMargins(0,context.getResources().getDimensionPixelOffset(R.dimen._10sdp),0,0);
             root_layout.setLayoutParams(layoutParams);
 
         }

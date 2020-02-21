@@ -1,8 +1,10 @@
 package com.utility.hapdelvendor.Adapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -118,7 +120,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         productViewHolder.delete_product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteProduct(datum);
+
+                showAlertDialog(datum);
             }
         });
 
@@ -134,9 +137,29 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             }
         });
     }
+    private void showAlertDialog(Product datum) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setTitle("Confirm Logout");
+        alertDialog.setMessage("Are you sure to logout from the app?");
+//        alertDialog.setIcon(R.drawable.ic_logout);
+
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteProduct(datum);
+            }
+        });
+
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
 
     private void deleteProduct(Product datum) {
-
         final ProgressDialog progressDialog = new ProgressDialog(context, R.style.MyDialogTheme);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Removing product...");

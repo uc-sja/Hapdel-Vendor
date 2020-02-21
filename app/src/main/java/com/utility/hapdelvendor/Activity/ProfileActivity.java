@@ -80,6 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
     private LinearLayout default_address_layout;
     private AHBottomNavigation bottomNavigation;
     private com.utility.hapdelvendor.Model.ProfileModel.Datum currentProifile;
+    private TextView all_products;
 
 
     @Override
@@ -154,6 +155,17 @@ public class ProfileActivity extends AppCompatActivity {
             hideErrorMessage();
             user_details_layout.setVisibility(View.VISIBLE);
         }
+        
+        all_products = findViewById(R.id.all_products);
+
+        all_products.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, AllProducts.class);
+                startActivity(intent);
+            }
+        });
+
 
         my_orders.setOnClickListener(new View.OnClickListener() {
             @Override

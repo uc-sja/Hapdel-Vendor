@@ -75,6 +75,8 @@
 
     <androidx.appcompat.widget.AppCompatAutoCompleteTextView
         android:id="@+id/search_bar"
+
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_10sdp"

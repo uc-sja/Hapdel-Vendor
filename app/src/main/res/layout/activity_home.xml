@@ -97,6 +97,7 @@
                         android:focusable="false"
                         android:focusableInTouchMode="false"
                         android:clickable="true"
+                        android:visibility="gone"
                         android:layout_marginHorizontal="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:background="@drawable/square_box"

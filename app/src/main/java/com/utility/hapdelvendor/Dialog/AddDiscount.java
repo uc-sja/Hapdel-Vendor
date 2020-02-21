@@ -102,10 +102,10 @@ public class AddDiscount extends Dialog {
         newFormatter = new SimpleDateFormat("d MMM yyyy");
 
         if(updateType.equalsIgnoreCase("edit") && current_discount!=null){
-            update_title.setText("Edit product");
+            update_title.setText("Edit discount");
             initializeDiscount(current_discount);
         } else if(updateType.equalsIgnoreCase("add")){
-            update_title.setText("Add product");
+            update_title.setText("Add discount");
         }
     }
 

@@ -18,12 +18,12 @@ public class Datum {
     @SerializedName("document_4")
     @Expose
     private String document4;
-    @SerializedName("store_logo")
-    @Expose
-    private String storeLogo;
     @SerializedName("document_5")
     @Expose
     private String document5;
+    @SerializedName("profile")
+    @Expose
+    private String profile;
 
     public String getDocument1() {
         return document1;
@@ -57,20 +57,20 @@ public class Datum {
         this.document4 = document4;
     }
 
-    public String getStoreLogo() {
-        return storeLogo;
-    }
-
-    public void setStoreLogo(String storeLogo) {
-        this.storeLogo = storeLogo;
-    }
-
     public String getDocument5() {
         return document5;
     }
 
     public void setDocument5(String document5) {
         this.document5 = document5;
+    }
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
 
 }

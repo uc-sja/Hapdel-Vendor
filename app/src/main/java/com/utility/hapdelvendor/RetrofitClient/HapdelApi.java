@@ -26,6 +26,7 @@ import com.utility.hapdelvendor.Model.VendorModel.VendorModel;
 import java.util.List;
 
 import okhttp3.MultipartBody;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -254,20 +255,23 @@ public interface HapdelApi {
             @Field("page") String page
     );
 
-    @FormUrlEncoded
-    @POST("order/cancel_item")
-    Call<ResponseModel> cancelOrder(
-            @Field("user_id") String userId,
-            @Field("access_token") String access_token,
-            @Field("order_id") String item_id
-    );
 
     @FormUrlEncoded
-    @POST("order/cancel_item")
+    @POST("order/order_status")
     Call<ResponseModel> acceptOrder(
             @Field("user_id") String userId,
             @Field("access_token") String access_token,
-            @Field("item_id") String item_id
+            @Field("order_id") String item_id,
+            @Field("status") String status
+    );
+
+    @FormUrlEncoded
+    @POST("order/order_status")
+    Call<ResponseModel> cancelItem(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("order_id") String item_id,
+            @Field("status") String status
     );
 
 
@@ -469,15 +473,11 @@ public interface HapdelApi {
             @Field("access_token") String access_token
     );
 
-    @FormUrlEncoded
+    @Multipart
     @POST("user/upload_documents")
     Call<ResponseModel> uploadDoc(
-            @Part MultipartBody.Part body1,
-            @Part MultipartBody.Part body2,
-            @Part MultipartBody.Part body3,
-            @Part MultipartBody.Part body4,
-            @Part MultipartBody.Part body5,
-            @Part MultipartBody.Part body6
+            @Part("user_id") RequestBody userId,
+            @Part MultipartBody.Part body1
     );
 }
 

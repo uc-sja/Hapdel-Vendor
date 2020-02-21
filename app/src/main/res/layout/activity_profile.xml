@@ -282,6 +282,21 @@
                         android:orientation="vertical"
                         android:visibility="visible">
 
+
+                        <TextView
+                            android:id="@+id/all_products"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_wrap_text_black_24dp"
+                            android:drawablePadding="@dimen/_10ssp"
+                            android:text= "All Products" />
+
+                        <View
+                            android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                            android:layout_marginVertical="@dimen/_10sdp"
+                            android:background="@drawable/faded_line" />
+
                         <TextView
                             android:id="@+id/my_orders"
                             android:layout_width="match_parent"

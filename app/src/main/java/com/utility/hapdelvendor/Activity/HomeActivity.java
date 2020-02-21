@@ -294,39 +294,7 @@ public class HomeActivity extends AppCompatActivity {
 
                             Log.d(TAG, "onResponse: banner size " + recentOrderModel.getData().size());
 
-
                             recentOrderAdapter.updateItems(recentOrderModel.getData());
-
-
-                            int indiator_size = (int) Math.ceil(((double) recentOrderModel.getData().size()) / 2);
-
-//                            circleIndicator.setVisibility(View.GONE);
-//                            circleIndicator.setItemCount(indiator_size);
-//
-//                            recentOrderView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//                                private int pos;
-//
-//                                @Override
-//                                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                                    super.onScrollStateChanged(recyclerView, newState);
-//                                    switch (newState) {
-//                                        case RecyclerView.SCROLL_STATE_IDLE:
-//                                            Log.d(TAG, "onScrollStateChanged: new state " + newState);
-//
-//                                            int position = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition() + 1;
-//                                            pos = position;
-//
-//                                            if (position % 2 != 0) {
-//                                                pos = position + 1;
-//                                            }
-//
-//                                            circleIndicator.setCurrentPosition((int) ((Double.valueOf(pos) / 2)) - 1);
-//                                            break;
-//                                    }
-//                                }
-//                            });
-
-
                         }
 
                     } else {

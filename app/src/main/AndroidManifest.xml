@@ -27,7 +27,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateAlwaysHidden">
-        <activity android:name=".Activity.UploadDocActivity"></activity>
+        <activity android:name=".Activity.AllProducts"></activity>
+        <activity android:name=".Activity.UploadDocActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -87,6 +88,7 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".Activity.HomeActivity"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".Activity.MainActivity"

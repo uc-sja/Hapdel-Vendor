@@ -76,9 +76,8 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/item_card_view"
-                        sothree:contentPadding="@dimen/_10sdp"
                         android:layout_width="match_parent"
-                        app:cardBackgroundColor="@color/lighterGray"
+                        app:cardBackgroundColor="@color/colorWhite"
                         app:cardCornerRadius="@dimen/_4sdp"
                         android:layout_height="wrap_content"
                         >
@@ -93,8 +92,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Ordered Items"
+                                android:layout_marginBottom="@dimen/_10sdp"
                                 android:textColor="@color/colorBlack"
-                                android:textSize="@dimen/_11ssp"
+                                android:textSize="@dimen/_13ssp"
                                 android:textStyle="bold" />
 
                             <androidx.recyclerview.widget.RecyclerView

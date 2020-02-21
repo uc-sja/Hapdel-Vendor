@@ -46,7 +46,6 @@ import com.utility.hapdelvendor.Dialog.AddDiscount;
 import com.utility.hapdelvendor.Dialog.AddProduct;
 import com.utility.hapdelvendor.DiscountList;
 import com.utility.hapdelvendor.ExpandableCheckboxView.DataItem;
-import com.utility.hapdelvendor.ExpandableCheckboxView.MyCategoriesExpandableListAdapter;
 import com.utility.hapdelvendor.ExpandableCheckboxView.SubCategoryItem;
 import com.utility.hapdelvendor.Interfaces.ResponseResult;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.ParentCategoryModel;
@@ -126,7 +125,6 @@ public class OpenProductActivity extends AppCompatActivity {
 
     private ArrayList<HashMap<String, String>> parentItems;
     private ArrayList<ArrayList<HashMap<String, String>>> childItems;
-    private MyCategoriesExpandableListAdapter myCategoriesExpandableListAdapter;
 
     private AppCompatAutoCompleteTextView search_bar;
     private String tabCategoryId;
@@ -216,28 +214,6 @@ public class OpenProductActivity extends AppCompatActivity {
 
         total_products_list = new ArrayList<>();
 
-        if(selectedDatum!=null){
-            products_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                    currentItems=productLayoutManager.getChildCount();
-                    totalItems = productLayoutManager.getItemCount();
-                    scrolledOutItems = productLayoutManager.findFirstVisibleItemPosition();
-                    Log.d(TAG, "onScrolled: "+isScrolling+" "+totalItems+" "+scrolledOutItems+" "+currentItems);
-                    if(!isScrolling && totalItems == scrolledOutItems+currentItems){
-                        //Since we cannot assign a variable to final int i
-                        Log.d(TAG, "onScrolled: if "+isScrolling+" "+totalItems+" "+scrolledOutItems+" "+currentItems);
-
-                        fetchProducts(selectedDatum,++page +"");
-                        Log.d(TAG, "onScrolled: page "+page);
-                    }else {
-                        Log.d(TAG, "onScrolled: else "+isScrolling+" "+totalItems+" "+scrolledOutItems+" "+currentItems);
-                    }
-                }
-            });
-
-        }
 
 //        spruceAnimator = new Spruce
 //                .SpruceBuilder(view_scroller)
@@ -340,6 +316,32 @@ public class OpenProductActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void intializeEnlessScrolling(){
+        if (selectedDatum != null) {
+            products_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    currentItems = productLayoutManager.getChildCount();
+                    totalItems = productLayoutManager.getItemCount();
+                    scrolledOutItems = productLayoutManager.findFirstVisibleItemPosition();
+                    Log.d(TAG, "onScrolled: " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
+                    if (!isScrolling && totalItems == scrolledOutItems + currentItems) {
+                        //Since we cannot assign a variable to final int i
+                        Log.d(TAG, "onScrolled: if " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
+
+                        fetchProducts(selectedDatum, ++page + "");
+                        Log.d(TAG, "onScrolled: page " + page);
+                    } else {
+                        Log.d(TAG, "onScrolled: else " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
+                    }
+                }
+            });
+
+        }
+    }
+
 
     private void searchItem(final String keyword, com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum categoryId) {
         Call<SearchResultModel> searchResultModelCall = getApiInstance().searchItem(getCurrentUser().getId(), getCurrentUser().getAccessToken(), categoryId.getId(), keyword);

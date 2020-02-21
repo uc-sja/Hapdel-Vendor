@@ -52,20 +52,16 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.Discou
         boolean expanded = datum.isExpanded();
         // Set the visibility based on state
         holder.items_view_layout.setVisibility(expanded ? View.VISIBLE : View.GONE);
+        holder.click_info_layout.setVisibility(expanded? View.GONE : View.VISIBLE);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.view_more.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 datum.setExpanded(!expanded);
                 notifyDataSetChanged();
             }
         });
 
-        if(expanded){
-            holder.click_info_layout.setVisibility(View.GONE);
-        } else {
-            holder.click_info_layout.setVisibility(View.VISIBLE);
-        }
 
         holder.edit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,10 +86,11 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.Discou
     }
 
     public class DiscountViewHolder extends RecyclerView.ViewHolder{
-        TextView discount_value, min_amt, max_amt, discout_expiry;
+        TextView discount_value, min_amt, max_amt, discout_expiry, view_more;
         RelativeLayout root_layout;
         LinearLayout click_info_layout,items_view_layout;
         ImageView edit_btn;
+
         public DiscountViewHolder(@NonNull View itemView) {
             super(itemView);
             discount_value = itemView.findViewById(R.id.discount_value);
@@ -103,6 +100,7 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.Discou
             click_info_layout = itemView.findViewById(R.id.click_info_layout);
             items_view_layout = itemView.findViewById(R.id.items_view_layout);
             edit_btn = itemView.findViewById(R.id.edit_btn);
+            view_more = itemView.findViewById(R.id.view_more);
 
             root_layout = itemView.findViewById(R.id.root_layout);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
