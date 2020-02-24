@@ -205,7 +205,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
                     Log.d(TAG, "onResponse: response msg" + response.body().getResult() + "  msg  ");
                     if (responseModel.getResult().equals("success")) { //very important conditon
                         Toast.makeText(context, responseModel.getMsg(), Toast.LENGTH_SHORT).show();
-                        ((OpenProductActivity) context).fetchProducts(((OpenProductActivity) context).selectedDatum, "1");
+                        if((Activity)context instanceof OpenProductActivity){
+                            ((OpenProductActivity)context).fetchProducts(((OpenProductActivity)context).selectedDatum, ((OpenProductActivity)context).current_keyword, "1");
+                        } else if((Activity)context instanceof AllProducts){
+                            ((AllProducts)context).fetchProducts(((AllProducts)context).current_keyword, "1");
+                        }
                     } else {
                         content += responseModel.getMsg();
                         Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
@@ -237,15 +241,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     }
 
     public void updateItems(List<com.utility.hapdelvendor.Model.ProducModel.Product> data) {
-        Log.d(TAG, "updateItems: " + data.size());
-        if (data != null && data.size() > 0) {
-            this.productsList = new ArrayList<Product>();
-            for (com.utility.hapdelvendor.Model.ProducModel.Product product : data) {
-                Log.d(TAG, "updateItems: " + product.getProductName());
-                productsList.add(product);
-            }
-            notifyDataSetChanged();
-        }
+        productsList.clear();
+        notifyDataSetChanged();
+        productsList.addAll(data);
+        notifyDataSetChanged();
     }
 
     public class ProductViewHolder extends RecyclerView.ViewHolder {

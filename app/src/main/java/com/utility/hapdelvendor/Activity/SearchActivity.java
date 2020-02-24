@@ -43,6 +43,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 import static com.utility.hapdelvendor.Utils.Common.hideKeyboard;
 
 public class SearchActivity extends AppCompatActivity {
@@ -216,7 +217,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void searchItem(final String keyword, String categoryId) {
-        Call<SearchResultModel> searchResultModelCall = Common.getApiInstance().searchItem(keyword, Common.currentLat, Common.currentLong, categoryId);
+        Call<SearchResultModel> searchResultModelCall = Common.getApiInstance().searchItem(getCurrentUser().getId(), getCurrentUser().getAccessToken(), keyword, categoryId);
         hideErrorMessage();
 //        shimmerRecycler.showShimmerAdapter();
         searchResultModelCall.enqueue(new Callback<com.utility.hapdelvendor.Model.SearchModel.SearchResultModel>() {

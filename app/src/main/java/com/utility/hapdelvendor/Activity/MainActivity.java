@@ -26,7 +26,14 @@ public class MainActivity extends AppCompatActivity {
         //for testing
 //        LocalStorage.setUser(null);
         if (LocalStorage.getUser() != null) {
-            startActivity(new Intent(this, HomeActivity.class));
+
+            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+            if  (getIntent()!= null && getIntent().getStringExtra("isOrder") != null ){
+                intent.putExtra("isOrder",  getIntent().getStringExtra("isOrder") );
+                startActivity(intent);
+                finish();
+            }
+
             finish();
         } else {
             startActivity(new Intent(this, LoginActivity.class));

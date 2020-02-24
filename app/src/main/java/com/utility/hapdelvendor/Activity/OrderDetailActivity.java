@@ -27,6 +27,7 @@ import com.utility.hapdelvendor.Model.UserOrderModel.OrderDetailModel.OrderDetai
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.Common;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -61,7 +62,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     CardView shipping_cardview, shipping_cardview2, item_cardview;
 
-    private TextView order_date,order_amount,payment_method,order_id;
+    private TextView order_date,order_amount,payment_method,order_id,service_time;
     private RelativeLayout container_layout;
 
     @Override
@@ -121,6 +122,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         order_amount = findViewById(R.id.order_amount);
         payment_method = findViewById(R.id.payment_method);
         order_id = findViewById(R.id.order_id);
+        service_time = findViewById(R.id.service_time);
 
         shipping_cardview = findViewById(R.id.shipping_cardview);
         shipping_cardview2 = findViewById(R.id.shipping_cardview2);

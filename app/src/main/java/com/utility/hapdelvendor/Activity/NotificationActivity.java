@@ -184,9 +184,9 @@ public class NotificationActivity extends AppCompatActivity {
 
 
     public static void setInitialNotification(AHBottomNavigation bottomNavigation) {
-        Log.d(TAG, "setInitialNotification: "+LocalStorage.getRideNotificationCount()+ ", "+LocalStorage.getNotificationCount());
+        Log.d(TAG, "setInitialNotification: "+LocalStorage.getOrderNotificationCount()+ ", "+LocalStorage.getNotificationCount());
         bottomNavigation.setNotification(LocalStorage.getNotificationCount(), 3);
-        bottomNavigation.setNotification(LocalStorage.getRideNotificationCount(), 1);
+        bottomNavigation.setNotification(LocalStorage.getOrderNotificationCount(), 1);
     }
 
     @Override

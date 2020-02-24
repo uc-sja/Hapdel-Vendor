@@ -91,14 +91,14 @@ public class LocalStorage {
         return notificationCount;
     }
 
-    public static void setRideNotificationCount(int i) {
+    public static void setOrderNotificationCount(int i) {
         SharedPreferences sharedPreferences = getSharedPreferences();
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("rideNotificationCount", i);
         editor.apply();
     }
 
-    public static int getRideNotificationCount() {
+    public static int getOrderNotificationCount() {
         SharedPreferences sharedPreferences = null;
         try {
             sharedPreferences = getSharedPreferences();

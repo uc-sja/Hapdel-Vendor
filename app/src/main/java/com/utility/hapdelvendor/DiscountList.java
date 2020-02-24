@@ -141,6 +141,12 @@ public class DiscountList extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
+
     public void fetchDiscounts() {
 
         final ProgressDialog progressDialog = new ProgressDialog(DiscountList.this, R.style.MyDialogTheme);

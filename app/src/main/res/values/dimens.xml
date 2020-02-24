@@ -5,4 +5,6 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="thin_margin">2dp</dimen>
+    <dimen name="list_1line_item_padding">5dp</dimen>
 </resources>

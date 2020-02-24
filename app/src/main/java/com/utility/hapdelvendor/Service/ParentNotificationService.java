@@ -27,8 +27,6 @@ import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.LocalStorage;
 import java.util.Date;
 
-import static android.text.TextUtils.isEmpty;
-
 public class ParentNotificationService extends FirebaseMessagingService {
     private static final String TAG = "ParentNotifyService";
     private static final String CHANNEL_1_ID = "channe1";
@@ -36,7 +34,7 @@ public class ParentNotificationService extends FirebaseMessagingService {
 
 
     public static int general_notification_count = 0;
-    public static int ride_notification_count = 0;
+    public static int order_notification_count = 0;
 
 
     private NotificationManager notificationManager;
@@ -58,7 +56,7 @@ public class ParentNotificationService extends FirebaseMessagingService {
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "onCreate: gen "+ general_notification_count+"  "+ ride_notification_count+"  local ride"+LocalStorage.getRideNotificationCount()+"  "+LocalStorage.getNotificationCount());
+        Log.d(TAG, "onCreate: gen "+ general_notification_count+"  "+ order_notification_count +"  local ride"+LocalStorage.getOrderNotificationCount()+"  "+LocalStorage.getNotificationCount());
         super.onCreate();
         broadcaster = LocalBroadcastManager.getInstance(this);
 
@@ -66,7 +64,7 @@ public class ParentNotificationService extends FirebaseMessagingService {
         //so that we can count all the unread notifications after the activity is retarted
 
         general_notification_count = LocalStorage.getNotificationCount();
-        ride_notification_count = LocalStorage.getRideNotificationCount();
+        order_notification_count = LocalStorage.getOrderNotificationCount();
 
     }
 
@@ -75,10 +73,10 @@ public class ParentNotificationService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         Log.d(TAG, " : "+remoteMessage.toString());
         Intent intent = new Intent("MyData");
-        Log.d(TAG, "onMessageReceived: "+remoteMessage.getData().get("distance"));
-        intent.putExtra("jobId", remoteMessage.getData().get("body"));
-        intent.putExtra("distance", remoteMessage.getData().get("distance"));
-        intent.putExtra("price", remoteMessage.getData().get("price"));
+        Log.d(TAG, "onMessageReceived: "+remoteMessage.getData().get("isOrder"));
+        intent.putExtra("isOrder", remoteMessage.getData().get("isOrder"));
+        intent.putExtra("body", remoteMessage.getData().get("body"));
+        intent.putExtra("title", remoteMessage.getData().get("title"));
         /*
 
         broadcast is used to communicate between service and activity as
@@ -87,7 +85,7 @@ public class ParentNotificationService extends FirebaseMessagingService {
 
         */
 
-        showNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("body"), remoteMessage.getData().get("distance"), remoteMessage.getData().get("price"));
+        showNotification(remoteMessage.getData().get("isOrder"),remoteMessage.getData().get("title"),remoteMessage.getData().get("body"));
 
         broadcaster.sendBroadcast(intent); // sending broadcast after shownotification method because,  value of i is increased
         // in shownotification method. And when onReceive method of broadcast receiver
@@ -95,32 +93,28 @@ public class ParentNotificationService extends FirebaseMessagingService {
     }
 
 
-    private void showNotification(String title, String body, String distance, String price) {
+    private void showNotification(String isOrder, String title, String body) {
         //ride notification
         PendingIntent pendingIntent;
-        Boolean rideNotification = false;
-        if(body != null && !isEmpty(body) && distance!=null && !isEmpty(distance) && price != null && !isEmpty(price)){
-            ride_notification_count++;
-            rideNotification = true;
-            LocalStorage.setRideNotificationCount(ride_notification_count);
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("jobId", body);
-            intent.putExtra("distance", distance);
-            intent.putExtra("price", price);
+        Boolean orderNotification = false;
+        if(isOrder != null && isOrder.equalsIgnoreCase("y")){
+            order_notification_count++;
+            orderNotification = true;
 
-            Log.d(TAG, "showNotification: "+body+" " +distance+" "+price);
+            LocalStorage.setOrderNotificationCount(order_notification_count);
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("isOrder", isOrder);
 
             pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
             //general notification
         } else {
 
-            rideNotification = false;
+            orderNotification = false;
 
             general_notification_count++;
             LocalStorage.setNotificationCount(general_notification_count);
             Intent intent = new Intent(this, NotificationActivity.class);
-            Log.d(TAG, "showNotification: "+body+" " +distance+" "+price);
 
             pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
         }
@@ -131,7 +125,7 @@ public class ParentNotificationService extends FirebaseMessagingService {
         NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
         bigText.bigText("Tap to know more");
         bigText.setBigContentTitle(title);
-        bigText.setSummaryText("New Task");
+        bigText.setSummaryText(body);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.ic_address)
@@ -162,7 +156,7 @@ public class ParentNotificationService extends FirebaseMessagingService {
         Notification notification = mBuilder.build();
 
         //Checkking if notification is for ride or general notification;
-        if(rideNotification){
+        if(orderNotification){
             Log.d(TAG, "showNotification: ride notification ");
             Uri ride_sound = Uri.parse("android.resource://"+ getApplicationContext().getPackageName()+"/"+R.raw.apx_tone_alert);
             try {

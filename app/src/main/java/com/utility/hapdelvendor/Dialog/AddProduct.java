@@ -80,7 +80,7 @@ public class AddProduct extends Dialog {
         update_title = findViewById(R.id.update_title);
         stock_edit_layout = findViewById(R.id.stock_edit_layout);
 
-        autoSuggestAdapter = new com.utility.hapdelvendor.Utils.AutoSuggestAdapter(context, android.R.layout.simple_spinner_dropdown_item, new ArrayList());
+        autoSuggestAdapter = new com.utility.hapdelvendor.Utils.AutoSuggestAdapter(context, R.layout.simple_spinner_dropdown_item, new ArrayList());
         search_bar.setAdapter(autoSuggestAdapter);
 
         search_bar.addTextChangedListener(new TextWatcher() {
@@ -216,9 +216,9 @@ public class AddProduct extends Dialog {
                     if (responseModel.getResult().equals("success")){ //very important conditon
                         Toast.makeText(context, responseModel.getMsg(), Toast.LENGTH_SHORT).show();
                         if((Activity)context instanceof OpenProductActivity){
-                            ((OpenProductActivity)context).fetchProducts(((OpenProductActivity)context).selectedDatum, "1");
+                            ((OpenProductActivity)context).fetchProducts(((OpenProductActivity)context).selectedDatum, ((OpenProductActivity)context).current_keyword, "1");
                         } else if((Activity)context instanceof AllProducts){
-                            ((AllProducts)context).fetchProducts(null, "1");
+                            ((AllProducts)context).fetchProducts(((AllProducts)context).current_keyword, "1");
                         }
                         dismiss();
                     }else{
@@ -245,13 +245,17 @@ public class AddProduct extends Dialog {
         String stock_count = set_stock_count.getText().toString();
         String product_price = set_product_price.getText().toString();
 
-        try {
-            int stock = Integer.valueOf(stock_count.trim());
-        } catch (NumberFormatException e) {
-            Log.d(TAG, "validateInput: "+e.toString());
-            set_stock_count.setError("Kindly enter valid stock count");
-            set_stock_count.requestFocus();
-            return false;
+
+        //We dont set stock in case of service
+        if(current_product.getType().equalsIgnoreCase("product")){
+            try {
+                int stock = Integer.valueOf(stock_count.trim());
+            } catch (NumberFormatException e) {
+                Log.d(TAG, "validateInput: "+e.toString());
+                set_stock_count.setError("Kindly enter valid stock count");
+                set_stock_count.requestFocus();
+                return false;
+            }
         }
 
         try {

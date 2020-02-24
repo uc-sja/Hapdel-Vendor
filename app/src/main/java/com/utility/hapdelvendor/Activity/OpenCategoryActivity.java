@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -79,7 +80,7 @@ public class OpenCategoryActivity extends AppCompatActivity {
     private ImageView cart_icon;
     private TextView slider_msg;
     private Datum parentCategoryDatum;
-    private AppCompatAutoCompleteTextView search_bar;
+    private EditText search_bar;
     private int AUTOCOMPLETE_REQUEST_CODE = 2515;
     private AHBottomNavigation bottomNavigation;
     private FusedLocationProviderClient fusedLocationClient;
@@ -161,6 +162,7 @@ public class OpenCategoryActivity extends AppCompatActivity {
             fetchSubCategories(parentCategoryDatum);
 
             search_bar = findViewById(R.id.search_bar);
+            search_bar.setVisibility(View.GONE);
             search_bar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

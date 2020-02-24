@@ -29,6 +29,9 @@ import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.Model.UserOrderModel.OrderDetailModel.Item;
 import com.utility.hapdelvendor.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -137,6 +140,22 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
 
         holder.product_detail_layout.setVisibility(expanded ? View.VISIBLE : View.GONE);
 
+        if(!isEmpty(item.getService_time())){
+
+            SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat format2 = new SimpleDateFormat("EE, d MMM yyyy hh:mm a");
+
+            holder.service_time_layout.setVisibility(View.VISIBLE);
+            Date date = null;
+            try {
+                date = format1.parse(item.getService_time());
+            } catch (ParseException e) {
+                Log.d(TAG, "onBindViewHolder: " + e.toString());
+                holder.service_time.setText(format2.format(date));
+            }
+        } else {
+           holder.service_time_layout.setVisibility(View.GONE);
+        }
 
     }
 
@@ -316,9 +335,11 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
         private RelativeLayout root_layout;
         ImageView product_img, drop_down_icon, drop_up_icon;
         TextView order_status, order_date, product_name, product_quantity, product_seller, product_price, status_color;
-        TextView vendor_discount, coupon_discount, admin_discount, total_discount, commission, textViewOptions;
+        TextView vendor_discount, coupon_discount, admin_discount, total_discount, commission, textViewOptions, service_time;
 
         LinearLayout product_detail_layout;
+
+        LinearLayout service_time_layout;
 
         public OrderedItemsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -331,6 +352,8 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
             status_color = itemView.findViewById(R.id.status_color);
             drop_down_icon = itemView.findViewById(R.id.dropdown_icon);
             drop_up_icon = itemView.findViewById(R.id.dropup_icon);
+            service_time_layout = itemView.findViewById(R.id.service_time_layout);
+            service_time = itemView.findViewById(R.id.services_time_text);
 
 
             product_detail_layout = itemView.findViewById(R.id.product_detail_layout);

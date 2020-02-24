@@ -2,13 +2,22 @@ package com.utility.hapdelvendor.Activity;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,6 +36,7 @@ import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,6 +58,7 @@ import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.ParentCa
 import com.utility.hapdelvendor.Model.RecentOrderModel.Datum;
 import com.utility.hapdelvendor.Model.RecentOrderModel.RecentOrderModel;
 import com.utility.hapdelvendor.R;
+import com.utility.hapdelvendor.Service.ParentNotificationService;
 import com.utility.hapdelvendor.Utils.BottomNavigation;
 import com.utility.hapdelvendor.Utils.CircularTextView;
 import com.utility.hapdelvendor.Utils.Common;
@@ -61,6 +72,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.text.TextUtils.isEmpty;
 import static com.utility.hapdelvendor.Utils.Common.getApiInstance;
 import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 import static com.utility.hapdelvendor.Utils.Common.hideKeyboard;
@@ -117,6 +129,13 @@ public class HomeActivity extends AppCompatActivity {
     private RecentOrderAdapter recentOrderAdapter;
     private LinearLayoutManager linearLayoutManager;
     private AnyViewIndicator circleIndicator;
+
+
+    private boolean myReceiverIsRegistered = false;
+    private static BroadcastReceiver mMessageReceiver = null;
+    private static boolean firstConnect = true;
+    private static boolean dialogActive;
+    private boolean isWindowActive;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -216,17 +235,172 @@ public class HomeActivity extends AppCompatActivity {
         search_bar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
+                Intent intent = new Intent(HomeActivity.this, AllProducts.class);
                 intent.putExtra("category", "");
                 startActivity(intent);
             }
         });
+
+        mMessageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d(TAG, "aed broadcast ");
+                final ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                final NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
+                if (activeNetInfo != null) {
+
+                    Log.d(TAG, "onReceive: active info");
+
+
+                    //using first connect flag because we want to receive the broadcast only once
+                    //and in previous versions of android onreceive is called multiple number of times simultaneously
+                    //but we need to reset firstConnect to true after a while also so that we receive broadcast updtes in future
+
+                    if(firstConnect) {
+                        firstConnect = false;
+
+//                        final Handler handler = new Handler();
+//                        handler.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                // Do something after 5s = 5000ms
+//                                firstConnect = true;
+//                            }
+//                        }, 1500);
+
+                        String isOrder = intent.getExtras().getString("isOrder");
+                        //                current_job_id = job_id;
+                        //                LocalStorage.setCurrentJobId(getCurrentUser().getId(), job_id);
+
+                        String body = intent.getExtras().getString("body");
+                        String title = intent.getExtras().getString("title");
+
+//                        Log.d(TAG, "onReceive jobid " + job_id +  "price"+ price +" distance" +distance+"  "+isOnRide+"  "+dialogActive);
+
+                        //we are null checking price and distance too below because this is how we diferenciate the notification of type general
+                        //or notification type ride
+                        if (isOrder != null && isOrder.equalsIgnoreCase("y") && body!=null && title!=null  && !dialogActive) {
+                            Log.d(TAG, "brodcast_received: notification received ");
+                            // Customize notification (title, background, typeface)
+                            bottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));
+
+                            // Add or remove notification for each item
+                            bottomNavigation.setNotification(ParentNotificationService.order_notification_count, 1);
+
+                            showRideDialog(HomeActivity.this, "You have received a new job", "Your ride details are", body, title);
+                        } else if (isOrder != null && isOrder.equalsIgnoreCase("y") && body!=null && title!=null) {
+                            Log.d(TAG, "onReceive: on ride notification ");
+                            bottomNavigation.setNotification(ParentNotificationService.order_notification_count, 1);
+                        } else {
+                            Log.d(TAG, "onReceive: general notification ");
+                            //GENERAL NOTIFICATION
+                            bottomNavigation.setNotification(ParentNotificationService.general_notification_count, 3);
+                        }
+
+                    } else {
+                        firstConnect = true;
+                    }
+                }
+
+            }
+
+            ;
+        };
+
     }
+
+    private void showRideDialog(HomeActivity homeActivity, String s, String your_ride_details_are, String body, String title) {
+        Log.d(TAG, "showRideDialog: is called");
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Dialog dialog = new Dialog(new ContextThemeWrapper(HomeActivity.this, R.style.DialogSlideAnim));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.setTitle("Hapdel");
+        //before inflating the custom alert dialog layout, we will getItemType the current activity viewgroup
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.my_ride_dialog, null, false);
+        TextView dialog_subt = dialogView.findViewById(R.id.dialog_subtitle);
+        TextView dialog_details = dialogView.findViewById(R.id.dialog_details);
+
+        TextView distance_text = dialogView.findViewById(R.id.distance);
+        TextView price_text = dialogView.findViewById(R.id.price);
+
+        dialog_details.setMovementMethod(new ScrollingMovementMethod());
+        Button buttonOk = dialogView.findViewById(R.id.buttonOk);
+        Button buttonCancel = dialogView.findViewById(R.id.buttonCancel);
+        dialog_subt.setText(title);
+        dialog_details.setText(body);
+
+//
+//        price_text.setText(getString(R.string.rupee_icon) + price);
+//        distance_text.setText(distance);
+        dialog.setContentView(dialogView);
+
+        buttonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                dialogActive = false;
+                notificationManager.cancelAll();
+            }
+        });
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                notificationManager.cancelAll();
+            }
+        });
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                dialogActive = false;
+            }
+        });
+
+        if (isWindowActive) {
+            dialog.show();
+            dialogActive = true;
+        } else {
+            Log.d(TAG, "showRideDialog: activity is finishing");
+        }
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult: ");
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isWindowActive = false;
+        Log.d(TAG, "state onPause: ");
+        if (myReceiverIsRegistered) {
+            unregisterReceiver(mMessageReceiver);
+            myReceiverIsRegistered = false;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        backPressCount = 0;
+        fetchHomePage();
+
+        isWindowActive = true;
+        Log.d(TAG, "state onResume: ");
+        if (!myReceiverIsRegistered) {
+            dialogActive = false;
+            LocalBroadcastManager.getInstance(HomeActivity.this).registerReceiver(mMessageReceiver, new IntentFilter("MyData"));
+        }
     }
 
     private void fetchHomePage() {
@@ -235,6 +409,7 @@ public class HomeActivity extends AppCompatActivity {
 //        fetchRecentOrder();
         i = 1;
     }
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -392,14 +567,6 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onResume() {
-        Log.d(TAG, "onResume: home ");
-        super.onResume();
-        backPressCount = 0;
-        fetchHomePage();
-        Log.d(TAG, "onResume: else currentcity" + Common.currentCity);
-    }
 
 
     private void showErrorMessage(String s) {

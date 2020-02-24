@@ -131,7 +131,7 @@ public class TabbedViewAdapter extends RecyclerView.Adapter<TabbedViewAdapter.Ta
             //Reinitializing total products list on tab click
             ((OpenProductActivity) context).setSelectedDatum(datum);
             ((OpenProductActivity) context).intializeEnlessScrolling();
-            ((OpenProductActivity) context).fetchProducts(datum ,"1");
+            ((OpenProductActivity) context).fetchProducts(datum ,"", "1");
         }
     }
 

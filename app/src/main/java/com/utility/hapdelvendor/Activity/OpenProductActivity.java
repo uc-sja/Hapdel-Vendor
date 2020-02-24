@@ -8,11 +8,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -126,7 +128,7 @@ public class OpenProductActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, String>> parentItems;
     private ArrayList<ArrayList<HashMap<String, String>>> childItems;
 
-    private AppCompatAutoCompleteTextView search_bar;
+    private EditText search_bar;
     private String tabCategoryId;
     private LinearLayoutManager productLayoutManager;
     private boolean isScrolling,firstLoad;
@@ -141,6 +143,7 @@ public class OpenProductActivity extends AppCompatActivity {
     private AHBottomNavigation bottomNavigation;
     private Subcategory tabCategory;
     private SpeedDialView speedDialView;
+    public String current_keyword;
 
 
     public void setSelectedDatum(com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum selectedDatum) {
@@ -198,9 +201,22 @@ public class OpenProductActivity extends AppCompatActivity {
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                 }
 
+                private Handler handler = new Handler();
+                private long DELAY = 500;
+
+                private Runnable scheduledTask = new Runnable() {
+                    @Override
+                    public void run() {
+                        current_keyword = search_bar.getText().toString();
+                        fetchProducts(selectedDatum, current_keyword, "1");
+
+                    }
+                };
+
                 @Override
                 public void afterTextChanged(Editable s) {
-                    searchItem(search_bar.getText().toString(), selectedDatum);
+                    handler.removeCallbacks(scheduledTask);
+                    handler.postDelayed(scheduledTask, DELAY);
                 }
             });
         }
@@ -331,7 +347,7 @@ public class OpenProductActivity extends AppCompatActivity {
                         //Since we cannot assign a variable to final int i
                         Log.d(TAG, "onScrolled: if " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
 
-                        fetchProducts(selectedDatum, ++page + "");
+                        fetchProducts(selectedDatum,  current_keyword, ++page + "");
                         Log.d(TAG, "onScrolled: page " + page);
                     } else {
                         Log.d(TAG, "onScrolled: else " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
@@ -342,61 +358,6 @@ public class OpenProductActivity extends AppCompatActivity {
         }
     }
 
-
-    private void searchItem(final String keyword, com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum categoryId) {
-        Call<SearchResultModel> searchResultModelCall = getApiInstance().searchItem(getCurrentUser().getId(), getCurrentUser().getAccessToken(), categoryId.getId(), keyword);
-        hideErrorMessage();
-//      shimmerRecycler.showShimmerAdapter();
-        searchResultModelCall.enqueue(new Callback<SearchResultModel>() {
-            @Override
-            public void onResponse(Call<SearchResultModel> call, Response<SearchResultModel> response) {
-//              shimmerRecycler.hideShimmerAdapter();
-                if(!response.isSuccessful()){
-                    Toast.makeText(OpenProductActivity.this, ""+response.message(), Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "onResponse: fail "+response.code());
-                    return;
-                }
-                Log.d(TAG, "onResponse: success"+response.code()+response.body());
-                if(response.body()!=null ){
-                    SearchResultModel searchResultModel = null;
-                    try {
-                        searchResultModel = response.body();
-                    } catch (Exception e) {
-                        Toast.makeText(OpenProductActivity.this, "Error in response", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    String content="";
-                    Log.d(TAG, "onResponse: response msg"+response.body().getResult()+"  msg  ");
-                    if (searchResultModel.getResult().equals("success")){ //very important conditon
-                        Log.d(TAG, "onResponse: success");
-                        if(searchResultModel.getData()!=null && searchResultModel.getData().size()>0){
-                            hideErrorMessage();
-                            productAdapter.updateItems(searchResultModel.getData());
-                        } else {
-                            showErrorMessage("No Search Results found for keyword "+"\""+keyword+"\"", true);
-//                            Toast.makeText(OpenProductActivity.this, "No Search Results", Toast.LENGTH_SHORT).show();
-                        }
-                    }else{
-                        content+= searchResultModel.getMsg();
-                        Toast.makeText(OpenProductActivity.this, content, Toast.LENGTH_SHORT).show();
-                    }
-
-                    Log.d(TAG, "onResponse: search item res"+content);
-                } else {
-                    Toast.makeText(OpenProductActivity.this, "Invalid response from server", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SearchResultModel> call, Throwable t) {
-//                shimmerRecycler.hideShimmerAdapter();
-                Toast.makeText(OpenProductActivity.this, ""+t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-
-    }
 
     @Override
     protected void onResume() {
@@ -485,7 +446,7 @@ public class OpenProductActivity extends AppCompatActivity {
 
     }
 
-    public void fetchProducts(final com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum datum, final String page) {
+    public void fetchProducts(final com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum datum, final String keyword, String page) {
         //needed while fetching filters
         Log.d(TAG, "fetchProducts: page "+page);
         if(page.equalsIgnoreCase("1")){
@@ -500,7 +461,7 @@ public class OpenProductActivity extends AppCompatActivity {
         dialog = null;
 
         Log.d(TAG, "fetchProducts: product_id "+ datum.getId());
-        Call<ProducModel> productModel = getApiInstance().fetchProducts(getCurrentUser().getId(), getCurrentUser().getAccessToken(), datum.getId(), page);
+        Call<ProducModel> productModel = getApiInstance().fetchProducts(getCurrentUser().getId(), getCurrentUser().getAccessToken(), datum.getId(), keyword, page);
         shimmerRecycler.showShimmerAdapter();
 
         productModel.enqueue(new Callback<ProducModel>() {

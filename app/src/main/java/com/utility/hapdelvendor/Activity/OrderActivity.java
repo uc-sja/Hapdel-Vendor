@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -49,7 +50,7 @@ public class OrderActivity extends AppCompatActivity {
     ImageView cart_icon;
     private CircularTextView cart_badge;
     private Toolbar tl;
-    private AppCompatAutoCompleteTextView search_bar;
+    private EditText search_bar;
     private static final String TAG = "OrderActivity";
     private RecyclerView user_order_view;
     private RecentOrderAdapter recentOrderAdapter;
@@ -120,6 +121,7 @@ public class OrderActivity extends AppCompatActivity {
 //        }
 
         search_bar = findViewById(R.id.search_bar);
+        search_bar.setFocusable(false);
         search_bar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

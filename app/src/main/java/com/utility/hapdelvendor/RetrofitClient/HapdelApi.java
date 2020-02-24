@@ -57,7 +57,9 @@ public interface HapdelApi {
             @Field("user_id") String userId,
             @Field("access_token") String accessToken,
             @Field("category_id") String category_id,
+            @Field("search") String keyword,
             @Field("page") String page
+
     );
 
     @FormUrlEncoded
@@ -214,7 +216,7 @@ public interface HapdelApi {
             @Field("access_token") String access_token
     );
 
-    
+
 
 
     @FormUrlEncoded

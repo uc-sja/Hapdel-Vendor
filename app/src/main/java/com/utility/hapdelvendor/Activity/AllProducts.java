@@ -12,9 +12,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,6 +32,7 @@ import com.utility.hapdelvendor.Adapter.ProductsAdapter;
 import com.utility.hapdelvendor.Dialog.AddProduct;
 import com.utility.hapdelvendor.Model.ProducModel.ProducModel;
 import com.utility.hapdelvendor.Model.ProducModel.Product;
+import com.utility.hapdelvendor.Model.SearchModel.SearchResultModel;
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.BottomNavigation;
 import com.utility.hapdelvendor.Utils.Common;
@@ -35,6 +40,8 @@ import com.utility.hapdelvendor.Utils.MovableFloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,6 +79,8 @@ public class AllProducts extends AppCompatActivity {
     private int scrolledOutItems,currentItems,totalItems;
     private int page = 1;
     MovableFloatingActionButton add_btn;
+    private EditText search_bar;
+    public String current_keyword="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +114,7 @@ public class AllProducts extends AppCompatActivity {
         productLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         products_view.setLayoutManager(productLayoutManager);
         products_view.setAdapter(productAdapter);
+        search_bar = findViewById(R.id.search_bar);
 
         shimmerRecycler = (ShimmerRecyclerView) findViewById(R.id.shimmer_recycler_view);
 
@@ -131,26 +141,26 @@ public class AllProducts extends AppCompatActivity {
                 error_image.playAnimation();
             }
         });
-
-        products_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                currentItems = productLayoutManager.getChildCount();
-                totalItems = productLayoutManager.getItemCount();
-                scrolledOutItems = productLayoutManager.findFirstVisibleItemPosition();
-                Log.d(TAG, "onScrolled: " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
-                if (!isScrolling && totalItems == scrolledOutItems + currentItems) {
-                    //Since we cannot assign a variable to final int i
-                    Log.d(TAG, "onScrolled: if " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
-
-                    fetchProducts(null, ++page + "");
-                    Log.d(TAG, "onScrolled: page " + page);
-                } else {
-                    Log.d(TAG, "onScrolled: else " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
-                }
-            }
-        });
+//
+//        products_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                currentItems = productLayoutManager.getChildCount();
+//                totalItems = productLayoutManager.getItemCount();
+//                scrolledOutItems = productLayoutManager.findFirstVisibleItemPosition();
+//                Log.d(TAG, "onScrolled: " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
+//                if (!isScrolling && totalItems == scrolledOutItems + currentItems) {
+//                    //Since we cannot assign a variable to final int i
+//                    Log.d(TAG, "onScrolled: if " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
+//
+//                    fetchProducts(current_keyword, ++page + "");
+//                    Log.d(TAG, "onScrolled: page " + page);
+//                } else {
+//                    Log.d(TAG, "onScrolled: else " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
+//                }
+//            }
+//        });
 
         add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,11 +171,42 @@ public class AllProducts extends AppCompatActivity {
             }
         });
 
-        fetchProducts(null ,"1");
+        search_bar.addTextChangedListener(new TextWatcher() {
+                  @Override
+                  public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                  }
+
+                  @Override
+                  public void onTextChanged(CharSequence s, int start, int before, int count) {
+                  }
+
+
+            private Handler handler=new Handler();
+            private final long DELAY = 500; // milliseconds
+
+            Runnable mFilterTask = new Runnable() {
+                @Override
+                public void run() {
+                    current_keyword = search_bar.getText().toString();
+                    fetchProducts(current_keyword, "1");
+                }
+            };
+
+            @Override
+                  public void afterTextChanged(Editable s) {
+
+                      handler.removeCallbacks(mFilterTask);
+                      handler.postDelayed(mFilterTask, DELAY);
+
+                  }
+              }
+        );
+
+        fetchProducts(current_keyword,"1");
 
     }
 
-    public void fetchProducts(final com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum datum, final String page) {
+    public void fetchProducts(String keyword, final String page) {
         //needed while fetching filters
         Log.d(TAG, "fetchProducts: page "+page);
         if(page.equalsIgnoreCase("1")){
@@ -174,7 +215,7 @@ public class AllProducts extends AppCompatActivity {
             total_products_list = new ArrayList<>();
         }
 
-        Call<ProducModel> productModel = getApiInstance().fetchProducts(getCurrentUser().getId(), getCurrentUser().getAccessToken(), null, page);
+        Call<ProducModel> productModel = getApiInstance().fetchProducts(getCurrentUser().getId(), getCurrentUser().getAccessToken(), null, keyword, page);
         shimmerRecycler.showShimmerAdapter();
 
         productModel.enqueue(new Callback<ProducModel>() {
@@ -216,12 +257,12 @@ public class AllProducts extends AppCompatActivity {
                         } else {
                             isScrolling = true;
                             if(firstLoad){
-                                showErrorMessage("There are no products under this category", true);
+                                showErrorMessage("There are no products under this category");
                             }
                         }
 
                     } else {
-                        showErrorMessage(productModel.getMsg(), true);
+                        showErrorMessage(productModel.getMsg());
                         Log.d(TAG, "onResponse: "+ productModel.getMsg());
                         Toast.makeText(AllProducts.this, ""+ productModel.getMsg(), Toast.LENGTH_SHORT).show();
                     }
@@ -230,7 +271,7 @@ public class AllProducts extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ProducModel> call, Throwable t) {
-                showErrorMessage("There are no products under this category", true);
+                showErrorMessage("There are no products under this category");
                 shimmerRecycler.hideShimmerAdapter();
                 Log.d(TAG, "onFailure: "+t.getLocalizedMessage());
             }
@@ -243,7 +284,7 @@ public class AllProducts extends AppCompatActivity {
         return super.onSupportNavigateUp();
     }
 
-    private void showErrorMessage(String s, Boolean isTabsFetched) {
+    private void showErrorMessage(String s) {
         error_msg_layout.setVisibility(View.VISIBLE);
         error_msg.setText(s);
         open_product_layout.setVisibility(View.GONE);
