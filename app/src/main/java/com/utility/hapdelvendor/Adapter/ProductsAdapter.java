@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.squareup.picasso.Picasso;
+import com.utility.hapdelvendor.Activity.AllProducts;
 import com.utility.hapdelvendor.Activity.OpenProductActivity;
 import com.utility.hapdelvendor.Dialog.AddProduct;
 import com.utility.hapdelvendor.Model.ProducModel.Product;
@@ -66,7 +67,13 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         final com.utility.hapdelvendor.Model.ProducModel.Product datum = productsList.get(i);
         productViewHolder.product_name.setText(datum.getProductName());
         productViewHolder.product_desc.setText(datum.getShortDescription() == null || isEmpty(datum.getShortDescription()) ? "No description available" : datum.getShortDescription());
-        productViewHolder.store_name.setText("Stock Available: " + datum.getStocks());
+        if(datum.getType().equalsIgnoreCase("service")){
+            productViewHolder.store_name.setVisibility(View.GONE);
+        } else {
+            productViewHolder.store_name.setVisibility(View.VISIBLE);
+            productViewHolder.store_name.setText("Stock Available: " + datum.getStocks());
+
+        }
 
         //initializing
         productViewHolder.edit_btn.setVisibility(View.VISIBLE);
@@ -128,8 +135,13 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         productViewHolder.edit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AddProduct addProduct = null;
 
-                AddProduct addProduct = new AddProduct(context, ((OpenProductActivity) context).selectedDatum, "edit");
+                if((Activity)context instanceof AllProducts) {
+                    addProduct = new AddProduct(context, null, "edit");
+                } else if((Activity)context instanceof OpenProductActivity){
+                    addProduct = new AddProduct(context, ((OpenProductActivity) context).selectedDatum, "edit");
+                }
                 addProduct.setProduct(datum);
                 addProduct.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                 addProduct.show();
@@ -139,8 +151,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     }
     private void showAlertDialog(Product datum) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-        alertDialog.setTitle("Confirm Logout");
-        alertDialog.setMessage("Are you sure to logout from the app?");
+        alertDialog.setTitle("Delete Products");
+        alertDialog.setMessage("Are you sure to remove this product?");
 //        alertDialog.setIcon(R.drawable.ic_logout);
 
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {

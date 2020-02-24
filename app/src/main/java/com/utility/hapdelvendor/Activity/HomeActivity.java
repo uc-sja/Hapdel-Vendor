@@ -101,7 +101,7 @@ public class HomeActivity extends AppCompatActivity {
     private Handler handler;
     private static final int TRIGGER_AUTO_COMPLETE = 100;
     private static final long AUTO_COMPLETE_DELAY = 300;
-    private com.utility.hapdelvendorvendor.Utils.AutoSuggestAdapter autoSuggestAdapter;
+    private com.utility.hapdelvendor.Utils.AutoSuggestAdapter autoSuggestAdapter;
     private NestedScrollView nested_scroll_view;
     private int i = 1;
     private int scrolledOutItems, currentItems, totalItems;
@@ -335,7 +335,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void fetchMainCategories() {
         Log.d(TAG, "fetchMainCategories: ");
-        Call<ParentCategoryModel> categoryModel = getApiInstance().fetchParentCategory("1", "");
+        Call<ParentCategoryModel> categoryModel = getApiInstance().fetchParentCategory(getCurrentUser().getId(), getCurrentUser().getAccessToken());
         shimmerRecycler.showShimmerAdapter();
         categoryModel.enqueue(new Callback<ParentCategoryModel>() {
             @Override
@@ -372,7 +372,6 @@ public class HomeActivity extends AppCompatActivity {
                         } else {
                             showErrorMessage("There are not categories yet");
                             Log.d(TAG, "onResponse: empty result ");
-                            Toast.makeText(HomeActivity.this, "Empty response from server", Toast.LENGTH_SHORT).show();
                         }
 
                     } else {

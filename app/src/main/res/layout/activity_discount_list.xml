@@ -22,7 +22,7 @@
         <TextView
             android:id="@+id/discount_title_text"
             android:layout_width="wrap_content"
-            android:textSize="@dimen/_15sdp"
+            android:textSize="@dimen/_12ssp"
             android:text="Discount List"
             android:textColor="@color/colorWhite"
             android:layout_height="wrap_content"/>

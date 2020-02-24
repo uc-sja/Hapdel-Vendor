@@ -129,24 +129,24 @@
                                 android:layout_width="@dimen/_100sdp"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentStart="true"
-                                android:theme="@style/TextInputCustomStyle"
                                 android:textColorHint="@color/medium_gray"
-                                android:minWidth="@dimen/_120sdp"
-                                >
+                                android:theme="@style/TextInputCustomStyle">
 
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/min_order"
+                                    android:id="@+id/start_disc"
                                     android:layout_width="match_parent"
-                                    android:hint="Min order amount"
                                     android:layout_height="wrap_content"
-                                    android:paddingHorizontal="@dimen/_2sdp"
-                                    android:maxLines="1"
-                                    android:digits="0123456789."
-                                    android:inputType="numberDecimal"
+                                    android:focusable="false"
+                                    android:hint="Start date"
                                     android:textAlignment="center"
+                                    android:digits="0123456789."
+                                    android:paddingHorizontal="@dimen/_2sdp"
+                                    android:inputType="numberDecimal"
+                                    android:maxLines="1"
                                     android:textSize="@dimen/_12ssp" />
 
                             </com.google.android.material.textfield.TextInputLayout>
+
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="@dimen/_100sdp"
@@ -166,6 +166,38 @@
                                     android:paddingHorizontal="@dimen/_2sdp"
                                     android:inputType="numberDecimal"
                                     android:maxLines="1"
+                                    android:textSize="@dimen/_12ssp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                        </RelativeLayout>
+
+
+                        <RelativeLayout
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="@dimen/_100sdp"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:theme="@style/TextInputCustomStyle"
+                                android:textColorHint="@color/medium_gray"
+                                android:minWidth="@dimen/_120sdp"
+                                >
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/min_order"
+                                    android:layout_width="match_parent"
+                                    android:hint="Min order amount"
+                                    android:layout_height="wrap_content"
+                                    android:paddingHorizontal="@dimen/_2sdp"
+                                    android:maxLines="1"
+                                    android:digits="0123456789."
+                                    android:inputType="numberDecimal"
+                                    android:textAlignment="center"
                                     android:textSize="@dimen/_12ssp" />
 
                             </com.google.android.material.textfield.TextInputLayout>

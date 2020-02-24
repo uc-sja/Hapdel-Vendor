@@ -84,25 +84,20 @@
 
         </RelativeLayout>
 
-        <com.leinardi.android.speeddial.SpeedDialOverlayLayout
-            android:id="@+id/overlay"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-
-        <com.leinardi.android.speeddial.SpeedDialView
-            android:id="@+id/speedDial"
-            android:layout_alignParentEnd="true"
-            android:layout_above="@+id/bottom_navigation"
+        <com.utility.hapdelvendor.Utils.MovableFloatingActionButton
+            android:id="@+id/add_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            app:sdMainFabClosedIconColor="@color/colorWhite"
-            app:sdMainFabOpenedIconColor="@color/colorWhite"
-            app:sdMainFabOpenedBackgroundColor="@color/colorPrimary"
-            app:sdMainFabClosedBackgroundColor="@color/colorPrimary"
-            app:sdMainFabOpenedSrc="@drawable/ic_collapse"
-            app:sdMainFabClosedSrc="@drawable/ic_menu" />
+            android:visibility="gone"
+            android:src="@drawable/add_btn"
+            app:useCompatPadding="true"
+            android:layout_above="@+id/bottom_navigation"
+            android:layout_margin="@dimen/_10sdp"
+            android:backgroundTint="@color/colorPrimary"
+            app:rippleColor="@null"
+            app:backgroundTint="@null"
+            android:layout_alignParentEnd="true"/>
+
 
         <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
             android:id="@+id/bottom_navigation"
@@ -111,6 +106,7 @@
             android:layout_alignParentBottom="true"
 
             />
+
     </RelativeLayout>
 
     <RelativeLayout

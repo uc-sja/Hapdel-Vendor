@@ -31,7 +31,19 @@ public class Datum {
     @Expose
     private String expiryDate;
 
+    @SerializedName("start_date")
+    @Expose
+    private String startDate;
+
     private boolean isExpanded;
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
 
     public boolean isExpanded() {
         return isExpanded;

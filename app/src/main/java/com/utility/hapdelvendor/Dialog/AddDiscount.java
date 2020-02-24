@@ -20,7 +20,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.utility.hapdelvendor.Activity.OpenProductActivity;
 import com.utility.hapdelvendor.DiscountList;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum;
-import com.utility.hapdelvendor.Model.ProducModel.Product;
 import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.Common;
@@ -45,13 +44,13 @@ public class AddDiscount extends Dialog {
     private final String updateType;
     private Context context;
     private Datum selected_category;
-    private TextInputEditText set_discount, max_discount, min_order, expiry_disc;
+    private TextInputEditText set_discount, max_discount, min_order, expiry_disc, start_disc;
     private Button submit_result;
     private LinearLayout disc_layout;
     private static final String TAG = "AddDiscount";
 
     private long time;
-    private String dateTimeText;
+    private String endDateTimeText, startDateTimeText;
     private TextView update_title;
     private com.utility.hapdelvendor.Model.DiscountModel.Datum current_discount = null;
     private SimpleDateFormat originalFormatter;
@@ -75,6 +74,7 @@ public class AddDiscount extends Dialog {
         max_discount = findViewById(R.id.max_discount);
         min_order = findViewById(R.id.min_order);
         expiry_disc = findViewById(R.id.expiry_disc);
+        start_disc = findViewById(R.id.start_disc);
 
         update_title = findViewById(R.id.update_title);
         submit_result = findViewById(R.id.submit_result);
@@ -84,7 +84,14 @@ public class AddDiscount extends Dialog {
         expiry_disc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dateTimePickerInit();
+                dateTimePickerInit("expiry");
+            }
+        });
+
+        start_disc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dateTimePickerInit("start");
             }
         });
 
@@ -114,22 +121,24 @@ public class AddDiscount extends Dialog {
         max_discount.setText(current_discount.getMaxDiscount());
         min_order.setText(current_discount.getMinOrder());
 
-        dateTimeText = current_discount.getExpiryDate();
+        endDateTimeText = current_discount.getExpiryDate();
+        startDateTimeText = current_discount.getStartDate();
+
         Date date = null;
         try {
             date = originalFormatter.parse(current_discount.getExpiryDate());
         } catch (ParseException e) {
             Log.d(TAG, "initializeDiscount: "+e.toString());
-            expiry_disc.setText(newFormatter.format(date));
             return;
         }
 
         expiry_disc.setText(newFormatter.format(date));
+        start_disc.setText(newFormatter.format(date));
 
     }
 
 
-    private void dateTimePickerInit() {
+    private void dateTimePickerInit(String dateType) {
         boolean isDateTimePicked = false;
         final String dateTime = "";
         final Calendar newCalendar = Calendar.getInstance();
@@ -160,13 +169,18 @@ public class AddDiscount extends Dialog {
                 formattedDateTime = newFormatter.format(date);
 
                 //setting selected date globally
-                dateTimeText = selectedDateTime;
 
                 Log.d(TAG, "onClick: inactive "+selectedDateTime);
 
-                expiry_disc.setText(formattedDateTime);
-                expiry_disc.setError(null);
-
+                if(dateType.equalsIgnoreCase("expiry")){
+                    endDateTimeText = selectedDateTime;
+                    expiry_disc.setText(formattedDateTime);
+                    expiry_disc.setError(null);
+                } else if(dateType.equalsIgnoreCase("start")){
+                    startDateTimeText = selectedDateTime;
+                    start_disc.setText(formattedDateTime);
+                    start_disc.setError(null);
+                }
                 alertDialog.dismiss();
 
             }
@@ -185,7 +199,7 @@ public class AddDiscount extends Dialog {
                 progressDialog.show();
             }
 
-            Call<ResponseModel> responseModelCall = getApiInstance().addDiscount(getCurrentUser().getId(), getCurrentUser().getAccessToken(), selected_category.getId(),  set_discount.getText().toString(), dateTimeText, max_discount.getText().toString(), min_order.getText().toString(), current_discount==null?null:current_discount.getId());
+            Call<ResponseModel> responseModelCall = getApiInstance().addDiscount(getCurrentUser().getId(), getCurrentUser().getAccessToken(), selected_category.getId(),  set_discount.getText().toString(), endDateTimeText, max_discount.getText().toString(), min_order.getText().toString(), current_discount==null?null:current_discount.getId());
             responseModelCall.enqueue(new Callback<ResponseModel>() {
                 @Override
                 public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
@@ -247,7 +261,7 @@ public class AddDiscount extends Dialog {
                 return false;
             }
 
-            if(textInputEditText.getId() != R.id.expiry_disc){
+            if(textInputEditText.getId() != R.id.expiry_disc & textInputEditText.getId() != R.id.start_disc){
                 try {
                     double value = Double.parseDouble(textInputEditText.getText().toString().trim());
                     } catch (Exception e){
@@ -258,12 +272,17 @@ public class AddDiscount extends Dialog {
                 }
             }
 
-        if(dateTimeText == null || isEmpty(dateTimeText)){
+        if(endDateTimeText == null || isEmpty(endDateTimeText)){
             expiry_disc.requestFocus();
             expiry_disc.setError("Invalid expiry date");
             return false;
         }
-
+        Log.d(TAG, "validateInput:startDateTimeText "+startDateTimeText);
+        if(startDateTimeText == null || isEmpty(startDateTimeText)){
+            start_disc.requestFocus();
+            start_disc.setError("Invalid start date");
+            return false;
+        }
         return true;
 
     }

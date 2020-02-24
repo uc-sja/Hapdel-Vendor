@@ -793,8 +793,6 @@ public class SignUpActivity extends AppCompatActivity {
 //            }
 //        });
 
-
-
         final String mobileNumber = phone_edit.getText().toString().substring(3);
 
         RequestBody full_name_edit_body = RequestBody.create(MediaType.parse("text/plain"), full_name_edit.getText().toString());
@@ -832,7 +830,7 @@ public class SignUpActivity extends AppCompatActivity {
                         Log.d(TAG, "onResponse: registration  success");
                         Toast.makeText(SignUpActivity.this, "" + responseModel.getMsg(), Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "onResponse: success upload images");
-                        fetchOtpforMobile(mobileNumber);
+                        finish();
                     } else {
                         content += responseModel.getMsg();
                         Log.d(TAG, "onResponse: invalid response" + content);

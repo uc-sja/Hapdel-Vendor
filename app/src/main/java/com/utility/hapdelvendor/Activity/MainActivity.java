@@ -26,10 +26,8 @@ public class MainActivity extends AppCompatActivity {
         //for testing
 //        LocalStorage.setUser(null);
         if (LocalStorage.getUser() != null) {
-//            LocalStorage.storeString("cartItems"+ Common.getCurrentUser().getId(), null);
-            finish();
             startActivity(new Intent(this, HomeActivity.class));
-            fileList();
+            finish();
         } else {
             startActivity(new Intent(this, LoginActivity.class));
             finish();

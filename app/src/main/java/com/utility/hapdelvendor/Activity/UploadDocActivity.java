@@ -91,7 +91,6 @@ public class UploadDocActivity extends AppCompatActivity {
     private boolean logo_updated = false;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,7 +103,6 @@ public class UploadDocActivity extends AppCompatActivity {
             getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimaryGreen));
             Common.setStatusColor(UploadDocActivity.this, R.color.colorPrimaryGreen);
         }
-
 
 
         toolbar = findViewById(R.id.toolbar);
@@ -269,7 +267,7 @@ public class UploadDocActivity extends AppCompatActivity {
 
             if (!isEmpty(datumL.getDocument1())) {
                 doc_one_img.setVisibility(View.VISIBLE);
-                Picasso.get().load(datumL.getDocument1() ).fit().into(doc_one_img);
+                Picasso.get().load(datumL.getDocument1()).fit().into(doc_one_img);
             }
 
             if (!isEmpty(datumL.getDocument2())) {
@@ -306,17 +304,17 @@ public class UploadDocActivity extends AppCompatActivity {
         myAlertDialog.setMessage("How do you want to choose your document?");
 
         myAlertDialog.setPositiveButton("Gallery",
-            new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface arg0, int arg1) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if ((ContextCompat.checkSelfPermission(UploadDocActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) || (ContextCompat.checkSelfPermission(UploadDocActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
-                            ActivityCompat.requestPermissions((Activity) UploadDocActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, FILE_PERMISSION_CODE);
-                            return;
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if ((ContextCompat.checkSelfPermission(UploadDocActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) || (ContextCompat.checkSelfPermission(UploadDocActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+                                ActivityCompat.requestPermissions((Activity) UploadDocActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, FILE_PERMISSION_CODE);
+                                return;
+                            }
                         }
+                        startGalleryIntent();
                     }
-                    startGalleryIntent();
-                }
-            });
+                });
 
         myAlertDialog.setNegativeButton("Camera",
                 new DialogInterface.OnClickListener() {
@@ -365,8 +363,8 @@ public class UploadDocActivity extends AppCompatActivity {
             // place where to store camera taken picture
             photo = createTemporaryFile("picture", ".jpg");
             photo.delete();
-        } catch(Exception e) {
-            Log.d(TAG, "Can't create file to take picture! "+e.toString());
+        } catch (Exception e) {
+            Log.d(TAG, "Can't create file to take picture! " + e.toString());
             Toast.makeText(UploadDocActivity.this, "Please check SD card! Image shot is impossible!", Toast.LENGTH_SHORT);
             return;
         }
@@ -417,9 +415,9 @@ public class UploadDocActivity extends AppCompatActivity {
     }
 
     private File createTemporaryFile(String part, String ext) throws Exception {
-        File tempDir= Environment.getExternalStorageDirectory();
-        tempDir=new File(tempDir.getAbsolutePath()+"/.temp/");
-        if(!tempDir.exists()) {
+        File tempDir = Environment.getExternalStorageDirectory();
+        tempDir = new File(tempDir.getAbsolutePath() + "/.temp/");
+        if (!tempDir.exists()) {
             tempDir.mkdirs();
         }
         tempDir.deleteOnExit();
@@ -432,8 +430,7 @@ public class UploadDocActivity extends AppCompatActivity {
         Bitmap bitmap = null;
         try {
             bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Failed to load", e);
         }
@@ -458,8 +455,8 @@ public class UploadDocActivity extends AppCompatActivity {
             changeBtnMessage(current_doc_type, selectedImage);
         } else if (requestCode == CAM_PICTURE && resultCode == RESULT_OK) {
             // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-            if(grabImage()!=null){
-                Uri uri =grabImage();
+            if (grabImage() != null) {
+                Uri uri = grabImage();
                 imgUrisList.put(current_doc_type, uri);
                 changeBtnMessage(current_doc_type, uri);
             } else {
@@ -517,9 +514,7 @@ public class UploadDocActivity extends AppCompatActivity {
                     Map.Entry pair = (Map.Entry) it.next();
                     uploadFile(pair.getKey().toString(), (Uri) pair.getValue(), ++i);
                     it.remove(); // avoids a ConcurrentModificationException
-
-
-                                }
+                }
             }
         } else {
             Toast.makeText(UploadDocActivity.this, "Kindly upload documents", Toast.LENGTH_SHORT).show();
@@ -533,7 +528,7 @@ public class UploadDocActivity extends AppCompatActivity {
         if (progressDialog != null) {
             progressDialog = new ProgressDialog(UploadDocActivity.this);
         }
-        progressDialog.setMessage("Uploading file "+i+" of "+imgUrisList.size());
+        progressDialog.setMessage("Uploading file " + i + " of " + imgUrisList.size());
         progressDialog.setIndeterminate(false);
         progressDialog.setProgress(0);
         if (!((Activity) UploadDocActivity.this).isFinishing()) {
@@ -625,7 +620,7 @@ public class UploadDocActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(sliding_layout.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)){
+        if (sliding_layout.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
             sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             return;
         }

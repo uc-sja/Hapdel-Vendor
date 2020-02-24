@@ -194,7 +194,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:text="Max discount applicavle"
+                    android:text="Max discount applicable"
                     android:theme="@style/user_order_table"></TextView>
 
                 <TextView

@@ -20,7 +20,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.cardview.widget.CardView;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
+import com.utility.hapdelvendor.Activity.AllProducts;
 import com.utility.hapdelvendor.Activity.OpenProductActivity;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum;
 import com.utility.hapdelvendor.Model.ProducModel.Product;
@@ -41,7 +43,7 @@ import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 public class AddProduct extends Dialog {
     Context context;
     AppCompatAutoCompleteTextView search_bar;
-    private com.utility.hapdelvendorvendor.Utils.AutoSuggestAdapter autoSuggestAdapter;
+    private com.utility.hapdelvendor.Utils.AutoSuggestAdapter autoSuggestAdapter;
     private static final String TAG = "AddProduct";
     private CardView product_card;
     private TextView product_name, product_desc, product_price;
@@ -52,6 +54,7 @@ public class AddProduct extends Dialog {
     private String updateType;
     private TextView update_title;
     private Product current_product;
+    private TextInputLayout stock_edit_layout;
 
     public AddProduct(@NonNull Context context, Datum selectedDatum, String updateType) {
         super(context);
@@ -75,8 +78,9 @@ public class AddProduct extends Dialog {
         set_product_price = findViewById(R.id.set_discount);
         submit_result = findViewById(R.id.submit_result);
         update_title = findViewById(R.id.update_title);
+        stock_edit_layout = findViewById(R.id.stock_edit_layout);
 
-        autoSuggestAdapter = new com.utility.hapdelvendorvendor.Utils.AutoSuggestAdapter(context, android.R.layout.simple_spinner_dropdown_item, new ArrayList());
+        autoSuggestAdapter = new com.utility.hapdelvendor.Utils.AutoSuggestAdapter(context, android.R.layout.simple_spinner_dropdown_item, new ArrayList());
         search_bar.setAdapter(autoSuggestAdapter);
 
         search_bar.addTextChangedListener(new TextWatcher() {
@@ -158,7 +162,13 @@ public class AddProduct extends Dialog {
 
             //Initiating
             set_product_price.setText(product.getPrice());
-            set_stock_count.setText("1");
+
+            if(product.getType().equalsIgnoreCase("service")){
+                stock_edit_layout.setVisibility(View.GONE);
+            } else {
+                stock_edit_layout.setVisibility(View.VISIBLE);
+                set_stock_count.setText("1");
+            }
 
             if (product.getImage() != null && !isEmpty(product.getImage())) {
                 Picasso.get().load(product.getImage()).placeholder(R.drawable.app_icon_small_png).into(product_img);
@@ -172,7 +182,6 @@ public class AddProduct extends Dialog {
     }
 
     private void addProduct() {
-
         final ProgressDialog progressDialog = new ProgressDialog(context, R.style.MyDialogTheme);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Updating product...");
@@ -181,7 +190,7 @@ public class AddProduct extends Dialog {
             progressDialog.show();
         }
 
-        Call<ResponseModel> responseModelCall = getApiInstance().addProduct(getCurrentUser().getId(), getCurrentUser().getAccessToken(), selected_category.getId(),  current_product.getPid(), set_stock_count.getText().toString(), set_product_price.getText().toString());
+        Call<ResponseModel> responseModelCall = getApiInstance().addProduct(getCurrentUser().getId(), getCurrentUser().getAccessToken(), current_product.getCategoryId(),  current_product.getPid(), set_stock_count.getText().toString(), set_product_price.getText().toString());
         responseModelCall.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
@@ -206,7 +215,11 @@ public class AddProduct extends Dialog {
                     Log.d(TAG, "onResponse: response msg"+response.body().getResult()+"  msg  ");
                     if (responseModel.getResult().equals("success")){ //very important conditon
                         Toast.makeText(context, responseModel.getMsg(), Toast.LENGTH_SHORT).show();
-                        ((OpenProductActivity)context).fetchProducts(((OpenProductActivity)context).selectedDatum, "1");
+                        if((Activity)context instanceof OpenProductActivity){
+                            ((OpenProductActivity)context).fetchProducts(((OpenProductActivity)context).selectedDatum, "1");
+                        } else if((Activity)context instanceof AllProducts){
+                            ((AllProducts)context).fetchProducts(null, "1");
+                        }
                         dismiss();
                     }else{
                         content+= responseModel.getMsg();
@@ -273,8 +286,7 @@ public class AddProduct extends Dialog {
     }
 
     private void searchItem(final String keyword, com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum category) {
-        Log.d(TAG, "searchItem: catID "+category.getIcon());
-        Call<SearchResultModel> searchResultModelCall = getApiInstance().searchItem(getCurrentUser().getId(), getCurrentUser().getAccessToken(), category.getId(), keyword);
+        Call<SearchResultModel> searchResultModelCall = getApiInstance().searchItem(getCurrentUser().getId(), getCurrentUser().getAccessToken(), category!=null?category.getId():null, keyword);
 //        shimmerRecycler.showShimmerAdapter();
         searchResultModelCall.enqueue(new Callback<SearchResultModel>() {
             @Override

@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,11 +25,13 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.utility.hapdelvendor.Adapter.ProductsAdapter;
+import com.utility.hapdelvendor.Dialog.AddProduct;
 import com.utility.hapdelvendor.Model.ProducModel.ProducModel;
 import com.utility.hapdelvendor.Model.ProducModel.Product;
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.BottomNavigation;
 import com.utility.hapdelvendor.Utils.Common;
+import com.utility.hapdelvendor.Utils.MovableFloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +71,7 @@ public class AllProducts extends AppCompatActivity {
     private static final String TAG = "AllProducts";
     private int scrolledOutItems,currentItems,totalItems;
     private int page = 1;
+    MovableFloatingActionButton add_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +110,7 @@ public class AllProducts extends AppCompatActivity {
 
 
         slider_layout = findViewById(R.id.slider_layout);
+        add_btn = findViewById(R.id.add_btn);
 
         sliding_layout = findViewById(R.id.sliding_layout);
         slider_img = findViewById(R.id.slider_img);
@@ -146,6 +152,15 @@ public class AllProducts extends AppCompatActivity {
             }
         });
 
+        add_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddProduct addProduct = new AddProduct(AllProducts.this, null, "add");
+                addProduct.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+                addProduct.show();
+            }
+        });
+
         fetchProducts(null ,"1");
 
     }
@@ -159,8 +174,6 @@ public class AllProducts extends AppCompatActivity {
             total_products_list = new ArrayList<>();
         }
 
-
-        Log.d(TAG, "fetchProducts: product_id "+ datum.getId());
         Call<ProducModel> productModel = getApiInstance().fetchProducts(getCurrentUser().getId(), getCurrentUser().getAccessToken(), null, page);
         shimmerRecycler.showShimmerAdapter();
 
@@ -224,6 +237,11 @@ public class AllProducts extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
 
     private void showErrorMessage(String s, Boolean isTabsFetched) {
         error_msg_layout.setVisibility(View.VISIBLE);

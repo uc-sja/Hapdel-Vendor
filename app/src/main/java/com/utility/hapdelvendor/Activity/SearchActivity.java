@@ -51,7 +51,7 @@ public class SearchActivity extends AppCompatActivity {
     private Handler handler;
     private static final int TRIGGER_AUTO_COMPLETE = 100;
     private static final long AUTO_COMPLETE_DELAY = 300;
-    private com.utility.hapdelvendorvendor.Utils.AutoSuggestAdapter autoSuggestAdapter;
+    private com.utility.hapdelvendor.Utils.AutoSuggestAdapter autoSuggestAdapter;
     private static final String TAG = "SearchActivity";
 
 
@@ -342,8 +342,6 @@ public class SearchActivity extends AppCompatActivity {
         }
         super.onBackPressed();
     }
-
-
 
     @Override
     protected void onResume() {
