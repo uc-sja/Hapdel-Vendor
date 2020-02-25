@@ -30,10 +30,8 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             if  (getIntent()!= null && getIntent().getStringExtra("isOrder") != null ){
                 intent.putExtra("isOrder",  getIntent().getStringExtra("isOrder") );
-                startActivity(intent);
-                finish();
             }
-
+            startActivity(intent);
             finish();
         } else {
             startActivity(new Intent(this, LoginActivity.class));
