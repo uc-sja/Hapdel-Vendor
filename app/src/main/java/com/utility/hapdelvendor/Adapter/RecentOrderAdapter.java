@@ -58,6 +58,7 @@ public class RecentOrderAdapter extends RecyclerView.Adapter<RecentOrderAdapter.
         });
 
         holder.order_status.setText(( datum.getOrderStatus().substring(0,1).toUpperCase() + datum.getOrderStatus().substring(1)));
+        setStatusColor(holder.status_color, datum.getOrderStatus());
 
 //        if (datum.getImage() != null && !isEmpty(datum.getImage())) {
 //            Log.d(TAG, "onBindViewHolder: " + datum.getImage());
@@ -80,6 +81,26 @@ public class RecentOrderAdapter extends RecyclerView.Adapter<RecentOrderAdapter.
         this.data.addAll(data);
         notifyDataSetChanged();
     }
+
+
+    private void setStatusColor(TextView status_color, String orderStatus) {
+        switch (orderStatus){
+            case "completed": status_color.setBackgroundColor(context.getResources().getColor(R.color.colorGreen));
+                break;
+            case "processing": status_color.setBackgroundColor(context.getResources().getColor(R.color.quantum_yellow));
+                break;
+            case "received": status_color.setBackgroundColor(context.getResources().getColor(R.color.quantum_orange));
+                break;
+            case "failed": status_color.setBackgroundColor(context.getResources().getColor(R.color.red));
+                break;
+            case "pickup": status_color.setBackgroundColor(context.getResources().getColor(R.color.com_facebook_blue));
+                break;
+            case "cancelled": status_color.setBackgroundColor(context.getResources().getColor(R.color.colorDullRed));
+                break;
+            default:break;
+        }
+    }
+
 
 
     @Override

@@ -57,11 +57,13 @@ import com.utility.hapdelvendor.Interfaces.ResponseResult;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.ParentCategoryModel;
 import com.utility.hapdelvendor.Model.RecentOrderModel.Datum;
 import com.utility.hapdelvendor.Model.RecentOrderModel.RecentOrderModel;
+import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Service.ParentNotificationService;
 import com.utility.hapdelvendor.Utils.BottomNavigation;
 import com.utility.hapdelvendor.Utils.CircularTextView;
 import com.utility.hapdelvendor.Utils.Common;
+import com.utility.hapdelvendor.Utils.LocalStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +74,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.text.TextUtils.isEmpty;
 import static com.utility.hapdelvendor.Utils.Common.getApiInstance;
 import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 import static com.utility.hapdelvendor.Utils.Common.hideKeyboard;
@@ -280,7 +281,6 @@ public class HomeActivity extends AppCompatActivity {
                         //we are null checking price and distance too below because this is how we diferenciate the notification of type general
                         //or notification type ride
                         if (isOrder != null && isOrder.equalsIgnoreCase("y") && body!=null && title!=null  && !dialogActive) {
-                            Log.d(TAG, "brodcast_received: notification received ");
                             // Customize notification (title, background, typeface)
                             bottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));
 
@@ -307,7 +307,66 @@ public class HomeActivity extends AppCompatActivity {
             ;
         };
 
+
+
+        if (LocalStorage.isNotificationRereshed()) {
+            Log.d(TAG, "onCreate: isNotificationRereshed ");
+            sendRegistrationToServer(LocalStorage.getNotificationToken());
+        } else {
+            Log.d(TAG, "onCreate: isNotificationRereshed " + LocalStorage.isNotificationRereshed());
+        }
+
+
     }
+
+
+    private void
+    sendRegistrationToServer(String s) {
+        Log.d(TAG, "login: " + s);
+        // TODO: Implement your own authentication logic here.
+
+        Call<ResponseModel> loginResponseCall = getApiInstance().sendNotificationToken(getCurrentUser().getId(), getCurrentUser().getAccessToken(), s);
+        loginResponseCall.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                if (!response.isSuccessful()) {
+                    Log.d(TAG, "onResponse: fail " + response.code());
+                    return;
+                }
+                Log.d(TAG, "onResponse: success" + response.code() + response.body());
+                if (response.body() != null) {
+                    ResponseModel responseModel = null;
+                    try {
+                        responseModel = response.body();
+                    } catch (Exception e) {
+                        Toast.makeText(HomeActivity.this, "Error in response", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    String content = "";
+                    Log.d(TAG, "onResponse: response msg" + response.body().getResult() + "  msg  ");
+                    if (responseModel.getResult().equals("success")) { //very important conditon
+                        Log.d(TAG, "onResponse: success send registration token");
+                        Toast.makeText(HomeActivity.this, "Successfully created access token", Toast.LENGTH_SHORT).show();
+                        LocalStorage.setIsNotificationRereshed(false);
+                    } else {
+                        content += responseModel.getMsg();
+                        Log.d(TAG, "onResponse: invalid response" + content);
+                    }
+                    Log.d(TAG, "onResponse: login res" + content);
+                } else {
+                    Log.d(TAG, "onResponse: Invalid response from server");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.getLocalizedMessage());
+
+            }
+        });
+    }
+
+
 
     private void showRideDialog(HomeActivity homeActivity, String s, String your_ride_details_are, String body, String title) {
         Log.d(TAG, "showRideDialog: is called");

@@ -152,7 +152,6 @@ public class ParentNotificationService extends FirebaseMessagingService {
 
             mBuilder.setChannelId(channelId);
         }
-
         Notification notification = mBuilder.build();
 
         //Checkking if notification is for ride or general notification;

@@ -59,7 +59,10 @@
         <activity
             android:name=".LaundaryActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".OtpVerificationActivity" />
+
+        <activity android:name=".OtpVerificationActivity"
+            android:windowSoftInputMode="stateAlwaysVisible"/>
+
         <activity
             android:name=".Activity.SignInActivity"
             android:windowSoftInputMode="adjustPan" />

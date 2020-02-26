@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -299,7 +298,6 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
             });
         }
 
-
     @Override
     public int getItemCount() {
         return userOrderDetailList.size();
@@ -330,7 +328,6 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
         }
     }
 
-
     public class OrderedItemsViewHolder extends RecyclerView.ViewHolder {
         private RelativeLayout root_layout;
         ImageView product_img, drop_down_icon, drop_up_icon;
@@ -339,7 +336,7 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
 
         LinearLayout product_detail_layout;
 
-        LinearLayout service_time_layout;
+        RelativeLayout service_time_layout;
 
         public OrderedItemsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -366,10 +363,8 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
             textViewOptions = itemView.findViewById(R.id.textViewOptions);
             root_layout = itemView.findViewById(R.id.root_layout);
 
-
             LayoutTransition layoutTransition = root_layout.getLayoutTransition();
             layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
-
 
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(0,context.getResources().getDimensionPixelOffset(R.dimen._10sdp),0,0);
@@ -377,4 +372,5 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
 
         }
     }
+
 }

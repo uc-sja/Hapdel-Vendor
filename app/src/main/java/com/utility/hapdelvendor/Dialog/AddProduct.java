@@ -290,6 +290,7 @@ public class AddProduct extends Dialog {
     }
 
     private void searchItem(final String keyword, com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum category) {
+        Log.d(TAG, "searchItem: ");
         Call<SearchResultModel> searchResultModelCall = getApiInstance().searchItem(getCurrentUser().getId(), getCurrentUser().getAccessToken(), category!=null?category.getId():null, keyword);
 //        shimmerRecycler.showShimmerAdapter();
         searchResultModelCall.enqueue(new Callback<SearchResultModel>() {

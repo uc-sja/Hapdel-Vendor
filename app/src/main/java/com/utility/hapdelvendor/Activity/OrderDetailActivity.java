@@ -27,7 +27,6 @@ import com.utility.hapdelvendor.Model.UserOrderModel.OrderDetailModel.OrderDetai
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.Common;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -110,7 +109,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         customer_name = findViewById(R.id.customer_name);
         customer_contact = findViewById(R.id.customer_contact);
         customer_address = findViewById(R.id.customer_address);
-
 
         //Initializing shipping layout
 //        customer_name2 = findViewById(R.id.customer_name2);

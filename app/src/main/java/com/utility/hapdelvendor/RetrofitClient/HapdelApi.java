@@ -26,7 +26,6 @@ import com.utility.hapdelvendor.Model.VendorModel.VendorModel;
 import java.util.List;
 
 import okhttp3.MultipartBody;
-import okhttp3.Request;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -437,7 +436,7 @@ public interface HapdelApi {
     Call<TransactionModel> fetchTransactions(
             @Field("user_id") String userId,
             @Field("access_token") String access_token,
-            @Field("filter") String filter
+            @Field("page") String filter
     );
 
 
@@ -480,6 +479,14 @@ public interface HapdelApi {
     Call<ResponseModel> uploadDoc(
             @Part("user_id") RequestBody userId,
             @Part MultipartBody.Part body1
+    );
+
+    @FormUrlEncoded
+    @POST("notifications/update_notification_token")
+    Call<ResponseModel> sendNotificationToken(
+            @Field("user_id") String userId,
+            @Field("access_token") String access_token,
+            @Field("token") String token
     );
 }
 

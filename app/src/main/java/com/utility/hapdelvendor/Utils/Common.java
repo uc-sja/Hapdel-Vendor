@@ -45,11 +45,11 @@ import static android.text.TextUtils.isEmpty;
 
 public class Common {
 
-//    public static final String baseUrl = "http://stage.hapdel.in/api/v1/vendors/";
+        public static final String baseUrl = "http://stage.hapdel.in/api/v1/vendors/";
 
 //        public static final String baseUrl = "https://test.hapdel.in/api/v1/vendors/";
 
-    public static final String baseUrl = "http://192.168.0.143/hapdel/api/v1/vendors/";
+//    public static final String baseUrl = "http://192.168.0.143/hapdel/api/v1/vendors/";
 
     private static final String TAG = "Common";
     public static boolean service_available = false;
