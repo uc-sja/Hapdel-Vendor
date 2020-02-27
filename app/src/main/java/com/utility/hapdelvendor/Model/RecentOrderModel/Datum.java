@@ -34,6 +34,18 @@ public class Datum {
     @Expose
     private String name;
 
+    @SerializedName("service_time")
+    @Expose
+    private String service_time;
+
+    public String getService_time() {
+        return service_time;
+    }
+
+    public void setService_time(String service_time) {
+        this.service_time = service_time;
+    }
+
     public String getTxnId() {
         return txnId;
     }

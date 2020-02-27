@@ -68,7 +68,6 @@ public class AddProduct extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_product_layout);
         search_bar = findViewById(R.id.search_bar);
-
         product_name = findViewById(R.id.product_name);
         product_desc = findViewById(R.id.product_desc);
         product_img = findViewById(R.id.product_img);
@@ -82,6 +81,14 @@ public class AddProduct extends Dialog {
 
         autoSuggestAdapter = new com.utility.hapdelvendor.Utils.AutoSuggestAdapter(context, R.layout.simple_spinner_dropdown_item, new ArrayList());
         search_bar.setAdapter(autoSuggestAdapter);
+        search_bar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isEmpty(search_bar.getText().toString())){
+                    searchItem(search_bar.getText().toString(), selected_category);
+                }
+            }
+        });
 
         search_bar.addTextChangedListener(new TextWatcher() {
             @Override
@@ -98,6 +105,9 @@ public class AddProduct extends Dialog {
 
             }
         });
+
+        search_bar.requestFocus();
+        search_bar.performClick();
 
         set_product_price.addTextChangedListener(new TextWatcher() {
             @Override

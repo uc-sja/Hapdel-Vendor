@@ -71,10 +71,10 @@ public class ParentNotificationService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Log.d(TAG, " : "+remoteMessage.toString());
+        Log.d(TAG, " parentnotification: "+remoteMessage.toString()+remoteMessage.getData().get("is_order")+remoteMessage.getData().get("body")+remoteMessage.getData().get("title"));
         Intent intent = new Intent("MyData");
-        Log.d(TAG, "onMessageReceived: "+remoteMessage.getData().get("isOrder"));
-        intent.putExtra("isOrder", remoteMessage.getData().get("isOrder"));
+        Log.d(TAG, "onMessageReceived: "+remoteMessage.getData().get("is_order"));
+        intent.putExtra("isOrder", remoteMessage.getData().get("is_order"));
         intent.putExtra("body", remoteMessage.getData().get("body"));
         intent.putExtra("title", remoteMessage.getData().get("title"));
         /*
@@ -85,7 +85,7 @@ public class ParentNotificationService extends FirebaseMessagingService {
 
         */
 
-        showNotification(remoteMessage.getData().get("isOrder"),remoteMessage.getData().get("title"),remoteMessage.getData().get("body"));
+        showNotification(remoteMessage.getData().get("is_order"),remoteMessage.getData().get("title"),remoteMessage.getData().get("body"));
 
         broadcaster.sendBroadcast(intent); // sending broadcast after shownotification method because,  value of i is increased
         // in shownotification method. And when onReceive method of broadcast receiver
@@ -97,6 +97,7 @@ public class ParentNotificationService extends FirebaseMessagingService {
         //ride notification
         PendingIntent pendingIntent;
         Boolean orderNotification = false;
+        Log.d(TAG, "showNotification: "+isOrder);
         if(isOrder != null && isOrder.equalsIgnoreCase("y")){
             order_notification_count++;
             orderNotification = true;

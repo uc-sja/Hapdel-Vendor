@@ -360,12 +360,36 @@
 
                             </RelativeLayout>
 
+                            <RelativeLayout
+                                android:id="@+id/service_time_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/order_amount_layout"
+                                android:layout_marginTop="@dimen/_5sdp">
+
+                                <TextView
+                                    android:id="@+id/service_time_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentStart="true"
+                                    android:text="Service Time"
+                                    android:theme="@style/user_order_table"></TextView>
+
+                                <TextView
+                                    android:id="@+id/service_amount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:theme="@style/user_order_table"></TextView>
+
+                            </RelativeLayout>
+
 
                             <RelativeLayout
                                 android:id="@+id/payment_method_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/order_amount_layout"
+                                android:layout_below="@+id/service_time_layout"
                                 android:layout_marginTop="@dimen/_5sdp">
 
                                 <TextView

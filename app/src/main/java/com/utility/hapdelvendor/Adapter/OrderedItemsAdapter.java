@@ -28,9 +28,6 @@ import com.utility.hapdelvendor.Model.ResponseModel.ResponseModel;
 import com.utility.hapdelvendor.Model.UserOrderModel.OrderDetailModel.Item;
 import com.utility.hapdelvendor.R;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -139,22 +136,22 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
 
         holder.product_detail_layout.setVisibility(expanded ? View.VISIBLE : View.GONE);
 
-        if(!isEmpty(item.getService_time())){
-
-            SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            SimpleDateFormat format2 = new SimpleDateFormat("EE, d MMM yyyy hh:mm a");
-
-            holder.service_time_layout.setVisibility(View.VISIBLE);
-            Date date = null;
-            try {
-                date = format1.parse(item.getService_time());
-            } catch (ParseException e) {
-                Log.d(TAG, "onBindViewHolder: " + e.toString());
-                holder.service_time.setText(format2.format(date));
-            }
-        } else {
-           holder.service_time_layout.setVisibility(View.GONE);
-        }
+//        if(!isEmpty(item.getService_time())){
+//
+//            SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            SimpleDateFormat format2 = new SimpleDateFormat("EE, d MMM yyyy hh:mm a");
+//
+//            holder.service_time_layout.setVisibility(View.VISIBLE);
+//            Date date = null;
+//            try {
+//                date = format1.parse(item.getService_time());
+//                holder.service_time.setText(format2.format(date));
+//            } catch (ParseException e) {
+//                Log.d(TAG, "onBindViewHolder: " + e.toString());
+//            }
+//        } else {
+//           holder.service_time_layout.setVisibility(View.GONE);
+//        }
 
     }
 

@@ -287,7 +287,7 @@ public class HomeActivity extends AppCompatActivity {
                             // Add or remove notification for each item
                             bottomNavigation.setNotification(ParentNotificationService.order_notification_count, 1);
 
-                            showRideDialog(HomeActivity.this, "You have received a new job", "Your ride details are", body, title);
+                            showRideDialog(HomeActivity.this, title, body   );
                         } else if (isOrder != null && isOrder.equalsIgnoreCase("y") && body!=null && title!=null) {
                             Log.d(TAG, "onReceive: on ride notification ");
                             bottomNavigation.setNotification(ParentNotificationService.order_notification_count, 1);
@@ -368,7 +368,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-    private void showRideDialog(HomeActivity homeActivity, String s, String your_ride_details_are, String body, String title) {
+    private void showRideDialog(HomeActivity homeActivity, String body, String title) {
         Log.d(TAG, "showRideDialog: is called");
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Dialog dialog = new Dialog(new ContextThemeWrapper(HomeActivity.this, R.style.DialogSlideAnim));

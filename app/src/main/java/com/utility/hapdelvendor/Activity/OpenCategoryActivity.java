@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -45,6 +44,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 import static com.utility.hapdelvendor.Utils.Common.hideKeyboard;
 
 public class OpenCategoryActivity extends AppCompatActivity {
@@ -195,7 +195,7 @@ public class OpenCategoryActivity extends AppCompatActivity {
     }
 
     private void fetchSubCategories(Datum datum) {
-        Call<ParentCategoryModel> categoryModel = Common.getApiInstance().fetchSubCategory("1", "",  datum.getId());
+        Call<ParentCategoryModel> categoryModel = Common.getApiInstance().fetchSubCategory(getCurrentUser().getId(), getCurrentUser().getAccessToken(),  datum.getId());
         shimmerRecycler.showShimmerAdapter();
 
         categoryModel.enqueue(new Callback<ParentCategoryModel>() {

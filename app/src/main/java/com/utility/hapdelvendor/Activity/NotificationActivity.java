@@ -95,7 +95,7 @@ public class NotificationActivity extends AppCompatActivity {
         //Error Msg Initialization
         error_msg_layout = findViewById(R.id.error_layout);
         error_msg = findViewById(R.id.error_msg);
-        error_image = findViewById(R.id.error_image);
+
         error_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,7 +242,6 @@ public class NotificationActivity extends AppCompatActivity {
                         bottomNavigation.setNotification("", 3);
                         ParentNotificationService.general_notification_count = 0;
                         LocalStorage.setNotificationCount(0);
-
                         notificationManager.cancelAll();
 
                         hideErrorMessage();

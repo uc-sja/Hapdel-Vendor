@@ -27,7 +27,10 @@ import com.utility.hapdelvendor.Model.UserOrderModel.OrderDetailModel.OrderDetai
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.Common;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,9 +62,12 @@ public class OrderDetailActivity extends AppCompatActivity {
     private TextView customer_name2,customer_contact2,customer_address2,landmark2,city_details2;
     private TextView shipping_text;
 
+    private RelativeLayout service_time_layout;
+    private TextView service_time;
+
     CardView shipping_cardview, shipping_cardview2, item_cardview;
 
-    private TextView order_date,order_amount,payment_method,order_id,service_time;
+    private TextView order_date,order_amount,payment_method,order_id;
     private RelativeLayout container_layout;
 
     @Override
@@ -120,7 +126,9 @@ public class OrderDetailActivity extends AppCompatActivity {
         order_amount = findViewById(R.id.order_amount);
         payment_method = findViewById(R.id.payment_method);
         order_id = findViewById(R.id.order_id);
-        service_time = findViewById(R.id.service_time);
+
+        service_time = findViewById(R.id.service_amount);
+        service_time_layout = findViewById(R.id.service_time_layout);
 
         shipping_cardview = findViewById(R.id.shipping_cardview);
         shipping_cardview2 = findViewById(R.id.shipping_cardview2);
@@ -186,6 +194,25 @@ public class OrderDetailActivity extends AppCompatActivity {
                             order_date.setText(item.getTxnDate());
                             payment_method.setText(item.getPayment_method());
                             order_amount.setText(getResources().getString(R.string.rupee_icon)+parentOrder.getAmount());
+
+                            if(!isEmpty(parentOrder.getService_time())){
+
+                                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                SimpleDateFormat format2 = new SimpleDateFormat("EE, d MMM yyyy hh:mm a");
+
+                                service_time_layout.setVisibility(View.VISIBLE);
+                                Date date = null;
+                                try {
+                                    date = format1.parse(parentOrder.getService_time());
+                                    service_time.setText(format2.format(date));
+                                } catch (ParseException e) {
+                                    Log.d(TAG, "service time parsing: " + e.toString());
+                                }
+                            } else {
+                                service_time_layout.setVisibility(View.GONE);
+                            }
+
+
 
                         } else {
                             showErrorMessage("There is no item in this order");

@@ -45,9 +45,9 @@ import static android.text.TextUtils.isEmpty;
 
 public class Common {
 
-        public static final String baseUrl = "http://stage.hapdel.in/api/v1/vendors/";
+//        public static final String baseUrl = "http://stage.hapdel.in/api/v1/vendors/";
 
-//        public static final String baseUrl = "https://test.hapdel.in/api/v1/vendors/";
+        public static final String baseUrl = "https://test.hapdel.in/api/v1/vendors/";
 
 //    public static final String baseUrl = "http://192.168.0.143/hapdel/api/v1/vendors/";
 
@@ -189,15 +189,17 @@ public class Common {
         }
     }
 
+
+
     public static void setStatusColor(Context context, @Nullable int color){
         Window window = ((Activity)context).getWindow();
-// clear FLAG_TRANSLUCENT_STATUS flag:
+    // clear FLAG_TRANSLUCENT_STATUS flag:
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+    // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-// finally change the color
+    // finally change the color
         if(color == 0){
             window.setStatusBarColor(ContextCompat.getColor(((Activity)context), R.color.colorPrimaryGreen));
         } else {
@@ -215,6 +217,17 @@ public class Common {
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void showKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.showSoftInputFromInputMethod(view.getWindowToken(), 0);
     }
 
 

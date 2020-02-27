@@ -1,6 +1,7 @@
 package com.utility.hapdelvendor.Activity;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
@@ -17,7 +18,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,9 +31,11 @@ import com.utility.hapdelvendor.Interfaces.ResponseResult;
 import com.utility.hapdelvendor.Model.RecentOrderModel.Datum;
 import com.utility.hapdelvendor.Model.RecentOrderModel.RecentOrderModel;
 import com.utility.hapdelvendor.R;
+import com.utility.hapdelvendor.Service.ParentNotificationService;
 import com.utility.hapdelvendor.Utils.BottomNavigation;
 import com.utility.hapdelvendor.Utils.CircularTextView;
 import com.utility.hapdelvendor.Utils.Common;
+import com.utility.hapdelvendor.Utils.LocalStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.utility.hapdelvendor.Activity.NotificationActivity.setInitialNotification;
 import static com.utility.hapdelvendor.Utils.Common.getApiInstance;
 import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 
@@ -79,6 +82,7 @@ public class OrderActivity extends AppCompatActivity {
 
 
     private int i = 1;
+    private AHBottomNavigation bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,9 +114,12 @@ public class OrderActivity extends AppCompatActivity {
         slider_one_btn = findViewById(R.id.slider_btn_one);
         slider_two_btn = findViewById(R.id.slider_btn_two);
 
-        AHBottomNavigation bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
+        bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
         BottomNavigation.initializeBottomNavigation(bottomNavigation, OrderActivity.this);
         bottomNavigation.setCurrentItem(1, false);
+
+        setInitialNotification(bottomNavigation);
+
 
 //
 //        if(getCurrentUser()==null || getCurrentUser().getId()==null){
@@ -178,6 +185,8 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     private void fetchVendorOrders(final int i) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
         Log.d(TAG, "fetchVendorOrderDetails: "+i);
         firstLoad = i == 1 ? true:false;
         final ProgressDialog progressDialog = new ProgressDialog(OrderActivity.this, R.style.MyDialogTheme);
@@ -213,6 +222,13 @@ public class OrderActivity extends AppCompatActivity {
                     Log.d(TAG, "onResponse: response msg"+response.body().getResult()+"  msg  ");
                     if (recentOrderModel.getResult().equals("success")){ //very important conditon
                         if(recentOrderModel.getData()!=null && recentOrderModel.getData().size()>0){
+
+
+                            bottomNavigation.setNotification("", 1);
+                            ParentNotificationService.order_notification_count = 0;
+                            LocalStorage.setOrderNotificationCount(0);
+                            notificationManager.cancelAll();
+
                             firstLoad = false;
                             isScrolling = false;
                             total_order_list.addAll(recentOrderModel.getData());
