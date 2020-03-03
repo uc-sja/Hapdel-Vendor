@@ -53,7 +53,7 @@
             app:shimmer_demo_layout_manager_type="linear_vertical"
             app:shimmer_demo_shimmer_color="@color/colorPrimaryGreenShade" />
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/view_scroller"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -311,7 +311,7 @@
                             </RelativeLayout>
 
                             <RelativeLayout
-                                android:id="@+id/order_date_layout"
+                                android:id="@+id/customer_name_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_5sdp"
@@ -340,7 +340,7 @@
                                 android:id="@+id/order_amount_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/order_date_layout"
+                                android:layout_below="@+id/customer_name_layout"
                                 android:layout_marginTop="@dimen/_5sdp">
 
                                 <TextView
@@ -455,7 +455,7 @@
             </RelativeLayout>
 
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </RelativeLayout>
     <RelativeLayout

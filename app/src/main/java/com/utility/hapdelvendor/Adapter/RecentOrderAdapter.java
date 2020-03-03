@@ -119,7 +119,7 @@ public class RecentOrderAdapter extends RecyclerView.Adapter<RecentOrderAdapter.
             order_status = itemView.findViewById(R.id.order_status);
             product_img = itemView.findViewById(R.id.product_img);
             order_amount = itemView.findViewById(R.id.order_amount_text);
-            customer_name = itemView.findViewById(R.id.order_date_text);
+            customer_name = itemView.findViewById(R.id.customer_name);
             status_color = itemView.findViewById(R.id.status_color);
             quantity = itemView.findViewById(R.id.quantity);
 

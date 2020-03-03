@@ -41,8 +41,6 @@
 
                 <LinearLayout
                     android:layout_alignParentTop="true"
-                    android:layout_toLeftOf="@+id/cart_icon"
-                    android:layout_toRightOf="@+id/location_layout"
                     android:layout_width="match_parent"
                     android:gravity="center"
                     android:layout_height="wrap_content">

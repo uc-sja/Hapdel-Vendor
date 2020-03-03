@@ -74,14 +74,14 @@
 
             <RelativeLayout
                 android:paddingHorizontal="@dimen/_10sdp"
-                android:id="@+id/order_date_layout"
+                android:id="@+id/customer_name_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/product_status_layout"
                 android:layout_marginTop="@dimen/_12sdp">
 
                 <TextView
-                    android:id="@+id/order_date_text"
+                    android:id="@+id/customer_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -104,7 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_10sdp"
-                android:layout_below="@+id/order_date_layout"
+                android:layout_below="@+id/customer_name_layout"
                 android:layout_marginTop="@dimen/_5sdp">
 
                 <TextView
@@ -213,7 +213,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_10sdp"
-                android:layout_below="@+id/order_date_layout"
+                android:layout_below="@+id/customer_name_layout"
                 android:layout_marginTop="@dimen/_5sdp">
 
                 <TextView

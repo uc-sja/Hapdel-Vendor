@@ -74,6 +74,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.utility.hapdelvendor.Activity.NotificationActivity.setInitialNotification;
 import static com.utility.hapdelvendor.Utils.Common.getApiInstance;
 import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 import static com.utility.hapdelvendor.Utils.Common.hideKeyboard;
@@ -116,7 +117,6 @@ public class HomeActivity extends AppCompatActivity {
     private static final long AUTO_COMPLETE_DELAY = 300;
     private com.utility.hapdelvendor.Utils.AutoSuggestAdapter autoSuggestAdapter;
     private NestedScrollView nested_scroll_view;
-    private int i = 1;
     private int scrolledOutItems, currentItems, totalItems;
     private LinearLayoutManager layoutManager;
     private boolean isScrolling;
@@ -219,7 +219,7 @@ public class HomeActivity extends AppCompatActivity {
         //        fetchMainCategories();
 
 
-        fetchRecentOrder();
+//        fetchRecentOrder();
 
         error_msg_layout = findViewById(R.id.error_layout);
         error_msg = findViewById(R.id.error_msg);
@@ -452,6 +452,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         backPressCount = 0;
+        setInitialNotification(bottomNavigation);
         fetchHomePage();
 
         isWindowActive = true;
@@ -465,8 +466,7 @@ public class HomeActivity extends AppCompatActivity {
     private void fetchHomePage() {
         Log.d(TAG, "fetchHomePage: ");
         fetchMainCategories();
-//        fetchRecentOrder();
-        i = 1;
+        fetchRecentOrder();
     }
 
 
@@ -490,7 +490,7 @@ public class HomeActivity extends AppCompatActivity {
     private void fetchRecentOrder() {
         final ProgressDialog progressDialog = new ProgressDialog(HomeActivity.this, R.style.MyDialogTheme);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching Offers...");
+        progressDialog.setMessage("Fetching Recent Orders...");
         progressDialog.setCancelable(false);
         if (!((Activity) HomeActivity.this).isFinishing()) {
             progressDialog.show();

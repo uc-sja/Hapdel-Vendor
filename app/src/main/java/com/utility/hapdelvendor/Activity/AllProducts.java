@@ -1,12 +1,5 @@
 package com.utility.hapdelvendor.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -24,6 +17,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
@@ -32,7 +32,6 @@ import com.utility.hapdelvendor.Adapter.ProductsAdapter;
 import com.utility.hapdelvendor.Dialog.AddProduct;
 import com.utility.hapdelvendor.Model.ProducModel.ProducModel;
 import com.utility.hapdelvendor.Model.ProducModel.Product;
-import com.utility.hapdelvendor.Model.SearchModel.SearchResultModel;
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.BottomNavigation;
 import com.utility.hapdelvendor.Utils.Common;
@@ -40,8 +39,6 @@ import com.utility.hapdelvendor.Utils.MovableFloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -142,25 +139,25 @@ public class AllProducts extends AppCompatActivity {
             }
         });
 //
-//        products_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                currentItems = productLayoutManager.getChildCount();
-//                totalItems = productLayoutManager.getItemCount();
-//                scrolledOutItems = productLayoutManager.findFirstVisibleItemPosition();
-//                Log.d(TAG, "onScrolled: " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
-//                if (!isScrolling && totalItems == scrolledOutItems + currentItems) {
-//                    //Since we cannot assign a variable to final int i
-//                    Log.d(TAG, "onScrolled: if " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
-//
-//                    fetchProducts(current_keyword, ++page + "");
-//                    Log.d(TAG, "onScrolled: page " + page);
-//                } else {
-//                    Log.d(TAG, "onScrolled: else " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
-//                }
-//            }
-//        });
+        products_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                currentItems = productLayoutManager.getChildCount();
+                totalItems = productLayoutManager.getItemCount();
+                scrolledOutItems = productLayoutManager.findFirstVisibleItemPosition();
+                Log.d(TAG, "onScrolled: " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
+                if (!isScrolling && totalItems == scrolledOutItems + currentItems) {
+                    //Since we cannot assign a variable to final int i
+                    Log.d(TAG, "onScrolled: if " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
+
+                    fetchProducts(current_keyword, ++page + "");
+                    Log.d(TAG, "onScrolled: page " + page);
+                } else {
+                    Log.d(TAG, "onScrolled: else " + isScrolling + " " + totalItems + " " + scrolledOutItems + " " + currentItems);
+                }
+            }
+        });
 
         add_btn.setOnClickListener(new View.OnClickListener() {
             @Override

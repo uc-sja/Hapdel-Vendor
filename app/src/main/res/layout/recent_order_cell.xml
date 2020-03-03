@@ -71,7 +71,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/order_date_layout"
+                android:id="@+id/customer_name_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/order_id_layout"
@@ -79,11 +79,11 @@
                 android:paddingHorizontal="@dimen/_10sdp">
 
                 <TextView
-                    android:id="@+id/order_date_text"
+                    android:id="@+id/customer_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:text="Order Date"
+                    android:text="Customer Name"
                     android:theme="@style/user_order_table"></TextView>
 
                 <!--                <TextView-->
@@ -99,7 +99,7 @@
                 android:id="@+id/order_amount_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/order_date_layout"
+                android:layout_below="@+id/customer_name_layout"
                 android:padding="@dimen/_10sdp">
 
                 <TextView

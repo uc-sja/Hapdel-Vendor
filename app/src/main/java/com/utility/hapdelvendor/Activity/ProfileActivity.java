@@ -45,6 +45,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.text.TextUtils.isEmpty;
+import static com.utility.hapdelvendor.Activity.NotificationActivity.setInitialNotification;
 import static com.utility.hapdelvendor.Utils.Common.getApiInstance;
 import static com.utility.hapdelvendor.Utils.Common.getCurrentUser;
 
@@ -218,6 +219,12 @@ public class ProfileActivity extends AppCompatActivity {
         fetchUserDetails();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setInitialNotification(bottomNavigation);
+    }
+
     private void fetchUserDetails() {
         final ProgressDialog progressDialog = new ProgressDialog(ProfileActivity.this, R.style.MyDialogTheme);
         progressDialog.setIndeterminate(true);
@@ -243,6 +250,7 @@ public class ProfileActivity extends AppCompatActivity {
                 if(response.body()!=null ){
                     UserDetailModel userDetailModel = null;
                     try {
+
                         userDetailModel = response.body();
                     } catch (Exception e) {
                         Toast.makeText(ProfileActivity.this, "Error in response", Toast.LENGTH_SHORT).show();

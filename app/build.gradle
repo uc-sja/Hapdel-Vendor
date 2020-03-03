@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-// Add the Fabric plugin.
-apply plugin: 'io.fabric'
+// Apply the Crashlytics Gradle plugin
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 28

@@ -48,6 +48,29 @@ public class Customer {
     @SerializedName("longitude")
     @Expose
     private String longitude;
+    @SerializedName("address_name")
+    @Expose
+    private String address_name;
+    @SerializedName("address_mobile")
+    @Expose
+    private String address_mobile;
+
+    public String getAddress_name() {
+        return address_name;
+    }
+
+    public void setAddress_name(String address_name) {
+        this.address_name = address_name;
+    }
+
+    public String getAddress_mobile() {
+        return address_mobile;
+    }
+
+    public void setAddress_mobile(String address_mobile) {
+        this.address_mobile = address_mobile;
+    }
+
     @SerializedName("address_type")
     @Expose
     private String addressType;

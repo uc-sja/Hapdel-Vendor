@@ -139,25 +139,6 @@ public class SearchActivity extends AppCompatActivity {
         slider_one_btn = findViewById(R.id.slider_btn_one);
         slider_two_btn = findViewById(R.id.slider_btn_two);
 
-        //Cart Initialization
-        cart_badge = findViewById(R.id.cart_badge);
-        cart_icon = findViewById(R.id.cart_icon);
-        cart_badge.setSolidColor("#FF6347");
-        cart_badge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SearchActivity.this, CartActivity.class);
-                startActivity(intent);
-
-            }
-        });
-        cart_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SearchActivity.this, CartActivity.class);
-                startActivity(intent);
-            }
-        });
 
 
         //Error Msg Initializtion

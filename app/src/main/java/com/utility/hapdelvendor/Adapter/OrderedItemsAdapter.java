@@ -1,7 +1,6 @@
 package com.utility.hapdelvendor.Adapter;
 
 
-import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -117,6 +116,7 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
 
         holder.drop_down_icon.setVisibility(expanded ? View.GONE : View.VISIBLE);
         holder.drop_up_icon.setVisibility(expanded ? View.VISIBLE : View.GONE);
+
 
         holder.drop_down_icon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -359,10 +359,6 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
             commission = itemView.findViewById(R.id.commission);
             textViewOptions = itemView.findViewById(R.id.textViewOptions);
             root_layout = itemView.findViewById(R.id.root_layout);
-
-            LayoutTransition layoutTransition = root_layout.getLayoutTransition();
-            layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
-
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(0,context.getResources().getDimensionPixelOffset(R.dimen._10sdp),0,0);
             root_layout.setLayoutParams(layoutParams);

@@ -8,43 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:602625311330:android:c21652342a71751b23073b",
-        "android_client_info": {
-          "package_name": "com.utility.hapdelvendor"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "602625311330-is0luuk6vfucmki4535jsvno21sf0toh.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.hapdelvendor",
-            "certificate_hash": "2d669e44485539b08d6f455f9c536296b2609c24"
-          }
-        },
-        {
-          "client_id": "602625311330-qd31afkua0p0ksj5lhfp9v8ih3hllj5a.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDbmaGtYQ2U2hm8Xtb9D5kVJ11YQEjsdCc"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "602625311330-qd31afkua0p0ksj5lhfp9v8ih3hllj5a.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:602625311330:android:96ab59907e64be9923073b",
         "android_client_info": {
           "package_name": "com.utility.hapdel"
@@ -94,6 +57,43 @@
           "android_info": {
             "package_name": "com.utility.hapdelbiker",
             "certificate_hash": "bc9227e36c86c9d49032ec1437ffa2910026f070"
+          }
+        },
+        {
+          "client_id": "602625311330-qd31afkua0p0ksj5lhfp9v8ih3hllj5a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbmaGtYQ2U2hm8Xtb9D5kVJ11YQEjsdCc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "602625311330-qd31afkua0p0ksj5lhfp9v8ih3hllj5a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602625311330:android:dd0660c3d82bd77323073b",
+        "android_client_info": {
+          "package_name": "com.utility.hapdelvendor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "602625311330-t5e1fe91k03bfoalmppfih8ovnovk665.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.utility.hapdelvendor",
+            "certificate_hash": "2d669e44485539b08d6f455f9c536296b2609c24"
           }
         },
         {

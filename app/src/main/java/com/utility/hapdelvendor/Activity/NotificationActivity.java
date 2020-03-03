@@ -90,11 +90,11 @@ public class NotificationActivity extends AppCompatActivity {
         BottomNavigation.initializeBottomNavigation(bottomNavigation, NotificationActivity.this);
         bottomNavigation.setCurrentItem(3, false);
 
-        setInitialNotification(bottomNavigation);
 
         //Error Msg Initialization
         error_msg_layout = findViewById(R.id.error_layout);
         error_msg = findViewById(R.id.error_msg);
+        error_image = findViewById(R.id.error_image);
 
         error_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,6 +192,8 @@ public class NotificationActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        setInitialNotification(bottomNavigation);
 
         if(getCurrentUser()==null){
             showErrorMessage("Kindly login to view your orders", "login");

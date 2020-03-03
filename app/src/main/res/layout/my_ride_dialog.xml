@@ -112,43 +112,50 @@
 
 
         </RelativeLayout>
+
         <RelativeLayout
-            android:layout_margin="@dimen/_5sdp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_15sdp"
+            android:gravity="center">
 
             <Button
                 android:id="@+id/buttonCancel"
-                android:layout_margin="@dimen/_5sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_25sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_toLeftOf="@+id/action_divider"
-                android:paddingHorizontal="@dimen/_20sdp"
                 android:background="@drawable/banner_btn"
+                android:paddingHorizontal="@dimen/_20sdp"
                 android:text="Cancel"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_10ssp"
-                android:textColor="@color/colorWhite" />
+                android:visibility="gone" />
 
 
             <View
                 android:id="@+id/action_divider"
-                android:layout_centerHorizontal="true"
                 android:layout_width="@dimen/_30sdp"
-                android:layout_height="0dp"/>
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone" />
 
 
             <Button
                 android:id="@+id/buttonOk"
-                android:layout_toRightOf="@+id/action_divider"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_25sdp"
-                android:layout_margin="@dimen/_5sdp"
                 android:layout_gravity="center"
-                android:paddingHorizontal="@dimen/_20sdp"
+                android:layout_margin="@dimen/_5sdp"
+                android:layout_toRightOf="@+id/action_divider"
                 android:background="@drawable/banner_btn"
+                android:paddingHorizontal="@dimen/_20sdp"
                 android:text="Ok"
-                android:textSize="@dimen/_10ssp"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_10ssp" />
 
         </RelativeLayout>
     </LinearLayout>

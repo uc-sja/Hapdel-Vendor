@@ -71,7 +71,8 @@ public class ParentNotificationService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Log.d(TAG, " parentnotification: "+remoteMessage.toString()+remoteMessage.getData().get("is_order")+remoteMessage.getData().get("body")+remoteMessage.getData().get("title"));
+        Log.d(TAG, " parentnotification: "+remoteMessage.toString()+remoteMessage.getData().get("is_order")+" "+remoteMessage.getData().get("body")+" "+remoteMessage.getData().get("title"));
+
         Intent intent = new Intent("MyData");
         Log.d(TAG, "onMessageReceived: "+remoteMessage.getData().get("is_order"));
         intent.putExtra("isOrder", remoteMessage.getData().get("is_order"));

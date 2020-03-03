@@ -146,7 +146,6 @@ public class OrderDetailActivity extends AppCompatActivity {
     }
 
     public void fetchOrderDetails() {
-
         Call<OrderDetailModel> orderDetailModelCall = getApiInstance().fetchUserOrderDetails(getCurrentUser().getId(), getCurrentUser().getAccessToken(), parentOrder.getTxnId());
         shimmerRecycler.showShimmerAdapter();
         container_layout.setVisibility(View.GONE);
@@ -184,10 +183,11 @@ public class OrderDetailActivity extends AppCompatActivity {
                             customer_contact.setText(customer.getMobile());
 
                             if(isEmpty(customer.getHouseNo().trim()) && isEmpty(customer.getApartmentName().trim())){
-                                customer_address.setText(customer.getAddress());
+                                customer_address.setText(customer.getAddress_name()+""+customer.getAddress_mobile()+customer.getAddress());
                             } else {
-                                customer_address.setText(customer.getHouseNo()+", "+customer.getApartmentName()+", "+
-                                        customer.getStreetAddress()+", "+customer.getAddress()+", "+customer.getState()+"- "+customer.getPincode());
+                                Log.d(TAG, "onResponse: is not empty");
+                                customer_address.setText(customer.getAddress_name()+""+customer.getAddress_mobile()+"  "+customer.getHouseNo()+", "+customer.getApartmentName()+", "+
+                                 customer.getStreetAddress()+", "+customer.getAddress()+", "+customer.getState()+"- "+customer.getPincode());
                             }
 
                             order_id.setText("#"+item.getOrderId());
