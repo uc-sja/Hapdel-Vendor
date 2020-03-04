@@ -183,10 +183,10 @@ public class OrderDetailActivity extends AppCompatActivity {
                             customer_contact.setText(customer.getMobile());
 
                             if(isEmpty(customer.getHouseNo().trim()) && isEmpty(customer.getApartmentName().trim())){
-                                customer_address.setText(customer.getAddress_name()+""+customer.getAddress_mobile()+customer.getAddress());
+                                customer_address.setText(customer.getAddress());
                             } else {
-                                Log.d(TAG, "onResponse: is not empty");
-                                customer_address.setText(customer.getAddress_name()+""+customer.getAddress_mobile()+"  "+customer.getHouseNo()+", "+customer.getApartmentName()+", "+
+                                Log.d(TAG, "customer apartment name is not empty");
+                                customer_address.setText(customer.getHouseNo()+", "+customer.getApartmentName()+", "+
                                  customer.getStreetAddress()+", "+customer.getAddress()+", "+customer.getState()+"- "+customer.getPincode());
                             }
 
