@@ -8,12 +8,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,39 +69,6 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
         }
 //
         holder.product_price.setText(context.getString(R.string.rupee_icon)+item.getPrice());
-
-        holder.textViewOptions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //creating a pop up menu
-                PopupMenu popupMenu = new PopupMenu(context, holder.textViewOptions);
-                //inflating menu from xml resource
-
-                popupMenu.inflate(R.menu.order_menu);
-
-                //adding  a click listener
-
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        if(menuItem.getItemId() == R.id.cancel_order){
-                            cancelOrder(item);
-                            return true;
-                        }
-                        if(menuItem.getItemId() == R.id.update_order){
-//                            showAlertDialog(item, "a");
-                            acceptOrder(item);
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-
-                //displaying the popup
-                popupMenu.show();
-                }
-            });
-
             holder.coupon_discount.setText(context.getResources().getString(R.string.rupee_icon)+item.getCouponDiscount());
             holder.admin_discount.setText(context.getResources().getString(R.string.rupee_icon)+item.getDiscountAdmin());
             holder.total_discount.setText(context.getResources().getString(R.string.rupee_icon)+item.getTotalDiscount());
@@ -135,6 +101,20 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
         });
 
         holder.product_detail_layout.setVisibility(expanded ? View.VISIBLE : View.GONE);
+
+            holder.accept_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                acceptOrder(item);
+            }
+        });
+
+        holder.cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cancelOrder(item);
+            }
+        });
 
 //        if(!isEmpty(item.getService_time())){
 //
@@ -335,6 +315,9 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
 
         RelativeLayout service_time_layout;
 
+        Button accept_btn;
+        ImageView cancel_btn;
+
         public OrderedItemsViewHolder(@NonNull View itemView) {
             super(itemView);
             order_status = itemView.findViewById(R.id.order_status);
@@ -349,6 +332,11 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
             service_time_layout = itemView.findViewById(R.id.service_time_layout);
             service_time = itemView.findViewById(R.id.services_time_text);
 
+            accept_btn = itemView.findViewById(R.id.accept_btn);
+            cancel_btn= itemView.findViewById(R.id.cancel_btn);
+
+
+
 
             product_detail_layout = itemView.findViewById(R.id.product_detail_layout);
 
@@ -357,7 +345,8 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
             admin_discount = itemView.findViewById(R.id.admin_discount);
             total_discount = itemView.findViewById(R.id.total_discount);
             commission = itemView.findViewById(R.id.commission);
-            textViewOptions = itemView.findViewById(R.id.textViewOptions);
+            cancel_btn = itemView.findViewById(R.id.cancel_btn);
+            accept_btn = itemView.findViewById(R.id.accept_btn);
             root_layout = itemView.findViewById(R.id.root_layout);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(0,context.getResources().getDimensionPixelOffset(R.dimen._10sdp),0,0);

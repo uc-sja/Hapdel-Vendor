@@ -9,12 +9,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,9 +77,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
         }
 
-        //initializing
-        productViewHolder.edit_btn.setVisibility(View.VISIBLE);
-        productViewHolder.change_number_btn.setVisibility(View.GONE);
 
 
         //this condition check if there are products in cart .
@@ -115,7 +114,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             }
         });
 
-
         productViewHolder.product_desc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,30 +122,52 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         });
         productViewHolder.itemView.setTag(i);
 
-        productViewHolder.delete_product.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                showAlertDialog(datum);
+
+        productViewHolder.textViewOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //creating a pop up menu
+                PopupMenu popupMenu = new PopupMenu(context, productViewHolder.textViewOptions);
+                //inflating menu from xml resource
+
+                popupMenu.inflate(R.menu.order_menu);
+
+                //adding  a click listener
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        if(menuItem.getItemId() == R.id.delete_item){
+                            showAlertDialog(datum);
+                            return true;
+                        }
+                        if(menuItem.getItemId() == R.id.edit_item){
+//                            showAlertDialog(item, "a");
+                            AddProduct addProduct = null;
+
+                            if((Activity)context instanceof AllProducts) {
+                                addProduct = new AddProduct(context, null, "edit");
+                            } else if((Activity)context instanceof OpenProductActivity){
+                                addProduct = new AddProduct(context, ((OpenProductActivity) context).selectedDatum, "edit");
+                            }
+                            addProduct.setProduct(datum);
+                            addProduct.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+                            addProduct.show();
+
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+
+                //displaying the popup
+                popupMenu.show();
             }
         });
 
-        productViewHolder.edit_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AddProduct addProduct = null;
 
-                if((Activity)context instanceof AllProducts) {
-                    addProduct = new AddProduct(context, null, "edit");
-                } else if((Activity)context instanceof OpenProductActivity){
-                    addProduct = new AddProduct(context, ((OpenProductActivity) context).selectedDatum, "edit");
-                }
-                addProduct.setProduct(datum);
-                addProduct.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-                addProduct.show();
 
-            }
-        });
     }
     private void showAlertDialog(Product datum) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
@@ -248,12 +268,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     }
 
     public class ProductViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView delete_product;
         RelativeLayout product_layout, root_layout;
         ImageView product_img;
         private Button edit_btn, remove_btn;
         private ElegantNumberButton change_number_btn;
-        TextView product_name, product_price, store_name, product_desc, status, unit, quantity, stock_quantity, stock_unit;
+        TextView product_name, product_price, store_name, product_desc, status, unit, quantity, stock_quantity, textViewOptions;
 
         LinearLayout status_unit_layout;
 
@@ -263,7 +282,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             product_layout = itemView.findViewById(R.id.product_layout);
             root_layout = itemView.findViewById(R.id.root_layout);
             change_number_btn = itemView.findViewById(R.id.change_number_btn);
-            edit_btn = itemView.findViewById(R.id.edit_btn);
             remove_btn = itemView.findViewById(R.id.remove_btn);
             product_name = itemView.findViewById(R.id.product_name);
             product_price = itemView.findViewById(R.id.product_price);
@@ -273,11 +291,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             product_img = itemView.findViewById(R.id.product_img);
             quantity = itemView.findViewById(R.id.quantity);
             stock_quantity = itemView.findViewById(R.id.stock_quantity);
-            delete_product = itemView.findViewById(R.id.delete_product);
+            textViewOptions = itemView.findViewById(R.id.textViewOptions);
 
             FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(0, 0, 0, context.getResources().getDimensionPixelOffset(R.dimen._12sdp));
             root_layout.setLayoutParams(layoutParams);
         }
-    }
+        }
 }

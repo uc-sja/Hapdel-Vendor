@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="Cancel Item"
-        android:id="@+id/cancel_order"></item>
+        android:title="Delete Item"
+        android:id="@+id/delete_item"></item>
     <item
-        android:title="Accept Item"
-        android:id="@+id/update_order"></item>
+        android:title="Edit Item"
+        android:id="@+id/edit_item"></item>
 
 </menu>
