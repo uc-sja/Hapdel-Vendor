@@ -415,6 +415,7 @@ public interface HapdelApi {
             @Field("access_token") String access_token,
             @Field("category_id") String category_id,
             @Field("discount") String discount,
+            @Field("start_date") String start_date,
             @Field("expiry_date") String expiry_date,
             @Field("max_discount_amount") String max_discount_amount,
             @Field("minimum_order_amount") String minimum_order_amount,

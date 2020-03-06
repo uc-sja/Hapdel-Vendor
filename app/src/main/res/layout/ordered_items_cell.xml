@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:layout_height="wrap_content">
 
-        <LinearLayout
+        <LinearLayout   
             android:layout_marginBottom="@dimen/_5sdp"
             android:layout_width="match_parent"
             android:gravity="center"

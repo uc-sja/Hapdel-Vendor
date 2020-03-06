@@ -199,7 +199,7 @@ public class AddDiscount extends Dialog {
                 progressDialog.show();
             }
 
-            Call<ResponseModel> responseModelCall = getApiInstance().addDiscount(getCurrentUser().getId(), getCurrentUser().getAccessToken(), selected_category.getId(),  set_discount.getText().toString(), endDateTimeText, max_discount.getText().toString(), min_order.getText().toString(), current_discount==null?null:current_discount.getId());
+            Call<ResponseModel> responseModelCall = getApiInstance().addDiscount(getCurrentUser().getId(), getCurrentUser().getAccessToken(), selected_category.getId(),  set_discount.getText().toString(), startDateTimeText, endDateTimeText, max_discount.getText().toString(), min_order.getText().toString(), current_discount==null?null:current_discount.getId());
             responseModelCall.enqueue(new Callback<ResponseModel>() {
                 @Override
                 public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
