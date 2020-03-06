@@ -225,7 +225,7 @@ public class AddDiscount extends Dialog {
                         if (responseModel.getResult().equals("success")){ //very important conditon
                             Toast.makeText(context, responseModel.getMsg(), Toast.LENGTH_SHORT).show();
                             if(updateType.trim().equalsIgnoreCase("add")){
-                                ((OpenProductActivity)context).fetchProducts(((OpenProductActivity)context).selectedDatum, "1", "");
+                                ((OpenProductActivity)context).fetchProducts(((OpenProductActivity)context).selectedDatum, ((OpenProductActivity)context).current_keyword, "1");
                             } else if(updateType.trim().equalsIgnoreCase("edit")){
                                 ((DiscountList)context).fetchDiscounts();
                             }

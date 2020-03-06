@@ -57,6 +57,7 @@
     <color name="darkGray">#4C4B4B</color>
     <color name="colordarkbackground">#1b242f</color>
     <color name="medium_gray">#7B8788</color>
+    <color name="medium_light_gray">#CAD0D1</color>
     <color name="french_gray">#cdccd0</color>
     <color name="colorDullBrown">#EA7773</color>
 

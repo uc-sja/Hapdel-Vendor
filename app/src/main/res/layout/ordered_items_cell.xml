@@ -49,9 +49,9 @@
 
             <ImageView
                 android:id="@+id/cancel_btn"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:src="@drawable/ic_quit"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:src="@drawable/ic_cancel"
                 android:visibility="visible"
                 android:layout_alignParentEnd="true"></ImageView>
 
@@ -139,43 +139,13 @@
         android:id="@+id/bottom_btn_layout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:weightSum="10"
         android:layout_height="wrap_content">
-
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="6"/>
-
-
-        <Button
-            android:id="@+id/accept_btn"
-            android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:background="@drawable/add_btn"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif-thin"
-            android:text="Accept"
-            android:elevation="0dp"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/_11ssp"
-            android:theme="@style/banner_btn"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:textStyle="bold"
-            android:visibility="visible" />
-
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="4"/>
 
 
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="start"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -195,6 +165,30 @@
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
+
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+
+        <Button
+            android:id="@+id/accept_btn"
+            android:layout_width="@dimen/_21sdp"
+            android:layout_height="@dimen/_21sdp"
+            android:background="@drawable/ic_check"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-thin"
+            android:elevation="0dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_11ssp"
+            android:theme="@style/banner_btn"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+
 
     </LinearLayout>
 
