@@ -44,6 +44,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.libraries.places.api.Places;
@@ -142,6 +143,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -61,6 +61,7 @@
     <color name="french_gray">#cdccd0</color>
     <color name="colorDullBrown">#EA7773</color>
 
+    <color name="com_facebook_blue">#03A9F4</color>
     <color name="mtrl_textinput_default_box_stroke_color">@color/colorPrimaryGreen</color>
 
     <array name="connecting_colors">

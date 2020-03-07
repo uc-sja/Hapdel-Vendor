@@ -211,4 +211,13 @@
         <item name="android:textSize">@dimen/_10ssp</item>
     </style>
 
+    <style name="signup_background" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/my_drawable</item>
+        <!--<item name="colorControlNormal">@color/colorPrimary</item>-->
+        <!--<item name="colorControlActivated">@color/colorPrimary</item>-->
+        <!--<item name="colorControlHighlight">@color/colorPrimary</item>-->
+
+    </style>
+
+
 </resources>

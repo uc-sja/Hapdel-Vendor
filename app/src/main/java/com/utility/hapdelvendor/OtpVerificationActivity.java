@@ -2,7 +2,11 @@ package com.utility.hapdelvendor;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -13,10 +17,15 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.auth.api.phone.SmsRetriever;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.mukesh.OnOtpCompletionListener;
 import com.mukesh.OtpView;
@@ -41,6 +50,7 @@ import static com.utility.hapdelvendor.Utils.Common.hideKeyboard;
 public class OtpVerificationActivity extends AppCompatActivity {
 
 
+    private static final int SMS_CONSENT_REQUEST = 221;
     Toolbar toolbar;
     private RelativeLayout mobile_ver_layout;
     private OtpView enter_mobile_view;
@@ -50,12 +60,72 @@ public class OtpVerificationActivity extends AppCompatActivity {
 
     private Datum parentCategory;
 
+    private final BroadcastReceiver smsVerificationReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (SmsRetriever.SMS_RETRIEVED_ACTION.equals(intent.getAction())) {
+                Bundle extras = intent.getExtras();
+                Status smsRetrieverStatus = (Status) extras.get(SmsRetriever.EXTRA_STATUS);
+
+                switch (smsRetrieverStatus.getStatusCode()) {
+                    case CommonStatusCodes.SUCCESS:
+                        // Get consent intent
+                        Intent consentIntent = extras.getParcelable(SmsRetriever.EXTRA_CONSENT_INTENT);
+                        try {
+                            // Start activity to show consent dialog to user, activity must be started in
+                            // 5 minutes, otherwise you'll receive another TIMEOUT intent
+                            startActivityForResult(consentIntent, SMS_CONSENT_REQUEST);
+                        } catch (ActivityNotFoundException e) {
+                            Log.d(TAG, "onReceive: "+e.getLocalizedMessage());
+                            // Handle the exception ...
+                        }
+                        break;
+                    case CommonStatusCodes.TIMEOUT:
+                        // Time out occurred, handle the error.
+                        break;
+                }
+            }
+        }
+    };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case SMS_CONSENT_REQUEST:
+                if(resultCode == RESULT_OK){
+                    String message = data.getStringExtra(SmsRetriever.EXTRA_SMS_MESSAGE);
+                    // Extract one-time code from the message and complete verification
+                    // `sms` contains the entire text of the SMS message, so you will need
+                    // to parse the string.
+                    String oneTimeCode = parseOneTimeCode(message); // define this function
+                    Log.d(TAG, "onActivityResult: oneTimeCode"+oneTimeCode);
+                    validateOtp(oneTimeCode);
+
+                    // send one time code to the server
+                } else {
+                    // Consent canceled, handle the error ...
+                    Toast.makeText(this, "Permission denied to read sms", Toast.LENGTH_SHORT).show();
+                }
+
+        }
+    }
+
+
+    private String parseOneTimeCode(String message) {
+        int startIndex = message.lastIndexOf("is ");
+        return message.substring(startIndex+3, startIndex+9);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp_verification);
 
+        IntentFilter intentFilter = new IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION);
+        registerReceiver(smsVerificationReceiver, intentFilter);
+        Task<Void> task = SmsRetriever.getClient(OtpVerificationActivity.this).startSmsUserConsent(null);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(ContextCompat.getColor(OtpVerificationActivity.this, R.color.colorPrimaryGreen));

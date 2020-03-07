@@ -3,17 +3,26 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('/Users/shikhar/AndroidStudioProjects/hapdel-biker/app/key')
+            storePassword 'Anushiansh91'
+            keyAlias = 'key0'
+            keyPassword 'Anushiansh91'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.utility.hapdelvendor"
         minSdkVersion 22
         targetSdkVersion 28
-        versionCode 1
+        versionCode 5
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -29,7 +38,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -50,8 +59,6 @@ dependencies {
 
     //library for GsonConvertorFactory
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-
-    implementation 'com.facebook.android:facebook-login:5.15.1'
 
     //scalable dp/sp library
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
@@ -81,9 +88,6 @@ dependencies {
 
     implementation 'com.aurelhubert:ahbottomnavigation:2.2.0'
 
-    //google places library for place autocomplete
-    implementation 'com.google.android.libraries.places:places:2.1.0'
-
     //elegant number button to increase quantity
     implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'
 
@@ -97,18 +101,11 @@ dependencies {
     //important library to show beautiful animation in a view that extends imageview
     implementation 'com.airbnb.android:lottie:3.1.0'
 
-    //Places Api
-    implementation 'com.google.android.libraries.places:places:2.1.0'
-
-    //Ping Place Picker
-    //noinspection GradleDynamicVersion
-    implementation 'com.github.rtchagas:pingplacepicker:1.1.+'
-
     // add the Firebase SDK for Google Analytics
-    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation 'com.google.firebase:firebase-analytics:17.2.3'
 
     // (Recommended) Add the Google Analytics dependency.
-    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation 'com.google.firebase:firebase-analytics:17.2.3'
 
     // Add the Firebase Crashlytics dependency.
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
@@ -122,9 +119,22 @@ dependencies {
 
     implementation "com.leinardi.android:speed-dial:3.1.1"
 
-    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    implementation 'com.google.firebase:firebase-messaging:20.1.2'
 
 
     implementation 'com.android.support:design:28.0.0'
+
+    //Places Api
+    implementation 'com.google.android.libraries.places:places:2.2.0'
+
+    //Auto fetch Otp
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'com.google.android.gms:play-services-auth-api-phone:17.4.0'
+
+
+    //Check for app updates
+    implementation 'com.github.javiersantos:AppUpdater:2.7'
+
+
 }
 apply plugin: 'com.google.gms.google-services'
