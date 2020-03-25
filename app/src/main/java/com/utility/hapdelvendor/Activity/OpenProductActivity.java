@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -53,7 +52,6 @@ import com.utility.hapdelvendor.Interfaces.ResponseResult;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.ParentCategoryModel;
 import com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Subcategory;
 import com.utility.hapdelvendor.Model.ProducModel.ProducModel;
-import com.utility.hapdelvendor.Model.SearchModel.SearchResultModel;
 import com.utility.hapdelvendor.R;
 import com.utility.hapdelvendor.Utils.BottomNavigation;
 import com.utility.hapdelvendor.Utils.Common;
@@ -386,7 +384,7 @@ public class OpenProductActivity extends AppCompatActivity {
     }
 
     private void fetchTabbedCategories(final com.utility.hapdelvendor.Model.CategoryModel.ParentCategoryModel.Datum datum) {
-        Call<ParentCategoryModel> categoryModel = getApiInstance().fetchSubCategory("1", "", datum.getId());
+        Call<ParentCategoryModel> categoryModel = getApiInstance().fetchSubCategory(getCurrentUser().getId(), getCurrentUser().getAccessToken(), datum.getId());
         categoryModel.enqueue(new Callback<ParentCategoryModel>() {
             @Override
             public void onResponse(Call<ParentCategoryModel> call, Response<ParentCategoryModel> response) {

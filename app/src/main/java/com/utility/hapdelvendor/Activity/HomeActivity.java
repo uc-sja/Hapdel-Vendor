@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -44,11 +45,20 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
-import com.google.android.gms.auth.api.phone.SmsRetriever;
+import com.github.javiersantos.appupdater.AppUpdater;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
 import com.kingfisher.easyviewindicator.AnyViewIndicator;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.utility.hapdelvendor.Adapter.MainCatAdapter;
@@ -82,6 +92,7 @@ import static com.utility.hapdelvendor.Utils.Common.hideKeyboard;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
+    private static final int UPDATE_REQUEST_CODE = 99;
 
     private Toolbar tl;
 
@@ -131,13 +142,27 @@ public class HomeActivity extends AppCompatActivity {
     private RecentOrderAdapter recentOrderAdapter;
     private LinearLayoutManager linearLayoutManager;
     private AnyViewIndicator circleIndicator;
+    private LinearLayout recent_order_layout;
+
+    private RelativeLayout container_layout;
 
 
     private boolean myReceiverIsRegistered = false;
     private static BroadcastReceiver mMessageReceiver = null;
+    private int HIGH_PRIORITY_UPDATE = 5;
+    private AppUpdateManager appUpdateManager;
+    private InstallStateUpdatedListener installStateUpdatedListener;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+
     private static boolean firstConnect = true;
     private static boolean dialogActive;
     private boolean isWindowActive;
+    private AppUpdater appUpdater;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -145,11 +170,71 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+
+        // Creates instance of the manager.
+        appUpdateManager = AppUpdateManagerFactory.create(HomeActivity.this);
+
+        installStateUpdatedListener = state -> {
+            // (Optional) Provide a download progress bar.
+            if (state.installStatus() == InstallStatus.DOWNLOADING) {
+                long bytesDownloaded = state.bytesDownloaded();
+                long totalBytesToDownload = state.totalBytesToDownload();
+
+                Log.d(TAG, "onCreate: bytesDownloaded " + bytesDownloaded);
+                // Implement progress bar.
+
+            }
+
+            if (state.installStatus() == InstallStatus.DOWNLOADED) {
+                appUpdateManager.unregisterListener(installStateUpdatedListener);
+                popupSnackbarForCompleteUpdate();
+            }
+            // Log state or install the update.
+        };
+
+
+        // Returns an intent object that you use to check for an update.
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+
+        // Checks that the platform will allow the specified type of update.
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            Log.d(TAG, "onCreate: `updateAvailability` " + appUpdateInfo.updateAvailability() + " , " + appUpdateInfo.updatePriority() + " appupdateinfo " + appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE));
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    // For a flexible update, use AppUpdateType.FLEXIBLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+                    && appUpdateInfo.updatePriority() >= 0) {
+                // Request the update.
+
+                try {
+                    appUpdateManager.startUpdateFlowForResult(appUpdateInfo,
+                            AppUpdateType.FLEXIBLE, HomeActivity.this, UPDATE_REQUEST_CODE);
+                    appUpdateManager.registerListener(installStateUpdatedListener);
+                } catch (IntentSender.SendIntentException e) {
+                    Log.d(TAG, "onCreate: " + e.toString());
+                }
+            } else if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                // For a flexible update, use AppUpdateType.FLEXIBLE
+                Log.d(TAG, "onCreate:   triggered");
+
+                try {
+                    appUpdateManager.startUpdateFlowForResult(appUpdateInfo,
+                            AppUpdateType.IMMEDIATE, HomeActivity.this, UPDATE_REQUEST_CODE);
+//                            appUpdateManager.registerListener(installStateUpdatedListener);
+                } catch (IntentSender.SendIntentException e) {
+                    Log.d(TAG, "onCreate: " + e.toString());
+                }
+
+
+            }
+
+        });
+
+
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
             Common.setStatusColor(HomeActivity.this, R.color.colorPrimaryGreen);
@@ -207,7 +292,7 @@ public class HomeActivity extends AppCompatActivity {
         recentOrderView = findViewById(R.id.recent_order_recycler);
 
 //        circleIndicator = findViewById(R.id.recent_order_indicator);
-        linearLayoutManager = new  LinearLayoutManager(HomeActivity.this, LinearLayoutManager.VERTICAL, false);
+        linearLayoutManager = new LinearLayoutManager(HomeActivity.this, LinearLayoutManager.VERTICAL, false);
         recentOrderView.setLayoutManager(linearLayoutManager);
 
 
@@ -223,6 +308,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
 //        fetchRecentOrder();
+
+        recent_order_layout = findViewById(R.id.recent_order_layout);
 
         error_msg_layout = findViewById(R.id.error_layout);
         error_msg = findViewById(R.id.error_msg);
@@ -260,7 +347,7 @@ public class HomeActivity extends AppCompatActivity {
                     //and in previous versions of android onreceive is called multiple number of times simultaneously
                     //but we need to reset firstConnect to true after a while also so that we receive broadcast updtes in future
 
-                    if(firstConnect) {
+                    if (firstConnect) {
                         firstConnect = false;
 
 //                        final Handler handler = new Handler();
@@ -283,15 +370,15 @@ public class HomeActivity extends AppCompatActivity {
 
                         //we are null checking price and distance too below because this is how we diferenciate the notification of type general
                         //or notification type ride
-                        if (isOrder != null && isOrder.equalsIgnoreCase("y") && body!=null && title!=null  && !dialogActive) {
+                        if (isOrder != null && isOrder.equalsIgnoreCase("y") && body != null && title != null && !dialogActive) {
                             // Customize notification (title, background, typeface)
                             bottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));
 
                             // Add or remove notification for each item
                             bottomNavigation.setNotification(ParentNotificationService.order_notification_count, 1);
 
-                            showRideDialog(HomeActivity.this, title, body   );
-                        } else if (isOrder != null && isOrder.equalsIgnoreCase("y") && body!=null && title!=null) {
+                            showRideDialog(HomeActivity.this, title, body);
+                        } else if (isOrder != null && isOrder.equalsIgnoreCase("y") && body != null && title != null) {
                             Log.d(TAG, "onReceive: on ride notification ");
                             bottomNavigation.setNotification(ParentNotificationService.order_notification_count, 1);
                         } else {
@@ -311,7 +398,6 @@ public class HomeActivity extends AppCompatActivity {
         };
 
 
-
         if (LocalStorage.isNotificationRereshed()) {
             Log.d(TAG, "onCreate: isNotificationRereshed ");
             sendRegistrationToServer(LocalStorage.getNotificationToken());
@@ -322,6 +408,19 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+
+    /* Displays the snackbar notification and call to action. */
+    private void popupSnackbarForCompleteUpdate() {
+        Snackbar snackbar =
+                Snackbar.make(
+                        findViewById(R.id.container_layout),
+                        "An update has just been downloaded.",
+                        Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("RESTART", view -> appUpdateManager.completeUpdate());
+        snackbar.setActionTextColor(
+                getResources().getColor(R.color.com_facebook_blue));
+        snackbar.show();
+    }
 
     private void
     sendRegistrationToServer(String s) {
@@ -370,7 +469,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-
     private void showRideDialog(HomeActivity homeActivity, String body, String title) {
         Log.d(TAG, "showRideDialog: is called");
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -394,7 +492,6 @@ public class HomeActivity extends AppCompatActivity {
         dialog_subt.setText(title);
         dialog_details.setText(body);
 
-//
 //        price_text.setText(getString(R.string.rupee_icon) + price);
 //        distance_text.setText(distance);
         dialog.setContentView(dialogView);
@@ -436,9 +533,16 @@ public class HomeActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult: ");
+        if (requestCode == UPDATE_REQUEST_CODE) {
+            if (resultCode != RESULT_OK) {
+                Toast.makeText(this, "Update Cancelled", Toast.LENGTH_SHORT).show();
+// Create a listener to track request state updates.
+                Log.d(TAG, "onActivityResult: Update flow failed! Result code: " + resultCode);
+            } else {
+
+            }
+        }
     }
-
-
 
     @Override
     protected void onPause() {
@@ -472,7 +576,6 @@ public class HomeActivity extends AppCompatActivity {
         fetchRecentOrder();
     }
 
-
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -491,6 +594,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void fetchRecentOrder() {
+        recent_order_layout.setVisibility(View.GONE);
         final ProgressDialog progressDialog = new ProgressDialog(HomeActivity.this, R.style.MyDialogTheme);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Fetching Recent Orders...");
@@ -524,13 +628,15 @@ public class HomeActivity extends AppCompatActivity {
                     content += recentOrderModel.getMsg();
 
                     Log.d(TAG, "onResponse: response msg" + response.body().getResult() + "  msg  ");
-                    if (recentOrderModel.getResult().equalsIgnoreCase("success")) { //very important conditon
+                    if (recentOrderModel.getResult().equalsIgnoreCase("success")) {
+                        //very important conditon
                         final List<Datum> bannerList = new ArrayList<>();
 
                         if (recentOrderModel.getData() != null && recentOrderModel.getData().size() > 0) {
 
                             Log.d(TAG, "onResponse: banner size " + recentOrderModel.getData().size());
 
+                            recent_order_layout.setVisibility(View.VISIBLE);
                             recentOrderAdapter.updateItems(recentOrderModel.getData());
                         }
 
@@ -628,7 +734,6 @@ public class HomeActivity extends AppCompatActivity {
         });
 
     }
-
 
 
     private void showErrorMessage(String s) {

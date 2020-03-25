@@ -255,6 +255,11 @@ public class AddProduct extends Dialog {
         String stock_count = set_stock_count.getText().toString();
         String product_price = set_product_price.getText().toString();
 
+        if(current_product !=null && isEmpty(current_product.getPid().trim())){
+            search_bar.setError("Kindly select a product first");
+            search_bar.requestFocus();
+            return false;
+        }
 
         //We dont set stock in case of service
         if(current_product.getType().equalsIgnoreCase("product")){
@@ -277,11 +282,6 @@ public class AddProduct extends Dialog {
             return false;
         }
 
-        if(current_product !=null && isEmpty(current_product.getPid().trim())){
-            search_bar.setError("Kindly select a product first");
-            search_bar.requestFocus();
-            return false;
-        }
         return true;
     }
 

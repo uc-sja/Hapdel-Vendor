@@ -10,12 +10,17 @@
     sothree:umanoShadowHeight="0dp">
 
     <RelativeLayout
+        android:id="@+id/container_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/lighterGray"
         tools:context=".Activity.HomeActivity">
 
         <FrameLayout
+
+
+
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/bottom_navigation"
@@ -178,8 +183,7 @@
                                 <LinearLayout
                                     android:id="@+id/recent_order_layout"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical">
+                                    android:layout_height="wrap_content">
 
                                     <TextView
                                         android:id="@+id/recent_order_subtitle"
@@ -205,15 +209,15 @@
                                         android:clipToPadding="false"
                                         android:orientation="horizontal" />
 
-<!--                                    <com.kingfisher.easyviewindicator.AnyViewIndicator-->
-<!--                                        android:id="@+id/recent_order_indicator"-->
-<!--                                        android:layout_width="wrap_content"-->
-<!--                                        android:layout_height="@dimen/_20sdp"-->
-<!--                                        android:layout_marginTop="@dimen/_10sdp"-->
-<!--                                        android:layout_gravity="left"-->
-<!--                                        android:gravity="center"-->
-<!--                                        sothree:avi_drawable_unselected="@drawable/gray_radius"-->
-<!--                                        sothree:avi_drawable="@drawable/coloured_radius"></com.kingfisher.easyviewindicator.AnyViewIndicator>-->
+                                    <!--                                    <com.kingfisher.easyviewindicator.AnyViewIndicator-->
+                                    <!--                                        android:id="@+id/recent_order_indicator"-->
+                                    <!--                                        android:layout_width="wrap_content"-->
+                                    <!--                                        android:layout_height="@dimen/_20sdp"-->
+                                    <!--                                        android:layout_marginTop="@dimen/_10sdp"-->
+                                    <!--                                        android:layout_gravity="left"-->
+                                    <!--                                        android:gravity="center"-->
+                                    <!--                                        sothree:avi_drawable_unselected="@drawable/gray_radius"-->
+                                    <!--                                        sothree:avi_drawable="@drawable/coloured_radius"></com.kingfisher.easyviewindicator.AnyViewIndicator>-->
 
                                 </LinearLayout>
 
