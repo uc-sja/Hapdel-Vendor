@@ -148,19 +148,6 @@
                                     android:layout_weight="1"
                                     android:src="@drawable/ic_cart" />
 
-                                <com.utility.hapdel.Utils.CircularTextView
-                                    android:id="@+id/cart_badge"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="@dimen/_2sdp"
-                                    android:layout_toEndOf="@+id/cart_icon"
-                                    android:clickable="true"
-                                    android:padding="@dimen/_3sdp"
-                                    android:text="0"
-                                    android:textAlignment="center"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="@dimen/_7ssp" />
 
                                 <ImageView
                                     android:id="@+id/myshop_icon"

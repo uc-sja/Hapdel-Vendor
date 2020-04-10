@@ -131,7 +131,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
                 PopupMenu popupMenu = new PopupMenu(context, productViewHolder.textViewOptions);
                 //inflating menu from xml resource
 
-                popupMenu.inflate(R.menu.order_menu);
+                popupMenu.inflate(R.menu.edit_product_menu);
 
                 //adding  a click listener
 

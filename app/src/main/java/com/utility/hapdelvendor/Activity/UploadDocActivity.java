@@ -67,7 +67,7 @@ public class UploadDocActivity extends AppCompatActivity {
     private static final String TAG = "SignInActivity";
     private Button proceed, back;
     TextView full_name_text;
-    TextView continue_txt;
+    TextView submit_btn;
     ProgressBar toolbar_progress_bar;
     private LinearLayout bottom_bar_layout;
     private SlidingUpPanelLayout sliding_layout;
@@ -178,7 +178,7 @@ public class UploadDocActivity extends AppCompatActivity {
 //        bottom_toolbar = findViewById(R.id.bottom_toolbar);
 //
 //        toolbar_progress_bar = findViewById(R.id.toolbar_progress_bar);
-        continue_txt = findViewById(R.id.continue_txt);
+        submit_btn = findViewById(R.id.submit_text);
         sliding_layout = findViewById(R.id.sliding_layout);
         slider_img = findViewById(R.id.slider_img);
         slider_msg = findViewById(R.id.slider_msg);
@@ -186,7 +186,7 @@ public class UploadDocActivity extends AppCompatActivity {
         slider_one_btn = findViewById(R.id.slider_btn_one);
         slider_two_btn = findViewById(R.id.slider_btn_two);
 
-        continue_txt.setOnClickListener(new View.OnClickListener() {
+        submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 performUploadTask();
@@ -297,7 +297,7 @@ public class UploadDocActivity extends AppCompatActivity {
         startDialog();
     }
 
-    private void startDialog() {
+    private void    startDialog() {
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(
                 this);
         myAlertDialog.setTitle("Upload Pictures Option");

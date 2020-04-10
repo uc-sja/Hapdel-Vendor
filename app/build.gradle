@@ -21,6 +21,14 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        applicationVariants.all { variant ->
+            variant.outputs.all {
+                outputFileName = applicationId;
+                outputFileName = "vendor test.apk";
+            }
+        }
+
+
         release {
             signingConfig signingConfigs.release
             minifyEnabled false

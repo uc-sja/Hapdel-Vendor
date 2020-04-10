@@ -257,7 +257,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textAlignment="center"
-                            android:hint="Enter prodcut price"
+                            android:hint="Enter product price"
                             android:digits="0123456789."
                             android:paddingHorizontal="@dimen/_2sdp"
                             android:inputType="numberDecimal"

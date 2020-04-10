@@ -52,8 +52,25 @@
                 android:layout_width="@dimen/_24sdp"
                 android:layout_height="@dimen/_24sdp"
                 android:src="@drawable/ic_cancel"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_alignParentEnd="true"></ImageView>
+
+
+            <TextView
+                android:id="@+id/textViewOptions"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:paddingEnd="@dimen/_10sdp"
+                android:paddingStart="@dimen/_30sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_7sdp"
+                android:text="&#8942;"
+                android:layout_gravity="top"
+                android:textSize="@dimen/_13ssp"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:textAppearance="?android:textAppearanceLarge" />
 
 
         </LinearLayout>
@@ -186,7 +203,7 @@
             android:theme="@style/banner_btn"
             android:layout_marginStart="@dimen/_5sdp"
             android:textStyle="bold"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
 
 

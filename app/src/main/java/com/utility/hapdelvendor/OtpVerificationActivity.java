@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,7 +26,10 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 import com.mukesh.OnOtpCompletionListener;
 import com.mukesh.OtpView;
@@ -49,6 +53,17 @@ import static com.utility.hapdelvendor.Utils.Common.hideKeyboard;
 
 public class OtpVerificationActivity extends AppCompatActivity {
 
+
+    private IntentFilter intentFilter;
+    private boolean smsReceiverRegistered = false;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(smsReceiverRegistered) {
+            unregisterReceiver(smsVerificationReceiver);
+        }
+    }
 
     private static final int SMS_CONSENT_REQUEST = 221;
     Toolbar toolbar;
@@ -123,9 +138,11 @@ public class OtpVerificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp_verification);
 
-        IntentFilter intentFilter = new IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION);
-        registerReceiver(smsVerificationReceiver, intentFilter);
-        Task<Void> task = SmsRetriever.getClient(OtpVerificationActivity.this).startSmsUserConsent(null);
+        if(!smsReceiverRegistered){
+            intentFilter = new IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION);
+            registerReceiver(smsVerificationReceiver, intentFilter);
+            Task<Void> task = SmsRetriever.getClient(OtpVerificationActivity.this).startSmsUserConsent(null);
+        }
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(ContextCompat.getColor(OtpVerificationActivity.this, R.color.colorPrimaryGreen));
@@ -317,7 +334,27 @@ public class OtpVerificationActivity extends AppCompatActivity {
             intent = new Intent(OtpVerificationActivity.this, OpenProductActivity.class);
             intent.putExtra("category", new Gson().toJson(parentCategory));
         } else {
+
+            FirebaseInstanceId.getInstance().getInstanceId()
+                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "getInstanceId failed", task.getException());
+                                return;
+                            }
+
+                            // Get new Instance ID token
+                            String token = task.getResult().getToken();
+                            LocalStorage.setNotificationToken(token);
+                            LocalStorage.setIsNotificationRereshed(true);
+                            Log.d(TAG, "onComplete: token ");
+                        }
+
+                    });
+
             intent = new Intent(OtpVerificationActivity.this, MainActivity.class);
+
         }
 
         Log.d(TAG, "onLoginSucess: "+userModel.getData().get(0).getEmail());
@@ -325,7 +362,6 @@ public class OtpVerificationActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
         startActivity(intent);
     }
-
 
     private void startTimer() {
         new CountDownTimer(30000, 1000) { // adjust the milli seconds here

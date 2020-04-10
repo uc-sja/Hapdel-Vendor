@@ -257,21 +257,13 @@ public interface HapdelApi {
 
     @FormUrlEncoded
     @POST("order/order_status")
-    Call<ResponseModel> acceptOrder(
+    Call<ResponseModel> updateOrder(
             @Field("user_id") String userId,
             @Field("access_token") String access_token,
             @Field("order_id") String item_id,
             @Field("status") String status
     );
 
-    @FormUrlEncoded
-    @POST("order/order_status")
-    Call<ResponseModel> cancelItem(
-            @Field("user_id") String userId,
-            @Field("access_token") String access_token,
-            @Field("order_id") String item_id,
-            @Field("status") String status
-    );
 
 
     //VendorList

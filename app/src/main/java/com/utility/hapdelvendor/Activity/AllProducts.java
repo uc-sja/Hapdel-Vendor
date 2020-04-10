@@ -254,7 +254,7 @@ public class AllProducts extends AppCompatActivity {
                         } else {
                             isScrolling = true;
                             if(firstLoad){
-                                showErrorMessage("There are no products under this category");
+                                showErrorMessage("No Search Results found for keyword "+"\""+keyword+"\"");
                             }
                         }
 

@@ -81,33 +81,46 @@ public class AddProduct extends Dialog {
 
         autoSuggestAdapter = new com.utility.hapdelvendor.Utils.AutoSuggestAdapter(context, R.layout.simple_spinner_dropdown_item, new ArrayList());
         search_bar.setAdapter(autoSuggestAdapter);
-        search_bar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isEmpty(search_bar.getText().toString())){
-                    searchItem(search_bar.getText().toString(), selected_category);
+
+
+        if(updateType.equalsIgnoreCase("edit") && current_product!=null){
+            search_bar.setVisibility(View.GONE);
+            update_title.setText("Edit product");
+            initializeProduct(current_product);
+        } else if(updateType.equalsIgnoreCase("add")){
+            search_bar.setVisibility(View.VISIBLE);
+            update_title.setText("Add product");
+
+            search_bar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(isEmpty(search_bar.getText().toString())){
+                        searchItem(search_bar.getText().toString(), selected_category);
+                    }
                 }
-            }
-        });
+            });
 
-        search_bar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            search_bar.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                searchItem(search_bar.getText().toString(), selected_category);
+                @Override
+                public void afterTextChanged(Editable s) {
+                    searchItem(search_bar.getText().toString(), selected_category);
 
-            }
-        });
+                }
+            });
 
-        search_bar.requestFocus();
-        search_bar.performClick();
+            search_bar.requestFocus();
+            search_bar.performClick();
+
+        }
+
 
         set_product_price.addTextChangedListener(new TextWatcher() {
             @Override
@@ -149,15 +162,6 @@ public class AddProduct extends Dialog {
             }
         });
 
-
-        if(updateType.equalsIgnoreCase("edit") && current_product!=null){
-            search_bar.setVisibility(View.GONE);
-            update_title.setText("Edit product");
-            initializeProduct(current_product);
-        } else if(updateType.equalsIgnoreCase("add")){
-            search_bar.setVisibility(View.VISIBLE);
-            update_title.setText("Add product");
-        }
     }
 
     private void initializeProduct(Product product) {

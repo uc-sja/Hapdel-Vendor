@@ -183,6 +183,7 @@
                                 <LinearLayout
                                     android:id="@+id/recent_order_layout"
                                     android:layout_width="match_parent"
+                                    android:orientation="vertical"
                                     android:layout_height="wrap_content">
 
                                     <TextView

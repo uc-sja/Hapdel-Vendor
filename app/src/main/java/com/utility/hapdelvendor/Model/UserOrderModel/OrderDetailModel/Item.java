@@ -64,6 +64,18 @@ public class Item {
     @Expose
     private String service_time;
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @SerializedName("type")
+    @Expose
+    private String type;
+
     public String getService_time() {
         return service_time;
     }

@@ -8,12 +8,13 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/category_cardview"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_80sdp"
+        android:layout_width="@dimen/_95sdp"
+        app:cardUseCompatPadding="true"
         app:contentPadding="@dimen/_3sdp"
-        app:cardCornerRadius="@dimen/_7sdp"
-        android:outlineAmbientShadowColor="@color/darkGray"
-        android:outlineSpotShadowColor="@color/darkGray"
+        android:elevation="0dp"
+        app:cardElevation="@dimen/_1sdp"
+        app:cardCornerRadius="@dimen/_10sdp"
+        android:layout_height="@dimen/_95sdp"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -22,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_height="wrap_content">
 
 
@@ -57,7 +58,7 @@
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/_3sdp"
+                android:layout_marginVertical="@dimen/_5sdp"
                 android:gravity="center"
                 android:layout_centerHorizontal="true"
                 android:maxLines="2"

@@ -448,7 +448,7 @@ public class HomeActivity extends AppCompatActivity {
                     Log.d(TAG, "onResponse: response msg" + response.body().getResult() + "  msg  ");
                     if (responseModel.getResult().equals("success")) { //very important conditon
                         Log.d(TAG, "onResponse: success send registration token");
-                        Toast.makeText(HomeActivity.this, "Successfully created access token", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(HomeActivity.this, "Successfully created access token", Toast.LENGTH_SHORT).show();
                         LocalStorage.setIsNotificationRereshed(false);
                     } else {
                         content += responseModel.getMsg();
@@ -550,7 +550,7 @@ public class HomeActivity extends AppCompatActivity {
         isWindowActive = false;
         Log.d(TAG, "state onPause: ");
         if (myReceiverIsRegistered) {
-            unregisterReceiver(mMessageReceiver);
+            LocalBroadcastManager.getInstance(HomeActivity.this).   unregisterReceiver(mMessageReceiver);
             myReceiverIsRegistered = false;
         }
     }

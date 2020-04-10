@@ -51,6 +51,7 @@ public class ParentNotificationService extends FirebaseMessagingService {
         // Instance ID token to your app server.
         LocalStorage.setNotificationToken(s);
         LocalStorage.setIsNotificationRereshed(true);
+
     }
 
 
@@ -127,7 +128,7 @@ public class ParentNotificationService extends FirebaseMessagingService {
         NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
         bigText.bigText("Tap to know more");
         bigText.setBigContentTitle(title);
-        bigText.setSummaryText(body);
+        bigText.setBigContentTitle(body);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.ic_address)
