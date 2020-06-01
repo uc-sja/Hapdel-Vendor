@@ -45,37 +45,34 @@ import static android.text.TextUtils.isEmpty;
 
 public class Common {
 
+
+//          public static final String baseUrl = "https://live.hapdel.in/api/v1/vendors/";
 //        public static final String baseUrl = "http://stage.hapdel.in/api/v1/vendors/";
-
         public static final String baseUrl = "https://test.hapdel.in/api/v1/vendors/";
-
-//    public static final String baseUrl = "https://live.hapdel.in/api/v1/vendors/";
-
-//    public static final String baseUrl = "http://192.168.0.143/hapdel/api/v1/vendors/";
-//
-//    public static final String baseUrl = "http://192.168.43.59:8080/hapdel/api/v1/vendors/";
+//        public static final String baseUrl = "http://192.168.0.143/hapdel/api/v1/vendors/";
+//        public static final String baseUrl = "http://192.168.43.59:8080/hapdel/api/v1/vendors/";
 
     private static final String TAG = "Common";
     public static boolean service_available = false;
     public static String currentCity = "";
 
-    public static HapdelApi getApiInstance(){
+    public static HapdelApi getApiInstance() {
         HapdelApi hapdelApi = RetrofitClient.getRetrofit().create(HapdelApi.class);
         return hapdelApi;
     }
 
-    public static Datum getCurrentUser(){
-        if(LocalStorage.getUser()!=null) {
+    public static Datum getCurrentUser() {
+        if (LocalStorage.getUser() != null) {
             return LocalStorage.getUser().getData().get(0);
-        } else{
+        } else {
             return null;
         }
     }
 
     public static void selectTextView(Context context, LinearLayout nick_name_option_layout, TextView selected_text_view, int selected_color, int unselect_color) {
         ArrayList<TextView> textViews = findTextViews(nick_name_option_layout, null);
-        for(TextView textView: textViews){
-            if(textView.getId()==selected_text_view.getId()){
+        for (TextView textView : textViews) {
+            if (textView.getId() == selected_text_view.getId()) {
                 textView.setBackgroundColor(context.getResources().getColor(selected_color));
                 textView.setTextColor(context.getResources().getColor(R.color.colorWhite));
             } else {
@@ -85,72 +82,71 @@ public class Common {
         }
     }
 
-    public static ArrayList<TextView> findTextViews(ViewGroup viewGroup, ArrayList<TextView> textViews){
-        if(textViews == null){
+    public static ArrayList<TextView> findTextViews(ViewGroup viewGroup, ArrayList<TextView> textViews) {
+        if (textViews == null) {
             textViews = new ArrayList<>();
         }
 
-        Log.d(TAG, "findEditableMarks: "+viewGroup.getChildCount());
-        for(int i = 0; i < viewGroup.getChildCount(); i++){
+        Log.d(TAG, "findEditableMarks: " + viewGroup.getChildCount());
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View view = viewGroup.getChildAt(i);
-            if(view instanceof  ViewGroup){
-                Log.d(TAG, "findTextViews: viewgroup hai"+view);
-                ViewGroup viewGroup1 = (ViewGroup)view;
+            if (view instanceof ViewGroup) {
+                Log.d(TAG, "findTextViews: viewgroup hai" + view);
+                ViewGroup viewGroup1 = (ViewGroup) view;
                 findTextViews(viewGroup1, textViews);
-            } else if(view instanceof TextView){
+            } else if (view instanceof TextView) {
                 Log.d(TAG, "findTextViews: textview hai");
                 TextView textView = (TextView) view;
-                Log.d(TAG, "findTextViews: "+textView.getText().toString());
+                Log.d(TAG, "findTextViews: " + textView.getText().toString());
                 textViews.add(textView);
 
             }
         }
 
-        Log.d(TAG, "findTextViews: "+textViews.size());
+        Log.d(TAG, "findTextViews: " + textViews.size());
         return textViews;
     }
 
-    public static ArrayList<TextInputEditText> findTextInputEditTexts(ViewGroup viewGroup, ArrayList<TextInputEditText> textInputEditTexts){
-        if(textInputEditTexts == null){
+    public static ArrayList<TextInputEditText> findTextInputEditTexts(ViewGroup viewGroup, ArrayList<TextInputEditText> textInputEditTexts) {
+        if (textInputEditTexts == null) {
             textInputEditTexts = new ArrayList<>();
         }
 
-        Log.d(TAG, "findEditableMarks: "+viewGroup.getChildCount());
-        for(int i = 0; i < viewGroup.getChildCount(); i++){
+        Log.d(TAG, "findEditableMarks: " + viewGroup.getChildCount());
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View view = viewGroup.getChildAt(i);
-            if(view instanceof  ViewGroup){
-                Log.d(TAG, "findTextViews: viewgroup hai"+view);
-                ViewGroup viewGroup1 = (ViewGroup)view;
+            if (view instanceof ViewGroup) {
+                Log.d(TAG, "findTextViews: viewgroup hai" + view);
+                ViewGroup viewGroup1 = (ViewGroup) view;
                 findTextInputEditTexts(viewGroup1, textInputEditTexts);
-            } else if(view instanceof TextInputEditText){
+            } else if (view instanceof TextInputEditText) {
                 Log.d(TAG, "findTextViews: textview hai");
                 TextInputEditText textInputEditText = (TextInputEditText) view;
-                Log.d(TAG, "findTextViews: "+textInputEditText.getText().toString());
+                Log.d(TAG, "findTextViews: " + textInputEditText.getText().toString());
                 textInputEditTexts.add(textInputEditText);
 
             }
         }
-        Log.d(TAG, "findTextViews: "+textInputEditTexts.size());
+        Log.d(TAG, "findTextViews: " + textInputEditTexts.size());
         return textInputEditTexts;
     }
 
 
-    public boolean setCurrentUser(UserModel userModel){
+    public boolean setCurrentUser(UserModel userModel) {
         LocalStorage.setUser(userModel);
         return true;
     }
 
-    public static void setAnimation(Context context){
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH){
+    public static void setAnimation(Context context) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
             Slide slide = new Slide();
             slide.setSlideEdge(Gravity.LEFT);
             slide.setDuration(400);
             slide.setInterpolator(new DecelerateInterpolator());
-            ((Activity)context).getWindow().setExitTransition(slide);
-            ((Activity)context).getWindow().setEnterTransition(slide);
+            ((Activity) context).getWindow().setExitTransition(slide);
+            ((Activity) context).getWindow().setEnterTransition(slide);
         }
     }
-
 
 
     public static void showEmptyDialog(Context context, String dialog_subtitle, String dialog_desc) {
@@ -167,7 +163,7 @@ public class Common {
         dialog_details.setMovementMethod(new ScrollingMovementMethod());
         Button buttonOk = dialogView.findViewById(R.id.buttonOk);
         dialog_subt.setText(dialog_subtitle);
-        dialog_details.setText(isEmpty(dialog_desc)?"No Descripition Availble":dialog_desc);
+        dialog_details.setText(isEmpty(dialog_desc) ? "No Descripition Availble" : dialog_desc);
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -182,33 +178,32 @@ public class Common {
 
 
     public static void hideKeyboardFrom(Context context) {
-        View view = ((Activity)context).getCurrentFocus();
+        View view = ((Activity) context).getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         } else {
-            InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
         }
     }
 
 
-
-    public static void setStatusColor(Context context, @Nullable int color){
-        Window window = ((Activity)context).getWindow();
-    // clear FLAG_TRANSLUCENT_STATUS flag:
+    public static void setStatusColor(Context context, @Nullable int color) {
+        Window window = ((Activity) context).getWindow();
+        // clear FLAG_TRANSLUCENT_STATUS flag:
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-    // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-    // finally change the color
-        if(color == 0){
-            window.setStatusBarColor(ContextCompat.getColor(((Activity)context), R.color.colorPrimaryGreen));
+        // finally change the color
+        if (color == 0) {
+            window.setStatusBarColor(ContextCompat.getColor(((Activity) context), R.color.colorPrimaryGreen));
         } else {
             //hard coded for now
-            window.setStatusBarColor(ContextCompat.getColor(((Activity)context), R.color.colordarkbackground));
+            window.setStatusBarColor(ContextCompat.getColor(((Activity) context), R.color.colordarkbackground));
         }
     }
 
@@ -235,49 +230,47 @@ public class Common {
     }
 
 
-    public static String fetchCityFromLatLng(Context context, LatLng latLng){
+    public static String fetchCityFromLatLng(Context context, LatLng latLng) {
         String city = "";
         Geocoder gcd = new Geocoder(context, Locale.getDefault());
         List<Address> addresses = null;
-        Log.d(TAG, "fetchCityFromLatLng: "+latLng.latitude+"   "+latLng.longitude);
+        Log.d(TAG, "fetchCityFromLatLng: " + latLng.latitude + "   " + latLng.longitude);
         try {
             addresses = gcd.getFromLocation(latLng.latitude, latLng.longitude, 1);
             if (addresses.size() > 0) {
                 city = addresses.get(0).getLocality();
 
-                if(city == null){
+                if (city == null) {
                     city = addresses.get(0).getAdminArea();
                 }
-                Log.d(TAG, "fetchCityFromLatLng: "+city+addresses.get(0).getAdminArea()+addresses.get(0).getFeatureName()+ new Gson().toJson(addresses.get(0)));
-            }
-            else {
+                Log.d(TAG, "fetchCityFromLatLng: " + city + addresses.get(0).getAdminArea() + addresses.get(0).getFeatureName() + new Gson().toJson(addresses.get(0)));
+            } else {
                 Log.d(TAG, "else : ");
             }
         } catch (IOException e) {
-            Log.d(TAG, "onSuccess: catch"+e.toString());
+            Log.d(TAG, "onSuccess: catch" + e.toString());
             fetchCityFromLatLng(context, latLng);
         }
         return city;
     }
 
-    public static Address fetchAddressFromLatLng(Context context, LatLng latLng){
+    public static Address fetchAddressFromLatLng(Context context, LatLng latLng) {
         Address address = null;
         Geocoder gcd = new Geocoder(context, Locale.getDefault());
         List<Address> addresses = null;
-        Log.d(TAG, "fechAdd: "+latLng.latitude+"   "+latLng.longitude);
+        Log.d(TAG, "fechAdd: " + latLng.latitude + "   " + latLng.longitude);
         try {
             addresses = gcd.getFromLocation(latLng.latitude, latLng.longitude, 1);
             if (addresses.size() > 0) {
                 address = addresses.get(0);
-            }
-            else {
+            } else {
                 Log.d(TAG, "else : ");
             }
 
-            Log.d(TAG, "fetchCityFromLatLng: "+addresses.get(0).getAdminArea()+addresses.get(0).getFeatureName()+ new Gson().toJson(addresses.get(0)));
+            Log.d(TAG, "fetchCityFromLatLng: " + addresses.get(0).getAdminArea() + addresses.get(0).getFeatureName() + new Gson().toJson(addresses.get(0)));
 
         } catch (IOException e) {
-            Log.d(TAG, "onSuccess: catch"+e.toString());
+            Log.d(TAG, "onSuccess: catch" + e.toString());
             fetchAddressFromLatLng(context, latLng);
         }
         return address;

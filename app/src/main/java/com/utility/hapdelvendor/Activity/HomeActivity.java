@@ -203,16 +203,16 @@ public class HomeActivity extends AppCompatActivity {
 
         // Checks that the platform will allow the specified type of update.
         appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
-            Log.d(TAG, "onCreate: `updateAvailability` " + appUpdateInfo.updateAvailability() + " , " + appUpdateInfo.updatePriority() + " appupdateinfo " + appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE));
+            Log.d(TAG, "onCreate: updateAvailability " + appUpdateInfo.updateAvailability() + " , " + appUpdateInfo.updatePriority() + " appupdateinfo " + appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE));
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                     // For a flexible update, use AppUpdateType.FLEXIBLE
-                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
                     && appUpdateInfo.updatePriority() >= 0) {
                 // Request the update.
 
                 try {
                     appUpdateManager.startUpdateFlowForResult(appUpdateInfo,
-                            AppUpdateType.FLEXIBLE, HomeActivity.this, UPDATE_REQUEST_CODE);
+                            AppUpdateType.IMMEDIATE, HomeActivity.this, UPDATE_REQUEST_CODE);
                     appUpdateManager.registerListener(installStateUpdatedListener);
                 } catch (IntentSender.SendIntentException e) {
                     Log.d(TAG, "onCreate: " + e.toString());
@@ -535,6 +535,7 @@ public class HomeActivity extends AppCompatActivity {
         Log.d(TAG, "onActivityResult: ");
         if (requestCode == UPDATE_REQUEST_CODE) {
             if (resultCode != RESULT_OK) {
+                HomeActivity.this.finish();
                 Toast.makeText(this, "Update Cancelled", Toast.LENGTH_SHORT).show();
 // Create a listener to track request state updates.
                 Log.d(TAG, "onActivityResult: Update flow failed! Result code: " + resultCode);
